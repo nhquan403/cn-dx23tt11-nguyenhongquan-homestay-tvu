@@ -106,10 +106,13 @@ Muốn thấy hệ thống làm gì mà không phải đoán, làm đúng thứ 
 ## Màn hình
 
 > **Ba ảnh dưới đây là bản giao diện CŨ, chụp trước lần thiết kế lại ngày
-> 24/09/2026.** Chưa thay được. Cách thay: `docker compose up -d`, mở
-> <http://localhost>, <http://localhost/admin> và <http://localhost/admin/payments>
-> ở bề ngang 1440px, chụp toàn trang, lưu đè lên ba tệp trong `docs/images/`.
-> Gỡ ghi chú này sau khi thay xong.
+> 24/09/2026.** Chụp lại bằng một lệnh, rồi gỡ ghi chú này:
+>
+> ```bash
+> docker compose up -d
+> docker compose logs api | grep -i -A 4 'mat khau admin demo'
+> node scripts/chup-anh-readme.mjs http://localhost <mat-khau-quan-tri>
+> ```
 
 ### Trang chủ
 
@@ -168,7 +171,7 @@ Quy ước đầy đủ: [docs/thiet-ke-giao-dien.md](docs/thiet-ke-giao-dien.md
 | `progress-report/` | **[bắt buộc]** Báo cáo tiến độ hàng tuần |
 | `thesis/` | **[bắt buộc]** Tài liệu văn bản: `doc/ pdf/ html/ abs/ refs/` |
 | `setup/` | Hướng dẫn cài đặt và dữ liệu thử |
-| `scripts/` | Công cụ: xuất Word, vẽ ảnh minh hoạ, sinh báo cáo tuần, quay demo |
+| `scripts/` | Công cụ: xuất Word, vẽ ảnh minh hoạ, sinh báo cáo tuần, quay demo, chụp ảnh README |
 | `plans/` | Kế hoạch triển khai theo giai đoạn |
 
 ## Tiến độ
