@@ -5,7 +5,7 @@
  *   docker compose logs api | grep -i -A 4 'mat khau admin demo'
  *   node scripts/chup-anh-readme.mjs http://localhost <mat-khau-quan-tri>
  *
- * Ghi de thang vao docs/images/: landing.png, admin-dashboard.png,
+ * Ghi de thang vao docs/images/: landing.jpg, admin-dashboard.png,
  * admin-payments.png. Khong doi ten tep vi README tro thang vao ba ten do.
  *
  * CHOT CUNG cho hai anh khu quan tri: neu sau khi dang nhap tren trang van con
@@ -48,12 +48,27 @@ async function napHetAnh(page) {
   await page.waitForTimeout(900);
 }
 
+/**
+ * Trang khach chup ra JPEG, hai man quan tri chup ra PNG.
+ *
+ * Trang khach phu kin anh chup, va anh toan trang cua no la 1440x6889 - gan
+ * 10 trieu diem anh. Ban PNG do nang 4,5 MB, nhieu hon ca 25 tam anh minh hoa
+ * cong lai. JPEG chat luong 80 con khoang 1 MB, bang mot phan tu, ma mat
+ * thuong khong phan biet duoc. Ha them chat luong gan nhu khong an thua: q60
+ * chi xuong 765 KB nhung chu bat dau nhoe. Hai man quan tri thi nguoc lai -
+ * chu va duong ke tren nen phang, PNG vua nhe hon vua sac net hon.
+ */
 async function chup(page, duong, ten) {
   await page.goto(BASE + duong, { waitUntil: 'networkidle' });
   await page.waitForTimeout(1500);
   await napHetAnh(page);
   const ra = path.join(OUTDIR, ten);
-  await page.screenshot({ path: ra, fullPage: true });
+  const jpeg = ten.endsWith('.jpg');
+  await page.screenshot({
+    path: ra,
+    fullPage: true,
+    ...(jpeg ? { type: 'jpeg', quality: 80 } : {}),
+  });
   const kb = (fs.statSync(ra).size / 1024).toFixed(0);
   console.log(`  ${ten.padEnd(22)} ${kb.padStart(5)} KB   (${duong})`);
 }
@@ -66,7 +81,7 @@ try {
   console.log(`Chup tu ${BASE} o be ngang 1440px:\n`);
 
   // ── Trang khach ────────────────────────────────────────────────────────────
-  await chup(page, '/', 'landing.png');
+  await chup(page, '/', 'landing.jpg');
 
   // ── Dang nhap khu quan tri ────────────────────────────────────────────────
   await page.goto(`${BASE}/admin`, { waitUntil: 'networkidle' });

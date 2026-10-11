@@ -97,26 +97,34 @@ Muốn thấy hệ thống làm gì mà không phải đoán, làm đúng thứ 
    không bấm chọn được.
 2. Chọn một loại phòng → điền thông tin → đặt. Màn hình thanh toán hiện mã QR
    và đồng hồ đếm ngược 15 phút.
-3. Profile `demo` có nút giả lập chuyển khoản ngay trên màn hình đó. Bấm vào,
-   đơn chuyển sang **Đã xác nhận**, thư xác nhận rơi vào <http://localhost:8025>.
+3. Vì đồ án chưa đăng ký tài khoản SePay thật, bản `demo` có nút **"Mô phỏng đã
+   chuyển khoản"** ngay dưới mã QR. Bấm vào, đơn chuyển sang **Đã xác nhận**,
+   thư xác nhận rơi vào <http://localhost:8025>. Nút này dựng đúng gói tin mà
+   SePay sẽ gửi rồi đẩy qua đúng webhook thật, nên luồng chạy không khác bản
+   nối tiền thật; nó không tồn tại ở profile `prod` và tắt sẵn nếu thiếu cờ
+   `PAYMENTS_SIMULATOR_ENABLED`.
 4. Mở <http://localhost/admin> → **Đơn đặt phòng** → thấy đơn vừa tạo.
 5. Thử đặt lại đúng phòng đó, đúng khoảng ngày đó, ở một tab khác — hệ thống
    từ chối.
 
 ## Màn hình
 
-> **Ba ảnh dưới đây là bản giao diện CŨ, chụp trước lần thiết kế lại ngày
-> 24/09/2026.** Chụp lại bằng một lệnh, rồi gỡ ghi chú này:
->
-> ```bash
-> docker compose up -d
-> docker compose logs api | grep -i -A 4 'mat khau admin demo'
-> node scripts/chup-anh-readme.mjs http://localhost <mat-khau-quan-tri>
-> ```
+Ba ảnh dưới đây chụp từ bản đang chạy thật, ngày 11/10/2026. Chụp lại sau
+mỗi lần đổi giao diện bằng một lệnh:
+
+```bash
+docker compose up -d
+docker compose logs api | grep -i -A 4 'mat khau admin demo'
+node scripts/chup-anh-readme.mjs http://localhost <mat-khau-quan-tri>
+```
+
+Bộ chụp có chốt cứng: nếu đăng nhập hỏng mà vẫn còn ô nhập mật khẩu trên
+trang, nó NÉM LỖI thay vì chụp tiếp. Không có chốt đó thì hai tấm "khu quản
+trị" hoá ra là hai tấm trang đăng nhập — nhìn qua rất giống thật.
 
 ### Trang chủ
 
-![Trang chủ](docs/images/landing.png)
+![Trang chủ](docs/images/landing.jpg)
 
 ### Tổng quan quản trị
 
@@ -171,7 +179,7 @@ Quy ước đầy đủ: [docs/thiet-ke-giao-dien.md](docs/thiet-ke-giao-dien.md
 | `progress-report/` | **[bắt buộc]** Báo cáo tiến độ hàng tuần |
 | `thesis/` | **[bắt buộc]** Tài liệu văn bản: `doc/ pdf/ html/ abs/ refs/` |
 | `setup/` | Hướng dẫn cài đặt và dữ liệu thử |
-| `scripts/` | Công cụ: xuất Word, vẽ ảnh minh hoạ, sinh báo cáo tuần, quay demo, chụp ảnh README |
+| `scripts/` | Công cụ: xuất Word, tải ảnh minh hoạ, vẽ sơ đồ, sinh báo cáo tuần, quay demo, chụp ảnh README |
 | `plans/` | Kế hoạch triển khai theo giai đoạn |
 
 ## Tiến độ
@@ -234,9 +242,16 @@ không cũ đi theo thời gian — mở repo sau sáu tháng vẫn thấy đơn
 Seed **không** đi qua Flyway, lý do ở
 [DemoDataSeeder](backend/src/main/java/com/tvh/homestay/demo/DemoDataSeeder.java).
 
-26 ảnh minh hoạ là SVG sinh ra từ `scripts/ve-anh-minh-hoa.py`, không phụ thuộc
-mạng. Thay bằng ảnh chụp thật: chép đè vào `frontend/public/images/demo/` với
-đúng tên tệp cũ, không phải sửa dòng mã nào.
+25 ảnh minh hoạ là ảnh chụp tải từ Unsplash (giấy phép cho dùng thương mại,
+không bắt buộc ghi nguồn), đã nằm sẵn trong repo nên lúc chạy không cần mạng.
+Mã ảnh gốc, khổ ảnh và cách tải lại ghi ở
+[README của thư mục ảnh](frontend/public/images/demo/README.md). Tấm thứ 26 là
+sơ đồ đường đi, vẫn do `scripts/ve-ban-do.py` vẽ — một tấm ảnh chụp không nói
+được "rẽ phải ở đây".
+
+Thay bằng ảnh chụp thật của homestay: chép đè vào `frontend/public/images/demo/`
+với đúng tên tệp cũ, không phải sửa dòng mã nào. Nhớ sửa luôn chú thích ảnh
+trong `demo-data.sql` cho khớp.
 
 ## Yêu cầu môi trường
 
