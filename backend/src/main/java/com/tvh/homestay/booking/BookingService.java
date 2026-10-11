@@ -1,5 +1,6 @@
 package com.tvh.homestay.booking;
 
+import org.springframework.beans.factory.annotation.Value;
 import com.tvh.homestay.availability.AvailabilityService;
 import com.tvh.homestay.booking.dto.BookingDtos.BookingResponse;
 import com.tvh.homestay.booking.dto.BookingDtos.BookingRoomView;
@@ -50,6 +51,14 @@ public class BookingService {
     private final PaymentService payments;
     private final VietQrGenerator qr;
 
+    /**
+     * Cờ bật nút mô phỏng chuyển khoản, đọc từ cùng một thuộc tính mà
+     * {@code GuestPaymentSimulatorController} dùng để quyết định có nạp bean
+     * hay không. Đọc chung một nguồn nên giao diện không bao giờ hiện một nút
+     * mà máy chủ trả 404.
+     */
+    private final boolean simulatorEnabled;
+
     public BookingService(
             AvailabilityService availabilityService,
             RoomAllocator allocator,
@@ -60,7 +69,8 @@ public class BookingService {
             BookingRepository bookings,
             BookingRoomRepository bookingRooms,
             PaymentService payments,
-            VietQrGenerator qr) {
+            VietQrGenerator qr,
+            @Value("${payments.simulator.enabled:false}") boolean simulatorEnabled) {
         this.availabilityService = availabilityService;
         this.allocator = allocator;
         this.bookingTx = bookingTx;
@@ -71,6 +81,7 @@ public class BookingService {
         this.bookingRooms = bookingRooms;
         this.payments = payments;
         this.qr = qr;
+        this.simulatorEnabled = simulatorEnabled;
     }
 
     /**
@@ -164,7 +175,8 @@ public class BookingService {
                 booking.getPaymentStatus().name(),
                 latest == null ? BigDecimal.ZERO : latest.getAmountExpected(),
                 latest == null ? BigDecimal.ZERO : latest.getAmountReceived(),
-                booking.getHoldExpiresAt());
+                booking.getHoldExpiresAt(),
+                simulatorEnabled);
     }
 
     @Transactional(readOnly = true)

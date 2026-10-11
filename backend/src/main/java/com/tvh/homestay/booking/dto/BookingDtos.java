@@ -89,11 +89,18 @@ public final class BookingDtos {
             List<BookingRoomView> rooms) {}
 
     /** Trạng thái thanh toán cho màn hình QR hỏi liên tục. */
+    /**
+     * @param simulatorEnabled bản đang chạy có bật nút mô phỏng chuyển khoản
+     *     hay không. Màn hình QR đã hỏi endpoint này vài giây một lần, nên gắn
+     *     cờ vào đây thay vì mở thêm một endpoint cấu hình: không tốn round
+     *     trip nào, và frontend không phải đoán bằng cách thử gọi rồi bắt 404.
+     */
     public record PaymentStatusResponse(
             String code,
             String status,
             String paymentStatus,
             BigDecimal amountExpected,
             BigDecimal amountReceived,
-            OffsetDateTime holdExpiresAt) {}
+            OffsetDateTime holdExpiresAt,
+            boolean simulatorEnabled) {}
 }

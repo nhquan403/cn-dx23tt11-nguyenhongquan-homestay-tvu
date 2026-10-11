@@ -137,6 +137,40 @@ const MAX_POLL_MS = 15 * 60_000;
         <p class="mt-4 text-center text-sm text-text-muted">
           Còn lại <strong class="font-mono text-text">{{ countdown() }}</strong> để hoàn tất
         </p>
+
+        <!--
+          Nút mô phỏng chỉ hiện khi MÁY CHỦ nói là có. Cờ đi kèm trạng thái
+          thanh toán mà màn hình này vốn đã hỏi vài giây một lần, nên giao diện
+          không bao giờ bày ra một nút mà backend trả 404.
+
+          Khung nét đứt và dòng chữ nói thẳng đây là công cụ trình diễn: người
+          chấm nhìn vào phải thấy ngay đây không phải một phần của luồng thật,
+          chứ không phải đoán.
+        -->
+        @if (simulatorEnabled()) {
+          <div class="mt-6 rounded-md border border-dashed border-border-strong p-4">
+            <p class="text-xs font-semibold uppercase tracking-wide text-text-muted">
+              Công cụ trình diễn
+            </p>
+            <p class="mt-2 text-sm text-text-muted">
+              Bản demo chưa nối tài khoản ngân hàng thật. Nút này dựng một thông báo chuyển
+              khoản giống hệt SePay rồi đẩy qua đúng đường xử lý thật, nên luồng chạy y như
+              khi tiền về.
+            </p>
+            <div class="mt-3">
+              <ui-button
+                variant="secondary"
+                [loading]="simulating()"
+                (pressed)="simulateTransfer()"
+              >
+                Mô phỏng đã chuyển khoản
+              </ui-button>
+            </div>
+            @if (simulateError(); as message) {
+              <p class="mt-2 text-sm font-semibold text-danger" aria-live="polite">{{ message }}</p>
+            }
+          </div>
+        }
       }
     </section>
   `,
@@ -153,6 +187,8 @@ export class PaymentQrComponent implements OnInit {
 
   protected readonly status = signal<PaymentStatus | null>(null);
   protected readonly copied = signal<'account' | 'content' | null>(null);
+  protected readonly simulating = signal(false);
+  protected readonly simulateError = signal<string | null>(null);
 
   private readonly now = signal(Date.now());
   private readonly startedAt = Date.now();
@@ -184,6 +220,9 @@ export class PaymentQrComponent implements OnInit {
   );
 
   protected readonly settled = computed(() => this.currentStatus() === 'CONFIRMED');
+
+  /** Chỉ true khi máy chủ báo có bật; mặc định false cho tới lần poll đầu tiên. */
+  protected readonly simulatorEnabled = computed(() => this.status()?.simulatorEnabled === true);
 
   protected readonly awaitingReview = computed(
     () => this.currentStatus() === 'AWAITING_REVIEW' || (this.status()?.amountReceived ?? 0) > 0,
@@ -227,6 +266,33 @@ export class PaymentQrComponent implements OnInit {
       // hiện ra dạng chữ nên khách gõ tay được, không cần báo lỗi.
       () => this.copied.set(null),
     );
+  }
+
+  /**
+   * Gọi endpoint mô phỏng rồi hỏi lại trạng thái NGAY, không chờ nhịp poll kế.
+   *
+   * Nhịp poll cách nhau vài giây; chờ nó thì người bấm nút thấy màn hình đứng
+   * yên và bấm lần nữa. Webhook có chốt chống trùng nên lần hai không cộng tiền
+   * hai lần, nhưng vẫn là một trải nghiệm làm người ta nghi hệ thống hỏng.
+   */
+  protected simulateTransfer(): void {
+    if (this.simulating()) {
+      return;
+    }
+    this.simulating.set(true);
+    this.simulateError.set(null);
+    this.bookings.simulateTransfer(this.booking().code, this.accessToken()).subscribe({
+      next: () => {
+        this.simulating.set(false);
+        this.poll();
+      },
+      error: () => {
+        this.simulating.set(false);
+        this.simulateError.set(
+          'Không gọi được công cụ mô phỏng. Bản đang chạy có thể đã tắt cờ payments.simulator.enabled.',
+        );
+      },
+    });
   }
 
   private poll(): void {

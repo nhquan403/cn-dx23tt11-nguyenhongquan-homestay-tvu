@@ -1,6 +1,7 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import type { Booking } from '../../../core/services/booking.service';
+import type { BookingStatus } from '../../../shared/ui';
 
 /** Tham số tìm kiếm — thứ DUY NHẤT được phép đi lên URL. */
 export interface SearchParams {
@@ -151,6 +152,29 @@ export class BookingFlowStore {
       this.rememberAccessToken(booking.code, booking.accessToken);
     }
     writeSession(bookingKey(booking.code), booking);
+  }
+
+  /**
+   * Ghi đè trạng thái của đơn đã cất, sau khi máy chủ báo tiền đã về.
+   *
+   * <p>Bản cất là ảnh chụp lúc TẠO đơn, nên nó mang `PENDING_PAYMENT` mãi mãi.
+   * Trang hoàn tất đọc bản cất đó để vẽ huy hiệu trạng thái, nên không cập
+   * nhật thì khách vừa trả tiền xong vẫn thấy chữ "Chờ thanh toán" ngay bên
+   * cạnh dòng "Đã cọc 900.000đ" — hai câu đá nhau trên cùng một màn hình.
+   *
+   * <p>Chỉ nhận trạng thái mà MÁY CHỦ trả về, không bao giờ tự suy ra. Màn
+   * hình QR hỏi lại trạng thái vài giây một lần; đây là nơi cất kết quả đó.
+   */
+  updateStatus(code: string, status: BookingStatus, paymentStatus: string): void {
+    const booking = this.bookingFor(code);
+    if (!booking) {
+      return;
+    }
+    const next: Booking = { ...booking, status, paymentStatus };
+    if (this.created()?.code === code) {
+      this.created.set(next);
+    }
+    writeSession(bookingKey(code), next);
   }
 
   /** Đơn đã cất ở tab này, hoặc `null` khi mở từ tab/máy khác. */

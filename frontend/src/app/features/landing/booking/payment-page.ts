@@ -1,6 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BookingService, type Booking } from '../../../core/services/booking.service';
+import {
+  BookingService,
+  type Booking,
+  type PaymentStatus,
+} from '../../../core/services/booking.service';
 import { UiButton, UiInput } from '../../../shared/ui';
 import { errorMessageOf } from '../shared/api-error';
 import { BookingFlowStore } from './booking-flow.store';
@@ -32,7 +36,7 @@ import { PaymentQrComponent } from './payment-qr.component';
         <app-payment-qr
           [booking]="data"
           [accessToken]="accessToken()"
-          (confirmed)="onConfirmed()"
+          (confirmed)="onConfirmed($event)"
           (rebook)="rebook()" />
       } @else {
         <section class="border border-border bg-surface p-5">
@@ -111,7 +115,15 @@ export class PaymentPage {
     });
   }
 
-  protected onConfirmed(): void {
+  /**
+   * Cất lại trạng thái MÁY CHỦ vừa báo, rồi mới chuyển sang trang hoàn tất.
+   *
+   * <p>Trang hoàn tất đọc bản đơn cất trong tab, và bản đó là ảnh chụp lúc tạo
+   * đơn — tức là còn `PENDING_PAYMENT`. Không cất lại thì khách vừa trả tiền
+   * xong vẫn thấy huy hiệu "Chờ thanh toán".
+   */
+  protected onConfirmed(status: PaymentStatus): void {
+    this.store.updateStatus(this.code(), status.status, status.paymentStatus);
     void this.router.navigate(['/dat-phong/hoan-tat', this.code()]);
   }
 

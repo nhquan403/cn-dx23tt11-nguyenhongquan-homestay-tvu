@@ -14,8 +14,15 @@ springdoc:
 
 payments:
   simulator:
-    # Endpoint mô phỏng chuyển khoản của Phase 6 cần CẢ ADMIN lẫn cờ này.
-    # Mặc định tắt kể cả ở demo: bật thủ công khi cần trình diễn.
+    # Hai endpoint mô phỏng chuyển khoản cùng đọc cờ này: bản quản trị
+    # (/api/admin/dev/**, đòi vai trò ADMIN) và nút "tôi đã chuyển khoản" của
+    # khách (/api/bookings/*/simulate-transfer, đòi mã truy cập của đúng đơn).
+    #
+    # Mặc định TẮT kể cả ở demo. Chỗ bật là docker-compose.yml — ở đó biến
+    # PAYMENTS_SIMULATOR_ENABLED mặc định true vì bản đem đi bảo vệ cần chạy
+    # trọn vòng khi chưa có tài khoản SePay thật. Để mặc định trong mã nguồn
+    # là TẮT thì một bản triển khai quên đổi cấu hình không tự dựng lên một
+    # cửa xác nhận đơn miễn phí.
     enabled: false
 
 logging:

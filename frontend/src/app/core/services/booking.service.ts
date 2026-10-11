@@ -76,6 +76,14 @@ export interface PaymentStatus {
   amountExpected: number;
   amountReceived: number;
   holdExpiresAt: string | null;
+  /**
+   * Bản đang chạy có bật nút mô phỏng chuyển khoản hay không.
+   *
+   * Cờ đi kèm trạng thái thanh toán — thứ màn hình QR vốn đã hỏi vài giây một
+   * lần — nên không tốn thêm round trip, và giao diện không phải đoán bằng
+   * cách gọi thử rồi bắt 404.
+   */
+  simulatorEnabled: boolean;
 }
 
 /**
@@ -140,6 +148,21 @@ export class BookingService {
   paymentStatus(code: string, token: string): Observable<PaymentStatus> {
     return this.http.get<PaymentStatus>(
       `/api/bookings/${encodeURIComponent(code)}/payment-status`,
+      { params: new HttpParams().set('token', token) },
+    );
+  }
+
+  /**
+   * Mô phỏng một lần chuyển khoản cho CHÍNH đơn đang giữ.
+   *
+   * Chỉ tồn tại ở bản trình diễn: máy chủ không nạp endpoint này khi thiếu cờ
+   * `payments.simulator.enabled`, và không bao giờ nạp ở profile `prod`. Chỉ
+   * gọi khi `paymentStatus().simulatorEnabled` là true.
+   */
+  simulateTransfer(code: string, token: string): Observable<unknown> {
+    return this.http.post<unknown>(
+      `/api/bookings/${encodeURIComponent(code)}/simulate-transfer`,
+      null,
       { params: new HttpParams().set('token', token) },
     );
   }

@@ -53,6 +53,11 @@ services:
       # khởi động với một bí mật mà ai đọc repo cũng biết.
       JWT_SECRET: ${JWT_SECRET:?JWT_SECRET chua duoc dat - chay ./scripts/init-env.sh}
       SEPAY_WEBHOOK_API_KEY: ${SEPAY_WEBHOOK_API_KEY:?SEPAY_WEBHOOK_API_KEY chua duoc dat - chay ./scripts/init-env.sh}
+      # Nut "toi da chuyen khoan" cua ban trinh dien. Bat o day chu KHONG o
+      # application.yml: mac dinh trong ma nguon phai la TAT, de mot ban trien
+      # khai quen doi cau hinh khong tu dung co cua xac nhan don mien phi.
+      # Profile prod khong nap bean nay du co bat co.
+      PAYMENTS_SIMULATOR_ENABLED: ${PAYMENTS_SIMULATOR_ENABLED:-true}
       SEPAY_ACCOUNT_NUMBER: ${SEPAY_ACCOUNT_NUMBER:-0123456789}
       SEPAY_BANK_CODE: ${SEPAY_BANK_CODE:-MBBank}
       # storage.local.dir trong application.yml là đường dẫn TƯƠNG ĐỐI

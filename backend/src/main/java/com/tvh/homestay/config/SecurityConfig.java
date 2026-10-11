@@ -91,6 +91,13 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/bookings/lookup").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/bookings/*/cancel").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/bookings/*/payment-status").permitAll()
+                        // Nut mo phong chuyen khoan cua ban trinh dien. permitAll o day
+                        // KHONG co nghia la ai cung goi duoc: bean chi ton tai khi co
+                        // payments.simulator.enabled va profile khac prod, va chinh
+                        // controller doi accessToken cua dung don do. Khong khai dong nay
+                        // thi EndpointAuthorizationIT do, vi no doi moi duong dan phai
+                        // duoc khai tuong minh.
+                        .requestMatchers(HttpMethod.POST, "/api/bookings/*/simulate-transfer").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/bookings/*/review").permitAll()
 
                         // Webhook tự xác thực bằng API key của nhà cung cấp.
