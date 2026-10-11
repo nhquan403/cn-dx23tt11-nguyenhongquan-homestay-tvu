@@ -141,19 +141,25 @@ rõ đo bằng cách nào để người đọc kiểm lại được.
 
 | Hạng mục | Kết quả | Đo bằng |
 |---|---|---|
-| Kiểm thử phía máy chủ | **129 test / 18 lớp**, tất cả xanh | `cd backend && ./mvnw verify` |
-| Thao tác API | **80 thao tác trên 63 đường dẫn** | đếm từ `/v3/api-docs` của hệ thống đang chạy |
-| Lược đồ cơ sở dữ liệu | **21 bảng**, 8 migration Flyway | đếm `CREATE TABLE` trong `db/migration/` |
+| Kiểm thử phía máy chủ | **124 phương thức test / 19 lớp** (120 `@Test` + 4 tham số hoá) | đếm trong `backend/src/test/java` |
+| Thao tác API | **82 thao tác trên 65 đường dẫn** | đếm từ `/v3/api-docs` của hệ thống đang chạy |
+| Lược đồ cơ sở dữ liệu | **21 bảng**, 9 migration Flyway | đếm `CREATE TABLE` trong `db/migration/` |
+| Dữ liệu mẫu | **329 đơn** đủ 8 trạng thái, 284 lần thanh toán, 24 đánh giá | đếm trong CSDL sau khi seed |
 | Khả năng tiếp cận | **0 vi phạm / 353 lượt đạt** trên 17 màn hình | axe-core 4.13.0, có chốt kiểm tra đăng nhập thật |
 | Tương phản màu | **23/23 cặp đạt** WCAG 2.1 AA | trang `/ui-kit` tính lại lúc chạy |
-| Gói giao diện | **317,54 kB** thô / **86,05 kB** nén | `ng build --configuration production` |
+| Gói giao diện | **317,60 kB** thô / **86,05 kB** nén | `ng build --configuration production` |
 | Chữ tự host | **93,6 KB** cho 3 kiểu, đủ dấu tiếng Việt | đo trên tệp `.woff2` trong repo |
 | Cuộn ngang | không có ở 360 / 768 / 1440 px | đo `scrollWidth` so với `innerWidth` |
 
-Con số **129 test** và **80 thao tác** lấy từ [docs/kiem-thu.md](docs/kiem-thu.md)
-và [docs/api.md](docs/api.md), nơi chúng được đo từ lần chạy thật. Đếm tĩnh
-trong mã nguồn cho 113 phương thức mang `@Test` cộng 4 phương thức tham số hoá —
-số 129 là số ca chạy sau khi các ca tham số hoá nở ra.
+Dòng kiểm thử cố ý ghi **số phương thức `@Test` đếm tĩnh**, không ghi "tất cả
+xanh". Lần chạy `./mvnw verify` đầy đủ gần nhất cho 129 ca xanh trên bộ test
+khi đó; bảy ca của `GuestPaymentSimulatorIT` thêm sau đó CHƯA chạy được ở đây,
+vì bộ test dùng Testcontainers và môi trường dựng bản này không có Docker. Máy
+nào có Docker thì `cd backend && ./mvnw verify` chạy được cả bộ. Hành vi mà bảy
+ca đó kiểm thì đã đo trực tiếp qua HTTP trên hệ thống đang chạy, xem
+[docs/kiem-thu.md](docs/kiem-thu.md).
+
+Chi tiết số thao tác API ở [docs/api.md](docs/api.md).
 
 ### Giao diện
 
@@ -224,9 +230,31 @@ và việc còn lại trước khi nộp:
 
 ## Dữ liệu mẫu
 
-Profile `demo` nạp sẵn: **4 loại phòng**, **15 phòng vật lý**, **12 tiện ích**,
-**40 đơn đặt phòng** trải đủ tám trạng thái, 3 khoản cần đối soát, 3 mã khuyến
-mãi (còn hạn / hết hạn / hết lượt), 8 đánh giá, và nội dung trang chủ đầy đủ.
+Profile `demo` nạp sẵn **4 loại phòng**, **15 phòng vật lý**, **12 tiện ích**
+và nội dung trang chủ đầy đủ, cộng với lượng dữ liệu giao dịch đủ để mọi màn
+hình có thật thứ để hiện:
+
+| Bảng | Số dòng | Có gì đáng xem |
+|---|---|---|
+| Đơn đặt phòng | 329 | đủ tám trạng thái, kể cả 8 đơn khách **đang ở** |
+| Lần thanh toán | 284 | trong đó 5 khoản lệch tiền đang chờ đối soát |
+| Đánh giá | 24 | 18 đã duyệt, 4 chờ duyệt, 2 đã từ chối |
+| Thư trong hộp thư đi | 257 | một dòng `FAILED` để thấy nhánh gửi hỏng |
+| Lịch sử trạng thái đơn | 636 | mỗi đơn có vết chuyển trạng thái |
+| Ghi chú nội bộ | 14 | viết theo giọng người trực thật |
+| Khuyến mãi | 6 | còn hạn / hết hạn / hết lượt / **đã tắt** |
+| Bài viết | 7 | 6 đã đăng, 1 bản nháp |
+
+Đơn rải trên cửa sổ 360 ngày, từ 270 ngày trước tới 90 ngày sau, nên biểu đồ
+doanh thu sáu tháng có số liệu ở **mọi** tháng chứ không phải vài cột lẻ. Tỉ lệ
+lấp đầy trung bình khoảng 28% — đủ dày để lịch có ngày kín, đủ thưa để hội đồng
+luôn đặt thử được.
+
+Ngoài ra có một **cuối tuần cháy phòng** ở `CURRENT_DATE + 12 … + 14`: mọi loại
+phòng đều kín, nên lịch ở bước một của luồng đặt phòng chặn sẵn hai ngày đó.
+Khối dựng cuối tuần này chạy TRƯỚC khối sinh đơn hàng loạt — nếu chạy sau, càng
+nhiều dữ liệu mẫu thì xác suất kín được cả nhà càng thấp, và lúc hỏng thì hỏng
+im lặng.
 
 Ba khoảng đóng phòng, mỗi khoảng chứng minh một điều khác nhau:
 

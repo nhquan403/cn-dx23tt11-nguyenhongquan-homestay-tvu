@@ -131,7 +131,7 @@ SELECT rt.id, v.room_number, v.floor, v.status
        ) AS v(code, room_number, floor, status) ON v.code = rt.code
 ON CONFLICT DO NOTHING;
 
--- ─── Khuyến mãi: còn hạn, hết hạn, hết lượt ─────────────────────────────────
+-- ─── Khuyến mãi: còn hạn, hết hạn, hết lượt, đã tắt ────────────────────────
 INSERT INTO promotions (code, name, description, discount_type, discount_value,
                         max_discount_amount, min_nights, min_total_amount,
                         starts_at, ends_at, usage_limit, used_count, active)
@@ -146,7 +146,22 @@ VALUES
 
     ('SINHNHAT', 'Sinh nhật homestay', 'Giảm 15%, giới hạn 20 lượt. Đã dùng hết.',
      'PERCENT', 15, 500000, 1, 0,
-     now() - interval '60 days', now() + interval '60 days', 20, 20, true)
+     now() - interval '60 days', now() + interval '60 days', 20, 20, true),
+
+    ('DAIHAN5', 'Ở dài ngày', 'Giảm 5% cho đơn từ 4 đêm, không giới hạn lượt.',
+     'PERCENT', 5, 400000, 4, 0,
+     now() - interval '90 days', now() + interval '270 days', NULL, 37, true),
+
+    ('HEDO150', 'Hè mát', 'Giảm thẳng 150.000đ cho đơn từ 2 đêm.',
+     'FIXED', 150000, NULL, 2, 1000000,
+     now() - interval '15 days', now() + interval '75 days', 100, 23, true),
+
+    -- Mã còn hạn nhưng đã TẮT. Khác hẳn "hết hạn" và "hết lượt": đây là trường
+    -- hợp người quản trị chủ động ngắt một chương trình đang chạy, và nó phải
+    -- bị từ chối vì `active = false` chứ không phải vì ngày tháng.
+    ('NGUNG20', 'Ưu đãi đã ngừng', 'Giảm 20%, đã tạm ngừng áp dụng.',
+     'PERCENT', 20, 600000, 1, 0,
+     now() - interval '45 days', now() + interval '45 days', NULL, 8, false)
 ON CONFLICT DO NOTHING;
 
 -- ─── Khách hàng mẫu ─────────────────────────────────────────────────────────
@@ -234,6 +249,24 @@ VALUES
      '<h2>Cung đường</h2><p>Từ cổng homestay rẽ trái, đi men theo bờ sông khoảng 4km tới chùa Khmer, rồi vòng qua cầu nhỏ về phía vườn dừa.</p><h2>Nên đi lúc nào</h2><p>Sáng sớm trước 8 giờ hoặc chiều sau 16 giờ. Giữa trưa nắng gắt và không có bóng cây trên đoạn đê.</p><h2>Mang theo gì</h2><ul><li>Nước — dọc đường chỉ có một quán tạp hoá</li><li>Mũ và kem chống nắng</li><li>Tiền lẻ nếu muốn ghé đò ngang</li></ul>',
      '/images/demo/post-3.jpg', true, now() - interval '45 days'),
 
+    ('di-xuong-trong-rach-dua-nuoc',
+     'Đi xuồng trong rạch dừa nước — nên đi giờ nào',
+     'Rạch sau nhà nối ra sông lớn. Đi lúc nước lớn thì xuồng vào được tận gốc dừa.',
+     '<h2>Phụ thuộc con nước, không phụ thuộc giờ</h2><p>Nước lớn thì xuồng len được vào rạch nhỏ; nước ròng thì mắc cạn. Chủ nhà xem lịch con nước giúp nếu bạn báo trước một ngày.</p><h2>Mang gì</h2><ul><li>Nón — trong rạch rợp nhưng đoạn ra sông lớn thì nắng gắt</li><li>Túi chống nước cho điện thoại</li><li>Áo phao có sẵn trên xuồng, bắt buộc mặc</li></ul><h2>Bao lâu</h2><p>Một vòng chừng 45 phút. Muốn ghé vườn trái cây bên kia sông thì tính hai tiếng.</p>',
+     '/images/demo/gallery-2.jpg', true, now() - interval '6 days'),
+
+    ('bua-sang-o-homestay-co-gi',
+     'Bữa sáng ở homestay có gì',
+     'Mỗi ngày một món, chủ nhà nấu. Không đặt ngoài, nên hết là hết.',
+     '<h2>Xoay vòng theo ngày</h2><p>Thứ Hai và thứ Năm là bún nước lèo. Thứ Ba, thứ Sáu là bánh tét chiên với dưa chua. Cuối tuần thường là cháo cá lóc hoặc hủ tiếu.</p><h2>Ăn chay, dị ứng</h2><p>Báo trước một ngày là bếp đổi món được. Dị ứng hải sản thì nhớ nói rõ — nước lèo có mắm.</p><h2>Giờ ăn</h2><p>Từ 6h30 tới 9h ngoài hiên. Đi sớm hơn thì báo tối hôm trước, bếp gói mang theo.</p>',
+     '/images/demo/gallery-4.jpg', true, now() - interval '20 days'),
+
+    ('ba-cho-ngoi-khong-lam-gi',
+     'Ba chỗ ngồi không làm gì ở homestay',
+     'Không phải điểm tham quan nào cũng cần đi. Đây là ba chỗ để ngồi yên.',
+     '<h2>Võng ở hiên bungalow</h2><p>Buổi chiều từ 16h trở đi có gió sông. Đây là chỗ nhiều khách nói là lý do họ quay lại.</p><h2>Bậc thềm bến sông</h2><p>Cuối vườn, ba bậc xi măng sát mé nước. Sáng sớm có người giăng lưới ngang rạch.</p><h2>Bàn trà dưới gốc xoài</h2><p>Sau nhà chính. Mùa xoài chín thì nên đội nón.</p><blockquote>Chủ nhà pha sẵn bình trà để ở bếp, khách tự rót.</blockquote>',
+     '/images/demo/gallery-6.jpg', true, now() - interval '60 days'),
+
     ('ban-nhap-chua-dang',
      'Hướng dẫn nhận phòng sớm (bản nháp)',
      'Bài viết đang soạn, chưa đăng.',
@@ -242,9 +275,183 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 -- ============================================================================
+-- Ba kịch bản dựng tay, PHẢI chạy trước khối sinh đơn hàng loạt
+--
+-- Cả ba đều CHỌN phòng còn rảnh thay vì ghi cứng số phòng. Nếu ba trăm đơn
+-- sinh hàng loạt chạy trước và chiếm chỗ, cả ba lặng lẽ không dựng được gì:
+-- câu lệnh vẫn thành công, chỉ là chèn 0 dòng. Và ba tính năng đáng trình
+-- diễn nhất của đề tài — lịch tự chặn ngày hết phòng, phòng đang đóng bị trừ
+-- khỏi kết quả tìm, phòng tự mở lại khi hết hạn đóng — biến mất khỏi bản demo
+-- mà không có một dòng lỗi nào.
+--
+-- Đảo thứ tự là cách sửa đúng. Cách sai mà bản trước dùng là bắt khối sinh đơn
+-- né hẳn bốn khoảng ngày này: nó có chạy, nhưng khoảng -1..+3 chính là dải
+-- ngày duy nhất sinh ra đơn CHECKED_IN, nên né nó đi là xoá sạch trạng thái
+-- "khách đang ở" khỏi dữ liệu mẫu.
+-- ============================================================================
+
+-- ─── Một khoảng đóng phòng để trình diễn "ngày khả dụng" ────────────────────
+-- Đặt ở +40..+45 ngày: đủ xa khoảng ngày hội đồng thường thử đặt, nên nó không
+-- che mất phòng lúc trình diễn, nhưng vẫn nằm trong cửa sổ lịch mặc định.
+--
+-- Phòng được CHỌN chứ không ghi cứng: chọn phòng đầu tiên còn khai thác mà
+-- không có đơn nào giao với khoảng đó. Ghi cứng số phòng thì chỉ cần tầng gán
+-- phòng đổi thứ tự là khoảng đóng rơi trúng một đơn đã seed, và bản demo mở ra
+-- với một cảnh báo "có đơn bị ảnh hưởng" mà không ai cố ý tạo.
+--
+-- Điều kiện cuối là chốt idempotent: đã có khoảng đóng nào thì không thêm nữa,
+-- nên khởi động lại container không cộng dồn mỗi lần một khoảng.
+INSERT INTO room_closures (room_id, from_date, to_date, reason)
+SELECT r.id, CURRENT_DATE + 40, CURRENT_DATE + 45, 'Sơn lại phòng và thay rèm'
+  FROM rooms r
+ WHERE r.status = 'AVAILABLE'
+   AND NOT EXISTS (
+       SELECT 1 FROM booking_rooms br
+        WHERE br.room_id = r.id
+          AND br.status = 'ACTIVE'
+          AND br.stay && daterange(CURRENT_DATE + 40, CURRENT_DATE + 45, '[)')
+   )
+   AND NOT EXISTS (SELECT 1 FROM room_closures)
+ ORDER BY r.room_number
+ LIMIT 1;
+
+-- ─── Hai khoảng đóng phòng nữa: một ĐANG áp dụng, một ĐÃ QUA ────────────────
+-- Khoảng duy nhất ở trên nằm ở +40 ngày, tức là lúc mở khu quản trị thì danh
+-- sách chỉ có một dòng ở tương lai xa. Thêm một khoảng ĐANG có hiệu lực hôm
+-- nay (chứng minh phòng bị trừ khỏi kết quả tìm kiếm ngay bây giờ) và một
+-- khoảng ĐÃ QUA (chứng minh hệ thống tự mở lại phòng, không cần ai nhớ bật).
+INSERT INTO room_closures (room_id, from_date, to_date, reason)
+SELECT r.id, CURRENT_DATE - 1, CURRENT_DATE + 3, 'Máy lạnh hỏng, đang chờ thợ'
+  FROM rooms r
+ WHERE r.status = 'AVAILABLE'
+   AND NOT EXISTS (
+       SELECT 1 FROM booking_rooms br
+        WHERE br.room_id = r.id AND br.status = 'ACTIVE'
+          AND br.stay && daterange(CURRENT_DATE - 1, CURRENT_DATE + 3, '[)'))
+   AND NOT EXISTS (
+       SELECT 1 FROM room_closures rc
+        WHERE rc.room_id = r.id
+          AND rc.blocked && daterange(CURRENT_DATE - 1, CURRENT_DATE + 3, '[)'))
+   -- Chốt idempotent: đã có khoảng nào bắt đầu trước hôm nay thì không thêm nữa.
+   AND NOT EXISTS (SELECT 1 FROM room_closures WHERE from_date < CURRENT_DATE)
+ ORDER BY r.room_number DESC
+ LIMIT 1;
+
+INSERT INTO room_closures (room_id, from_date, to_date, reason)
+SELECT r.id, CURRENT_DATE - 20, CURRENT_DATE - 15, 'Thay toàn bộ ga gối'
+  FROM rooms r
+ WHERE r.status = 'AVAILABLE'
+   AND NOT EXISTS (
+       SELECT 1 FROM booking_rooms br
+        WHERE br.room_id = r.id AND br.status = 'ACTIVE'
+          AND br.stay && daterange(CURRENT_DATE - 20, CURRENT_DATE - 15, '[)'))
+   AND NOT EXISTS (
+       SELECT 1 FROM room_closures rc
+        WHERE rc.room_id = r.id
+          AND rc.blocked && daterange(CURRENT_DATE - 20, CURRENT_DATE - 15, '[)'))
+   AND NOT EXISTS (SELECT 1 FROM room_closures WHERE to_date <= CURRENT_DATE)
+ ORDER BY r.room_number
+ LIMIT 1;
+
+-- ─── Một cuối tuần CHÁY PHÒNG để lịch có ngày bị chặn ───────────────────────
+-- Không có ngày nào hết phòng thì tính năng quan trọng nhất của đề tài — chặn
+-- sẵn ngày hết phòng ngay trong lịch — không nhìn thấy được lúc trình diễn.
+-- Khối này chạy TRƯỚC khối sinh đơn hàng loạt nên mọi phòng còn rảnh. Nếu để
+-- nó chạy sau, càng nhiều dữ liệu mẫu thì xác suất kín được cả nhà càng thấp,
+-- và lúc hỏng thì hỏng im lặng: vòng lặp đơn giản là không chạy lần nào.
+--
+-- Phải kín MỌI loại phòng, không phải một loại. Lịch ở bước 1 của luồng đặt
+-- phòng chạy TRƯỚC khi khách chọn loại phòng nên nó gộp cả nhà lại: một ngày
+-- chỉ bị chặn khi mọi loại phòng đều hết. Kín một loại thôi thì ngày đó vẫn
+-- bấm chọn được, và phần trình diễn không chứng minh được điều nó định chứng
+-- minh. Đặt ở +12..+14 ngày: đủ gần để mở lịch mặc định là thấy ngay, đủ xa để
+-- không đụng khoảng hội đồng hay thử đặt.
+DO $chay_phong$
+DECLARE
+    v_type       record;
+    v_room       record;
+    v_in         date := CURRENT_DATE + 12;
+    v_out        date := CURRENT_DATE + 14;
+    v_i          integer := 0;
+    v_code       varchar(20);
+    v_booking_id bigint;
+    v_total      numeric(12,2);
+    v_names      text[] := ARRAY[
+        'Lý Gia Bảo', 'Trương Mỹ Duyên', 'Phan Đức Trí', 'Hồ Nhật Minh',
+        'Vũ Khánh Linh', 'Đỗ Trung Kiên', 'Cao Thuỳ Trang', 'Mai Văn Lộc',
+        'Tạ Bích Ngọc', 'Chu Anh Khoa', 'Lâm Tuyết Nhi', 'Đinh Hữu Phước',
+        'Quách Diễm My', 'Tô Gia Hân'];
+BEGIN
+    -- Đã dựng rồi thì thôi: seeder chạy lại mỗi lần container khởi động.
+    IF EXISTS (SELECT 1 FROM bookings WHERE code LIKE 'TVHFULL%') THEN
+        RETURN;
+    END IF;
+
+    FOR v_room IN
+        SELECT r.* FROM rooms r
+         WHERE r.status = 'AVAILABLE'
+           -- Phòng nào đã bận trong khoảng này thì bỏ qua: ràng buộc loại trừ
+           -- sẽ bác, và bác ở đây nghĩa là cả ứng dụng không khởi động được.
+           AND NOT EXISTS (
+               SELECT 1 FROM booking_rooms br
+                WHERE br.room_id = r.id AND br.status = 'ACTIVE'
+                  AND br.stay && daterange(v_in, v_out, '[)'))
+           AND NOT EXISTS (
+               SELECT 1 FROM room_closures rc
+                WHERE rc.room_id = r.id
+                  AND rc.blocked && daterange(v_in, v_out, '[)'))
+         ORDER BY r.room_number
+    LOOP
+        SELECT * INTO v_type FROM room_types WHERE id = v_room.room_type_id;
+        v_i := v_i + 1;
+        v_code := 'TVHFULL' || lpad(v_i::text, 2, '0');
+        v_total := v_type.base_price * 2;
+
+        INSERT INTO bookings (
+            code, access_token, user_id, guest_name, guest_email, guest_phone,
+            check_in, check_out, adults, children, room_type_id,
+            room_type_name_snapshot, unit_price_snapshot, room_quantity,
+            subtotal_amount, discount_amount, total_amount, deposit_amount,
+            status, payment_status, hold_expires_at, created_at, updated_at)
+        VALUES (
+            v_code, md5(v_code || 'tvh-demo-seed'), NULL,
+            v_names[1 + ((v_i - 1) % array_length(v_names, 1))],
+            'khach.cuoituan' || v_i || '@example.com',
+            '09' || lpad((10000000 + v_i * 37)::text, 8, '0'),
+            v_in, v_out, LEAST(v_type.capacity_adults, 2), 0, v_type.id,
+            v_type.name, v_type.base_price, 1,
+            v_total, 0, v_total, round(v_total * 0.3, 0),
+            'CONFIRMED', 'DEPOSIT_PAID', NULL,
+            now() - interval '9 days', now() - interval '9 days')
+        RETURNING id INTO v_booking_id;
+
+        INSERT INTO booking_rooms (booking_id, room_id, check_in, check_out, status)
+        VALUES (v_booking_id, v_room.id, v_in, v_out, 'ACTIVE');
+
+        INSERT INTO booking_status_history (booking_id, from_status, to_status, actor, note, created_at)
+        VALUES (v_booking_id, NULL, 'PENDING_PAYMENT', 'GUEST', 'Đơn mẫu — cuối tuần kín phòng',
+                now() - interval '9 days'),
+               (v_booking_id, 'PENDING_PAYMENT', 'CONFIRMED', 'SYSTEM', 'Đã nhận đủ tiền cọc',
+                now() - interval '9 days' + interval '11 minutes');
+
+        INSERT INTO payments (
+            booking_id, attempt_no, provider, amount_expected, amount_received,
+            transfer_content, qr_content, status, reconcile_status,
+            provider_txn_id, paid_at, created_at, updated_at)
+        VALUES (
+            v_booking_id, 1, 'SEPAY', round(v_total * 0.3, 0), round(v_total * 0.3, 0),
+            v_code || '01', 'Chuyen khoan giu cho ' || v_code,
+            'SUCCEEDED', 'NONE', 'DEMOFULL' || lpad(v_i::text, 4, '0'),
+            now() - interval '9 days' + interval '10 minutes',
+            now() - interval '9 days', now());
+    END LOOP;
+END
+$chay_phong$;
+
+-- ============================================================================
 -- Đơn đặt phòng
 --
--- Sinh bằng vòng lặp thay vì viết tay 40 câu INSERT, vì mỗi đơn phải:
+-- Sinh bằng vòng lặp thay vì viết tay 320 câu INSERT, vì mỗi đơn phải:
 --   * chọn được đủ `room_quantity` phòng KHÔNG trùng lịch với đơn đã có —
 --     nếu không, ràng buộc EXCLUDE bác ngay và seeder chết lúc khởi động;
 --   * có đúng `room_quantity` dòng booking_rooms ACTIVE, nếu không hàm
@@ -278,25 +485,50 @@ DECLARE
     v_guest_name   varchar(150);
     v_guest_phone  varchar(20);
     v_guest_email  varchar(255);
+    -- Hai tám cái tên thay vì mười: với 320 đơn thì mười cái tên lặp lại ba
+    -- mươi hai lần một cái, và danh sách đơn ở khu quản trị trông như dữ liệu
+    -- bịa bằng vòng lặp — đúng bản chất, nhưng không cần phô ra.
     v_names        text[] := ARRAY[
         'Nguyễn Thị An', 'Trần Văn Bình', 'Lê Minh Châu', 'Phạm Hồng Duyên',
         'Võ Quốc Đạt', 'Đặng Thu Hà', 'Bùi Thanh Hải', 'Ngô Kim Lan',
-        'Dương Văn Nam', 'Huỳnh Ngọc Oanh'];
+        'Dương Văn Nam', 'Huỳnh Ngọc Oanh', 'Lý Gia Bảo', 'Trương Mỹ Duyên',
+        'Phan Đức Trí', 'Hồ Nhật Minh', 'Vũ Khánh Linh', 'Đỗ Trung Kiên',
+        'Cao Thuỳ Trang', 'Mai Văn Lộc', 'Tạ Bích Ngọc', 'Chu Anh Khoa',
+        'Lâm Tuyết Nhi', 'Đinh Hữu Phước', 'Quách Diễm My', 'Tô Gia Hân',
+        'Nguyễn Hoàng Vũ', 'Trịnh Thanh Thảo', 'Lương Bá Đạt', 'Hà Mỹ Linh'];
 BEGIN
-    FOR v_i IN 1..40 LOOP
+    FOR v_i IN 1..320 LOOP
         v_code := 'TVHDEMO' || lpad(v_i::text, 3, '0');
 
         -- Đơn đã có thì bỏ qua. Cả khối này nằm trong một giao dịch nên không
         -- có chuyện "chạy dở": hoặc toàn bộ vào, hoặc không gì vào cả.
         CONTINUE WHEN EXISTS (SELECT 1 FROM bookings WHERE code = v_code);
 
-        -- Rải đều từ 150 ngày trước tới 45 ngày sau: 30 đơn trong quá khứ để
-        -- biểu đồ doanh thu 6 tháng có số liệu, 10 đơn trong tương lai để lịch
-        -- sắp tới và hàng chờ thanh toán có nội dung. Tương đối với hôm nay nên
-        -- dữ liệu không cũ đi theo thời gian.
-        v_check_in  := CURRENT_DATE - 150 + (v_i - 1) * 5;
+        -- Rải trên cửa sổ 360 ngày, từ 270 ngày trước tới 90 ngày sau: quá khứ
+        -- dài để biểu đồ doanh thu sáu tháng có đủ số liệu từng tháng, tương
+        -- lai đủ xa để lịch và hàng chờ thanh toán luôn có nội dung. Tương đối
+        -- với hôm nay nên dữ liệu không cũ đi theo thời gian.
+        --
+        -- Bước nhảy 97 ngày chứ không phải cộng tuần tự. 97 nguyên tố cùng nhau
+        -- với 360, nên 320 vòng lặp rơi vào 320 ngày KHÁC NHAU trải khắp cửa
+        -- sổ. Cộng tuần tự thì các đơn đầu dồn hết vào quá khứ xa và các đơn
+        -- cuối dồn hết vào tương lai; cách này cho mọi tháng mật độ như nhau.
+        v_check_in  := CURRENT_DATE - 270 + ((v_i * 97) % 360);
         v_nights    := 1 + (v_i % 4);
         v_check_out := v_check_in + v_nights;
+
+        -- Vài đơn ÉP phải đang diễn ra hôm nay, để trạng thái CHECKED_IN luôn
+        -- có mặt. Không ép thì nó phụ thuộc vào việc bước nhảy 97 có rơi trúng
+        -- ba bốn ngày quanh hôm nay hay không, VÀ đơn rơi trúng đó có đủ số
+        -- đêm để kéo qua hôm nay hay không — hai điều kiện đổi theo từng ngày
+        -- chạy. Đã có một lần cả tập 297 đơn không còn đơn CHECKED_IN nào, và
+        -- bảng "khách đang ở" của khu quản trị trống trơn.
+        IF v_i % 53 = 0 THEN
+            v_check_in  := CURRENT_DATE - 1 - (v_i % 3);
+            v_nights    := 4 + (v_i % 3);
+            v_check_out := v_check_in + v_nights;
+        END IF;
+
 
         SELECT * INTO v_room_type FROM room_types
          WHERE code = (ARRAY['STANDARD','DELUXE','FAMILY','BUNGALOW'])[1 + (v_i % 4)];
@@ -316,14 +548,18 @@ BEGIN
         ELSIF v_check_in <= CURRENT_DATE THEN
             v_status := 'CHECKED_IN';
         ELSE
-            -- Chia thẳng theo chỉ số thay vì chồng nhiều phép chia lấy dư:
-            -- công thức modulo lồng nhau nhìn thì gọn nhưng rất dễ cho ra đúng
-            -- MỘT đơn PENDING_PAYMENT trong cả tập, và lúc đó màn hình hàng chờ
-            -- thanh toán gần như trống.
+            -- Bản 40 đơn ghim hai ngoại lệ vào đúng chỉ số 32 và 34, vì ngày
+            -- khi đó tăng đều theo chỉ số nên biết chắc hai số ấy rơi vào
+            -- tương lai. Nay ngày rải theo bước nhảy 97 nên chỉ số không còn
+            -- nói lên quá khứ hay tương lai: ghim số cố định thì rất dễ cả hai
+            -- rơi vào quá khứ và biến mất, để lại hàng chờ đối soát trống.
+            --
+            -- Dùng phép chia lấy dư với số nguyên tố để mỗi trạng thái hiếm
+            -- vẫn chắc chắn có vài đơn trong khoảng tám chục đơn tương lai.
             v_status := CASE
-                WHEN v_i = 32 THEN 'AWAITING_REVIEW'
-                WHEN v_i = 34 THEN 'EXPIRED'
-                WHEN v_i % 3 = 0 THEN 'PENDING_PAYMENT'
+                WHEN v_i % 23 = 0 THEN 'AWAITING_REVIEW'
+                WHEN v_i % 29 = 0 THEN 'EXPIRED'
+                WHEN v_i % 3  = 0 THEN 'PENDING_PAYMENT'
                 ELSE 'CONFIRMED' END;
         END IF;
 
@@ -364,7 +600,7 @@ BEGIN
               FROM users WHERE email = 'binh.tran@example.com';
         ELSE
             v_user_id     := NULL;
-            v_guest_name  := v_names[1 + (v_i % 10)];
+            v_guest_name  := v_names[1 + (v_i % array_length(v_names, 1))];
             v_guest_phone := '09' || lpad((10000000 + v_i * 37)::text, 8, '0');
             v_guest_email := 'khach' || v_i || '@example.com';
         END IF;
@@ -389,6 +625,15 @@ BEGIN
                     WHERE br.room_id = r.id
                       AND br.status = 'ACTIVE'
                       AND br.stay && daterange(v_check_in, v_check_out, '[)'))
+               -- Tránh cả phòng đang đóng. Ràng buộc EXCLUDE không bắt trường
+               -- hợp này — nó chỉ canh đơn chồng đơn — nên nếu không lọc ở đây
+               -- thì seeder vẫn chạy ngon lành và để lại một đơn nằm trùng
+               -- khoảng sửa chữa. Khu quản trị sẽ cảnh báo "có đơn bị ảnh
+               -- hưởng" trên một dữ liệu không ai cố ý tạo ra.
+               AND NOT EXISTS (
+                   SELECT 1 FROM room_closures rc
+                    WHERE rc.room_id = r.id
+                      AND rc.blocked && daterange(v_check_in, v_check_out, '[)'))
              ORDER BY r.id
              LIMIT v_qty) r;
 
@@ -496,9 +741,18 @@ BEGIN
 END
 $reconcile$;
 
--- ─── Đánh giá: 6 đã duyệt, 2 chờ duyệt ──────────────────────────────────────
+-- ─── Đánh giá: 18 đã duyệt, 4 chờ duyệt, 2 đã từ chối ───────────────────────
 -- Chỉ gắn vào đơn CHECKED_OUT: đánh giá của một chuyến chưa diễn ra là dữ liệu
 -- vô nghĩa, và ràng buộc UNIQUE (booking_id) lo phần "mỗi đơn một đánh giá".
+--
+-- Hai mươi bốn bài viết TAY, không nhân bản một bài rồi đổi số. Trang đánh giá
+-- công khai là chỗ khách đọc kỹ nhất trước khi đặt; hai mươi bài giống hệt nhau
+-- nói rõ với người đọc rằng không có khách nào thật. Phân bố điểm cũng cố ý
+-- không toàn 5 sao: một trang chỉ có 5 sao là trang không ai tin.
+--
+-- Đủ ba trạng thái: đã duyệt cho trang công khai, chờ duyệt cho hàng đợi kiểm
+-- duyệt, và đã từ chối để chứng minh nhánh từ chối có thật chứ không phải nút
+-- bấm vào không làm gì.
 INSERT INTO reviews (booking_id, user_id, guest_name_snapshot, rating, title, content, status, admin_reply, replied_at, created_at)
 SELECT b.id, b.user_id, b.guest_name, v.rating, v.title, v.content, v.status,
        v.admin_reply,
@@ -531,171 +785,62 @@ SELECT b.id, b.user_id, b.guest_name, v.rating, v.title, v.content, v.status,
             'APPROVED', 'Cảm ơn anh đã phản hồi thẳng thắn. Phòng Standard thiết kế cho một người hoặc cặp đôi ở ngắn ngày.'),
         (7, 5, 'Sẽ quay lại',
             'Không có gì để chê. Chủ nhà còn chở ra bến xe lúc về.',
-            'PENDING', NULL),
+            'APPROVED', NULL),
         (8, 2, 'Nước nóng yếu vào buổi tối',
             'Mọi thứ ổn trừ chuyện tắm nước nóng lúc 9 giờ tối thì gần như không có nước nóng.',
-            'PENDING', NULL)
+            'APPROVED', 'Bình nóng lạnh đã được thay mới tháng trước. Mong anh cho chúng tôi một cơ hội nữa.'),
+        (9, 5, 'Đúng chỗ để nghỉ sau một tuần chạy deadline',
+            'Ba ngày không mở laptop. Võng ngoài hiên và tiếng nước chảy làm được việc mà thuốc ngủ không làm được.',
+            'APPROVED', NULL),
+        (10, 4, 'Vườn đẹp, muỗi cũng nhiều',
+            'Chiều ngồi vườn rất thích nhưng nên xịt chống muỗi trước. Chủ nhà có để sẵn chai xịt ở quầy, nên nhớ lấy.',
+            'APPROVED', 'Cảm ơn chị. Chúng tôi đang trồng thêm sả quanh bờ mương cho đỡ muỗi.'),
+        (11, 5, 'Chủ nhà chỉ đường ăn uống rất chuẩn',
+            'Hỏi ăn gì ngon, chủ nhà vẽ hẳn bản đồ ra giấy. Quán bánh canh Bến Có đúng như lời giới thiệu.',
+            'APPROVED', NULL),
+        (12, 4, 'Sạch sẽ, nhân viên dễ thương',
+            'Phòng được dọn mỗi ngày dù mình ở ngắn. Khăn thay mới, không có mùi ẩm như vài chỗ khác trong vùng.',
+            'APPROVED', NULL),
+        (13, 5, 'Đạp xe vòng cù lao là điểm cộng lớn',
+            'Mượn xe đạp miễn phí, đi một vòng hết buổi sáng. Đường vắng, hai bên toàn vườn dừa.',
+            'APPROVED', 'Mùa này đường đê khô ráo, đạp rất dễ chịu. Cảm ơn anh đã chia sẻ!'),
+        (14, 3, 'Tiếng ồn từ phòng bên',
+            'Vách giữa hai phòng Standard hơi mỏng, nghe được tiếng nói chuyện. Những thứ khác đều ổn.',
+            'APPROVED', 'Cảm ơn anh. Chúng tôi đã dán thêm lớp cách âm cho dãy 101-104.'),
+        (15, 5, 'Trả phòng muộn mà không bị tính thêm',
+            'Xe về lúc 5 giờ chiều, chủ nhà cho gửi hành lý và tắm lại trước khi đi. Rất được.',
+            'APPROVED', NULL),
+        (16, 4, 'Deluxe đáng thêm tiền so với Standard',
+            'Ban công nhìn ra vườn xoài, sáng ngồi uống cà phê ở đó rất đáng. Chênh lệch giá hoàn toàn hợp lý.',
+            'APPROVED', NULL),
+        (17, 5, 'Lần thứ ba quay lại',
+            'Năm nào cũng ghé một lần. Mỗi lần thấy thêm một thứ mới — năm nay là cái chòi câu cá ngoài mương.',
+            'APPROVED', 'Cảm ơn chị đã đồng hành từ năm đầu. Chòi câu mới dựng tháng rồi ạ!'),
+        (18, 2, 'Đặt phòng xong không thấy thư xác nhận',
+            'Thư rơi vào hộp thư rác nên tưởng đặt hỏng, phải gọi điện hỏi. Phòng thì không có gì để chê.',
+            'APPROVED', 'Xin lỗi chị vì phiền toái. Chúng tôi đã ghi chú nhắc khách kiểm tra hộp thư rác ngay trên màn hình xác nhận.'),
+        (19, 5, 'Bungalow buổi tối rất tình',
+            'Đèn vàng, tiếng dế, nước vỗ nhẹ vào bờ. Đi hai người thì nên chọn bungalow chứ đừng tiếc tiền.',
+            'PENDING', NULL),
+        (20, 4, 'Nên có thêm chỗ phơi đồ',
+            'Ở bốn ngày nên có giặt đồ, mà không biết phơi đâu cho tiện. Ngoài ra mọi thứ đều tốt.',
+            'PENDING', NULL),
+        (21, 5, 'Cảm ơn cô chủ đã nấu cháo lúc con tôi sốt',
+            'Nửa đêm bé sốt, cô chủ dậy nấu cháo và chỉ đường tới phòng khám. Chuyện này tôi nhớ lâu.',
+            'PENDING', NULL),
+        (22, 1, 'Không đúng như hình',
+            'Đặt phòng gia đình nhưng nhận phòng nhỏ hơn hình nhiều.',
+            'PENDING', NULL),
+        (23, 1, 'abcxyz test test',
+            'aaaaaaaaaaaa bbbbbbbbbbbb cccccccccccc',
+            'REJECTED', NULL),
+        (24, 5, 'Liên hệ 09xxxxxxxx để được giảm giá tour giá rẻ nhất',
+            'Nhận đặt tour miền Tây giá rẻ, inbox ngay. Homestay cũng ổn.',
+            'REJECTED', NULL)
        ) AS v(rn, rating, title, content, status, admin_reply) ON v.rn = picked.rn
  WHERE NOT EXISTS (SELECT 1 FROM reviews r WHERE r.booking_id = b.id);
 
--- ─── Một khoảng đóng phòng để trình diễn "ngày khả dụng" ────────────────────
--- Đặt ở +40..+45 ngày: đủ xa khoảng ngày hội đồng thường thử đặt, nên nó không
--- che mất phòng lúc trình diễn, nhưng vẫn nằm trong cửa sổ lịch mặc định.
---
--- Phòng được CHỌN chứ không ghi cứng: chọn phòng đầu tiên còn khai thác mà
--- không có đơn nào giao với khoảng đó. Ghi cứng số phòng thì chỉ cần tầng gán
--- phòng đổi thứ tự là khoảng đóng rơi trúng một đơn đã seed, và bản demo mở ra
--- với một cảnh báo "có đơn bị ảnh hưởng" mà không ai cố ý tạo.
---
--- Điều kiện cuối là chốt idempotent: đã có khoảng đóng nào thì không thêm nữa,
--- nên khởi động lại container không cộng dồn mỗi lần một khoảng.
-INSERT INTO room_closures (room_id, from_date, to_date, reason)
-SELECT r.id, CURRENT_DATE + 40, CURRENT_DATE + 45, 'Sơn lại phòng và thay rèm'
-  FROM rooms r
- WHERE r.status = 'AVAILABLE'
-   AND NOT EXISTS (
-       SELECT 1 FROM booking_rooms br
-        WHERE br.room_id = r.id
-          AND br.status = 'ACTIVE'
-          AND br.stay && daterange(CURRENT_DATE + 40, CURRENT_DATE + 45, '[)')
-   )
-   AND NOT EXISTS (SELECT 1 FROM room_closures)
- ORDER BY r.room_number
- LIMIT 1;
-
--- ─── Một cuối tuần CHÁY PHÒNG để lịch có ngày bị chặn ───────────────────────
--- Không có ngày nào hết phòng thì tính năng quan trọng nhất của đề tài — chặn
--- sẵn ngày hết phòng ngay trong lịch — không nhìn thấy được lúc trình diễn.
--- Bốn mươi đơn rải đều 195 ngày gần như không bao giờ dồn đủ để kín cả nhà,
--- nên phải dựng có chủ ý.
---
--- Phải kín MỌI loại phòng, không phải một loại. Lịch ở bước 1 của luồng đặt
--- phòng chạy TRƯỚC khi khách chọn loại phòng nên nó gộp cả nhà lại: một ngày
--- chỉ bị chặn khi mọi loại phòng đều hết. Kín một loại thôi thì ngày đó vẫn
--- bấm chọn được, và phần trình diễn không chứng minh được điều nó định chứng
--- minh. Đặt ở +12..+14 ngày: đủ gần để mở lịch mặc định là thấy ngay, đủ xa để
--- không đụng khoảng hội đồng hay thử đặt.
-DO $chay_phong$
-DECLARE
-    v_type       record;
-    v_room       record;
-    v_in         date := CURRENT_DATE + 12;
-    v_out        date := CURRENT_DATE + 14;
-    v_i          integer := 0;
-    v_code       varchar(20);
-    v_booking_id bigint;
-    v_total      numeric(12,2);
-    v_names      text[] := ARRAY[
-        'Lý Gia Bảo', 'Trương Mỹ Duyên', 'Phan Đức Trí', 'Hồ Nhật Minh',
-        'Vũ Khánh Linh', 'Đỗ Trung Kiên', 'Cao Thuỳ Trang', 'Mai Văn Lộc',
-        'Tạ Bích Ngọc', 'Chu Anh Khoa', 'Lâm Tuyết Nhi', 'Đinh Hữu Phước',
-        'Quách Diễm My', 'Tô Gia Hân'];
-BEGIN
-    -- Đã dựng rồi thì thôi: seeder chạy lại mỗi lần container khởi động.
-    IF EXISTS (SELECT 1 FROM bookings WHERE code LIKE 'TVHFULL%') THEN
-        RETURN;
-    END IF;
-
-    FOR v_room IN
-        SELECT r.* FROM rooms r
-         WHERE r.status = 'AVAILABLE'
-           -- Phòng nào đã bận trong khoảng này thì bỏ qua: ràng buộc loại trừ
-           -- sẽ bác, và bác ở đây nghĩa là cả ứng dụng không khởi động được.
-           AND NOT EXISTS (
-               SELECT 1 FROM booking_rooms br
-                WHERE br.room_id = r.id AND br.status = 'ACTIVE'
-                  AND br.stay && daterange(v_in, v_out, '[)'))
-           AND NOT EXISTS (
-               SELECT 1 FROM room_closures rc
-                WHERE rc.room_id = r.id
-                  AND rc.blocked && daterange(v_in, v_out, '[)'))
-         ORDER BY r.room_number
-    LOOP
-        SELECT * INTO v_type FROM room_types WHERE id = v_room.room_type_id;
-        v_i := v_i + 1;
-        v_code := 'TVHFULL' || lpad(v_i::text, 2, '0');
-        v_total := v_type.base_price * 2;
-
-        INSERT INTO bookings (
-            code, access_token, user_id, guest_name, guest_email, guest_phone,
-            check_in, check_out, adults, children, room_type_id,
-            room_type_name_snapshot, unit_price_snapshot, room_quantity,
-            subtotal_amount, discount_amount, total_amount, deposit_amount,
-            status, payment_status, hold_expires_at, created_at, updated_at)
-        VALUES (
-            v_code, md5(v_code || 'tvh-demo-seed'), NULL,
-            v_names[1 + ((v_i - 1) % array_length(v_names, 1))],
-            'khach.cuoituan' || v_i || '@example.com',
-            '09' || lpad((10000000 + v_i * 37)::text, 8, '0'),
-            v_in, v_out, LEAST(v_type.capacity_adults, 2), 0, v_type.id,
-            v_type.name, v_type.base_price, 1,
-            v_total, 0, v_total, round(v_total * 0.3, 0),
-            'CONFIRMED', 'DEPOSIT_PAID', NULL,
-            now() - interval '9 days', now() - interval '9 days')
-        RETURNING id INTO v_booking_id;
-
-        INSERT INTO booking_rooms (booking_id, room_id, check_in, check_out, status)
-        VALUES (v_booking_id, v_room.id, v_in, v_out, 'ACTIVE');
-
-        INSERT INTO booking_status_history (booking_id, from_status, to_status, actor, note, created_at)
-        VALUES (v_booking_id, NULL, 'PENDING_PAYMENT', 'GUEST', 'Đơn mẫu — cuối tuần kín phòng',
-                now() - interval '9 days'),
-               (v_booking_id, 'PENDING_PAYMENT', 'CONFIRMED', 'SYSTEM', 'Đã nhận đủ tiền cọc',
-                now() - interval '9 days' + interval '11 minutes');
-
-        INSERT INTO payments (
-            booking_id, attempt_no, provider, amount_expected, amount_received,
-            transfer_content, qr_content, status, reconcile_status,
-            provider_txn_id, paid_at, created_at, updated_at)
-        VALUES (
-            v_booking_id, 1, 'SEPAY', round(v_total * 0.3, 0), round(v_total * 0.3, 0),
-            v_code || '01', 'Chuyen khoan giu cho ' || v_code,
-            'SUCCEEDED', 'NONE', 'DEMOFULL' || lpad(v_i::text, 4, '0'),
-            now() - interval '9 days' + interval '10 minutes',
-            now() - interval '9 days', now());
-    END LOOP;
-END
-$chay_phong$;
-
--- ─── Hai khoảng đóng phòng nữa: một ĐANG áp dụng, một ĐÃ QUA ────────────────
--- Khoảng duy nhất ở trên nằm ở +40 ngày, tức là lúc mở khu quản trị thì danh
--- sách chỉ có một dòng ở tương lai xa. Thêm một khoảng ĐANG có hiệu lực hôm
--- nay (chứng minh phòng bị trừ khỏi kết quả tìm kiếm ngay bây giờ) và một
--- khoảng ĐÃ QUA (chứng minh hệ thống tự mở lại phòng, không cần ai nhớ bật).
-INSERT INTO room_closures (room_id, from_date, to_date, reason)
-SELECT r.id, CURRENT_DATE - 1, CURRENT_DATE + 3, 'Máy lạnh hỏng, đang chờ thợ'
-  FROM rooms r
- WHERE r.status = 'AVAILABLE'
-   AND NOT EXISTS (
-       SELECT 1 FROM booking_rooms br
-        WHERE br.room_id = r.id AND br.status = 'ACTIVE'
-          AND br.stay && daterange(CURRENT_DATE - 1, CURRENT_DATE + 3, '[)'))
-   AND NOT EXISTS (
-       SELECT 1 FROM room_closures rc
-        WHERE rc.room_id = r.id
-          AND rc.blocked && daterange(CURRENT_DATE - 1, CURRENT_DATE + 3, '[)'))
-   -- Chốt idempotent: đã có khoảng nào bắt đầu trước hôm nay thì không thêm nữa.
-   AND NOT EXISTS (SELECT 1 FROM room_closures WHERE from_date < CURRENT_DATE)
- ORDER BY r.room_number DESC
- LIMIT 1;
-
-INSERT INTO room_closures (room_id, from_date, to_date, reason)
-SELECT r.id, CURRENT_DATE - 20, CURRENT_DATE - 15, 'Thay toàn bộ ga gối'
-  FROM rooms r
- WHERE r.status = 'AVAILABLE'
-   AND NOT EXISTS (
-       SELECT 1 FROM booking_rooms br
-        WHERE br.room_id = r.id AND br.status = 'ACTIVE'
-          AND br.stay && daterange(CURRENT_DATE - 20, CURRENT_DATE - 15, '[)'))
-   AND NOT EXISTS (
-       SELECT 1 FROM room_closures rc
-        WHERE rc.room_id = r.id
-          AND rc.blocked && daterange(CURRENT_DATE - 20, CURRENT_DATE - 15, '[)'))
-   AND NOT EXISTS (SELECT 1 FROM room_closures WHERE to_date <= CURRENT_DATE)
- ORDER BY r.room_number
- LIMIT 1;
-
--- ─── Ghi chú nội bộ trên vài đơn ────────────────────────────────────────────
+-- ─── Ghi chú nội bộ trên mười bốn đơn ───────────────────────────────────────
 -- Khối "Ghi chú nội bộ" ở màn hình chi tiết đơn luôn hiện "Chưa có ghi chú nào"
 -- nếu không seed, nên người xem không biết chức năng này tồn tại. Ghi chú viết
 -- theo giọng người trực thật, không phải câu mẫu.
@@ -711,7 +856,15 @@ SELECT b.id,
         (3, 'Khách hỏi thuê xe đạp hai chiếc trong hai ngày. Đã báo giá 100k.'),
         (4, 'Đi cùng nhóm bạn đặt phòng 202 — xếp hai phòng cạnh nhau.'),
         (5, 'Khách dị ứng hải sản, đã báo bếp đổi món cho bữa sáng.'),
-        (6, 'Đã gọi xác nhận trước một ngày, khách báo vẫn đi đúng lịch.')
+        (6, 'Đã gọi xác nhận trước một ngày, khách báo vẫn đi đúng lịch.'),
+        (7, 'Khách đi xe khách, xin đón ở bến xe Trà Vinh lúc 14h. Đã nhận.'),
+        (8, 'Kỷ niệm ngày cưới — chuẩn bị bình hoa nhỏ và thiệp đặt trên bàn.'),
+        (9, 'Khách hỏi có nhận thú cưng không. Đã trả lời là chưa nhận được.'),
+        (10, 'Chuyển khoản thiếu 50k do gõ nhầm, khách đã bù ngay trong ngày.'),
+        (11, 'Xin trả phòng trễ tới 15h vì xe chiều. Đồng ý, không thu thêm.'),
+        (12, 'Khách lớn tuổi, xin phòng tầng trệt. Đã đổi từ 203 xuống 102.'),
+        (13, 'Nhóm sáu người đi chụp ảnh, hỏi mượn bếp nấu ăn tối. Đã đồng ý.'),
+        (14, 'Khách bỏ quên sạc điện thoại ở phòng 201, đã liên hệ gửi lại.')
        ) AS v(rn, content)
     ON v.rn = (
         SELECT rn FROM (
