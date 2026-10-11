@@ -71,15 +71,15 @@ INSERT INTO room_type_images (room_type_id, url, alt_text, display_order, is_cov
 SELECT rt.id, v.url, v.alt_text, v.display_order, v.is_cover
   FROM room_types rt
   JOIN (VALUES
-        ('STANDARD',  '/images/demo/standard-1.svg',  'Phòng Standard nhìn từ cửa vào',      0, true),
-        ('STANDARD',  '/images/demo/standard-2.svg',  'Góc bàn làm việc trong phòng Standard', 1, false),
-        ('DELUXE',    '/images/demo/deluxe-1.svg',    'Phòng Deluxe với ban công hướng vườn', 0, true),
-        ('DELUXE',    '/images/demo/deluxe-2.svg',    'Ban công riêng của phòng Deluxe',      1, false),
-        ('DELUXE',    '/images/demo/deluxe-3.svg',    'Phòng tắm riêng của phòng Deluxe',     2, false),
-        ('FAMILY',    '/images/demo/family-1.svg',    'Phòng gia đình với hai giường đôi',    0, true),
-        ('FAMILY',    '/images/demo/family-2.svg',    'Bàn ăn nhỏ trong phòng gia đình',      1, false),
-        ('BUNGALOW',  '/images/demo/bungalow-1.svg',  'Bungalow gỗ đứng riêng cuối vườn',     0, true),
-        ('BUNGALOW',  '/images/demo/bungalow-2.svg',  'Hiên trước bungalow nhìn ra sông',     1, false)
+        ('STANDARD',  '/images/demo/standard-1.jpg',  'Phòng Standard nhìn từ cửa vào',      0, true),
+        ('STANDARD',  '/images/demo/standard-2.jpg',  'Góc đầu giường phòng Standard', 1, false),
+        ('DELUXE',    '/images/demo/deluxe-1.jpg',    'Phòng Deluxe nhìn từ cửa vào', 0, true),
+        ('DELUXE',    '/images/demo/deluxe-2.jpg',    'Góc ngồi bên cửa sổ phòng Deluxe',      1, false),
+        ('DELUXE',    '/images/demo/deluxe-3.jpg',    'Phòng tắm riêng của phòng Deluxe',     2, false),
+        ('FAMILY',    '/images/demo/family-1.jpg',    'Phòng gia đình với hai giường đôi',    0, true),
+        ('FAMILY',    '/images/demo/family-2.jpg',    'Phòng gia đình nhìn ra vườn',      1, false),
+        ('BUNGALOW',  '/images/demo/bungalow-1.jpg',  'Dãy bungalow mái lá bên mặt nước',     0, true),
+        ('BUNGALOW',  '/images/demo/bungalow-2.jpg',  'Bungalow tre giữa vườn cây',     1, false)
        ) AS v(code, url, alt_text, display_order, is_cover) ON v.code = rt.code
  WHERE NOT EXISTS (
        SELECT 1 FROM room_type_images x WHERE x.room_type_id = rt.id AND x.url = v.url);
@@ -169,11 +169,11 @@ ON CONFLICT DO NOTHING;
 INSERT INTO site_contents (section_key, title, subtitle, body, image_url) VALUES
     ('hero', 'Homestay TVH', 'Nghỉ ngơi giữa miền Tây sông nước',
      '<p>Bốn loại phòng nhìn ra vườn và ra sông, cách trung tâm Trà Vinh mười phút đi xe.</p>',
-     '/images/demo/hero.svg'),
+     '/images/demo/hero.jpg'),
 
     ('about', 'Về Homestay TVH', 'Một nơi để thở chậm lại',
      '<p>Homestay TVH là nhà của chúng tôi, mở cửa đón khách phương xa từ năm 2019. Vườn sau nhà trồng xoài và dừa, có lối nhỏ dẫn ra bến sông.</p><p>Bữa sáng là món nhà nấu — bún nước lèo, bánh tét, hoặc cháo cá tuỳ ngày. Chủ nhà nấu, không đặt ngoài.</p><ul><li>Đón khách tại bến xe Trà Vinh nếu báo trước</li><li>Cho thuê xe đạp đi vòng cù lao</li><li>Nhận giữ hành lý sau khi trả phòng</li></ul>',
-     '/images/demo/about.svg'),
+     '/images/demo/about.jpg'),
 
     ('contact', 'Liên hệ', 'Chúng tôi luôn sẵn sàng trả lời',
      '<p>Điện thoại: 0294 3855 246<br />Email: lienhe@homestaytvh.vn</p><p>Nhận phòng từ 14:00, trả phòng trước 12:00. Nhận phòng muộn xin báo trước để chúng tôi chờ cửa.</p>',
@@ -189,11 +189,11 @@ INSERT INTO banners (title, image_url, link_url, display_order, active, starts_a
 SELECT v.title, v.image_url, v.link_url, v.display_order, v.active,
        v.starts_at, v.ends_at
   FROM (VALUES
-        ('Giảm 10% cho khách đặt lần đầu', '/images/demo/banner-1.svg', '/phong',
+        ('Giảm 10% cho khách đặt lần đầu', '/images/demo/banner-1.jpg', '/phong',
          0, true, now() - interval '10 days', now() + interval '120 days'),
-        ('Đặt 3 đêm, tặng một buổi đi xe đạp vòng cù lao', '/images/demo/banner-2.svg', '/phong/bungalow-ven-song',
+        ('Đặt 3 đêm, tặng một buổi đi xe đạp vòng cù lao', '/images/demo/banner-2.jpg', '/phong/bungalow-ven-song',
          1, true, now() - interval '5 days', now() + interval '90 days'),
-        ('Ưu đãi Tết đã kết thúc', '/images/demo/banner-3.svg', NULL,
+        ('Ưu đãi Tết đã kết thúc', '/images/demo/banner-3.jpg', NULL,
          2, false, now() - interval '200 days', now() - interval '120 days')
        ) AS v(title, image_url, link_url, display_order, active, starts_at, ends_at)
  WHERE NOT EXISTS (SELECT 1 FROM banners b WHERE b.title = v.title);
@@ -202,14 +202,14 @@ SELECT v.title, v.image_url, v.link_url, v.display_order, v.active,
 INSERT INTO gallery_images (url, caption, category, display_order, active)
 SELECT v.url, v.caption, v.category, v.display_order, true
   FROM (VALUES
-        ('/images/demo/gallery-1.svg', 'Lối vào nhà chính buổi sáng',     'khong-gian', 0),
-        ('/images/demo/gallery-2.svg', 'Vườn xoài phía sau nhà',           'khong-gian', 1),
-        ('/images/demo/gallery-3.svg', 'Bến sông cuối vườn',               'khong-gian', 2),
-        ('/images/demo/gallery-4.svg', 'Hiên trước bungalow lúc chiều',    'khong-gian', 3),
-        ('/images/demo/gallery-5.svg', 'Bún nước lèo — bữa sáng thứ Bảy',  'am-thuc',    4),
-        ('/images/demo/gallery-6.svg', 'Bàn ăn chung ngoài hiên',          'am-thuc',    5),
-        ('/images/demo/gallery-7.svg', 'Xe đạp cho khách mượn',            'trai-nghiem',6),
-        ('/images/demo/gallery-8.svg', 'Đường đất đỏ dẫn vào cổng',        'trai-nghiem',7)
+        ('/images/demo/gallery-1.jpg', 'Lối đi giữa hai hàng cau',            'khong-gian', 0),
+        ('/images/demo/gallery-2.jpg', 'Bến sông cuối vườn',                  'khong-gian', 1),
+        ('/images/demo/gallery-7.jpg', 'Con rạch nhỏ giữa hai hàng dừa nước', 'khong-gian', 2),
+        ('/images/demo/gallery-3.jpg', 'Phở sáng nấu tại bếp nhà',            'am-thuc',    3),
+        ('/images/demo/gallery-4.jpg', 'Bàn ăn chung ngoài hiên',             'am-thuc',    4),
+        ('/images/demo/gallery-5.jpg', 'Xe đạp cho khách mượn',               'trai-nghiem',5),
+        ('/images/demo/gallery-8.jpg', 'Đi xuồng len lỏi trong rạch dừa nước','trai-nghiem',6),
+        ('/images/demo/gallery-6.jpg', 'Võng mắc ven nước lúc hoàng hôn',     'trai-nghiem',7)
        ) AS v(url, caption, category, display_order)
  WHERE NOT EXISTS (SELECT 1 FROM gallery_images g WHERE g.url = v.url);
 
@@ -220,19 +220,19 @@ VALUES
      'Đi Trà Vinh mùa nào đẹp nhất?',
      'Tháng 10 đến tháng 2 trời mát và ít mưa. Đây là vài điều nên biết trước khi đặt vé.',
      '<h2>Mùa khô: tháng 11 đến tháng 4</h2><p>Trời mát, đường đất khô ráo, đạp xe vòng cù lao dễ chịu nhất trong năm. Đây cũng là mùa đông khách nên nên đặt phòng sớm.</p><h2>Mùa mưa: tháng 5 đến tháng 10</h2><p>Mưa thường đổ vào chiều và tạnh nhanh. Vườn xanh hơn, khách vắng hơn, và giá phòng dễ chịu hơn.</p><h3>Vài ngày đáng chú ý</h3><ul><li><strong>Lễ Chôl Chnăm Thmây</strong> (giữa tháng 4) — các chùa Khmer trong vùng rất đông vui</li><li><strong>Lễ Ok Om Bok</strong> (rằm tháng 10 âm lịch) — đua ghe ngo trên sông Long Bình</li></ul>',
-     '/images/demo/post-1.svg', true, now() - interval '12 days'),
+     '/images/demo/post-1.jpg', true, now() - interval '12 days'),
 
     ('nhung-mon-nen-an-o-tra-vinh',
      'Năm món nên ăn khi tới Trà Vinh',
      'Bún nước lèo, bánh canh Bến Có, cháo ám... và chỗ ăn ngon mà người địa phương hay đi.',
      '<h2>Bún nước lèo</h2><p>Món phải thử đầu tiên. Nước lèo nấu từ mắm bò hóc, ăn kèm heo quay và rau sống.</p><h2>Bánh canh Bến Có</h2><p>Cách homestay khoảng 8km. Nên đi buổi sáng sớm, quán hết hàng trước trưa.</p><h2>Cháo ám</h2><p>Cháo cá lóc ăn với rau ghém và mắm nêm. Mỗi nhà nấu một kiểu.</p><blockquote>Chủ nhà sẵn lòng chỉ đường và gọi xe ôm quen nếu bạn hỏi.</blockquote>',
-     '/images/demo/post-2.svg', true, now() - interval '30 days'),
+     '/images/demo/post-2.jpg', true, now() - interval '30 days'),
 
     ('dap-xe-vong-cu-lao-long-tri',
      'Đạp xe một vòng cù lao Long Trị',
      'Cung đường 12km men theo sông, đi hết chừng hai tiếng kể cả dừng chụp ảnh.',
      '<h2>Cung đường</h2><p>Từ cổng homestay rẽ trái, đi men theo bờ sông khoảng 4km tới chùa Khmer, rồi vòng qua cầu nhỏ về phía vườn dừa.</p><h2>Nên đi lúc nào</h2><p>Sáng sớm trước 8 giờ hoặc chiều sau 16 giờ. Giữa trưa nắng gắt và không có bóng cây trên đoạn đê.</p><h2>Mang theo gì</h2><ul><li>Nước — dọc đường chỉ có một quán tạp hoá</li><li>Mũ và kem chống nắng</li><li>Tiền lẻ nếu muốn ghé đò ngang</li></ul>',
-     '/images/demo/post-3.svg', true, now() - interval '45 days'),
+     '/images/demo/post-3.jpg', true, now() - interval '45 days'),
 
     ('ban-nhap-chua-dang',
      'Hướng dẫn nhận phòng sớm (bản nháp)',
