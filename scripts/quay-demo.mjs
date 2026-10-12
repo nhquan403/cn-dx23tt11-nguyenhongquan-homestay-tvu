@@ -188,6 +188,11 @@ const boQua = [];
 
 async function main() {
   fs.mkdirSync(OUTDIR, { recursive: true });
+  // Xoa het anh cua lan quay truoc. Khong xoa thi anh cu con lai lan vao bo
+  // moi: kich ban nay doi ten anh so voi ban truoc, nen nhung tam mang ten cu
+  // khong bi ghi de. Nguoi doc thu muc se thay mot bo anh nua cu nua moi, va
+  // khong co cach nao biet tam nao thuoc lan quay nao.
+  fs.rmSync(SHOTS, { recursive: true, force: true });
   fs.mkdirSync(SHOTS, { recursive: true });
   const videoDir = path.join(OUTDIR, '.video-tmp');
   fs.rmSync(videoDir, { recursive: true, force: true });
