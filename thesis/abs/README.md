@@ -39,10 +39,10 @@ hai** script để slide và kịch bản nói không lệch nhau.
 
 | Tệp | Nội dung |
 |---|---|
-| `demo-homestay-tvh.mp4` | Video đi hết toàn bộ quy trình, chia 12 phần có thẻ tiêu đề |
-| `demo-anh/` | Ảnh chụp từng bước, cùng lượt với video |
+| `demo-homestay-tvh.mp4` | Video **10 phút 47 giây**, đi hết toàn bộ quy trình, chia 12 phần có thẻ tiêu đề |
+| `demo-anh/` | 40 ảnh chụp từng bước, cùng lượt với video |
 
-Video quay ở 1440×900. Có con trỏ chuột di chuyển thấy được, gõ phím từng ký
+Video quay ở 1440×900, 25 hình/giây, H.264, 16,5 MB. Có con trỏ chuột di chuyển thấy được, gõ phím từng ký
 tự, gợn sóng mỗi lần bấm, viền sáng quanh ô đang thao tác, và thanh chú thích
 chạy dưới màn hình.
 
