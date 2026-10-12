@@ -204,6 +204,12 @@ async function main() {
     recordVideo: { dir: videoDir, size: { width: 1440, height: 900 } },
   });
   await ctx.addInitScript(LOP_PHU);
+  // Thao tac hong thi hong NHANH. Mac dinh 30 giay nghia la mot selector lech
+  // de lai 30 giay dung hinh ngay giua video — nguoi xem tuong may treo. Tam
+  // giay la thua suc cho mot ung dung chay cuc bo, va neu co lech thi chi mat
+  // mot khoang lang ngan.
+  ctx.setDefaultTimeout(8000);
+  ctx.setDefaultNavigationTimeout(30000);
   const page = await ctx.newPage();
 
   // Chuot bat dau o goc duoi, ngoai vung noi dung, de no khong che gi luc mo
@@ -725,7 +731,10 @@ async function main() {
   await thu('them ma khuyen mai', async () => {
     await bam(page.getByRole('button', { name: /thêm mã/i }).first(), { nhanManh: true });
     await doi(1400);
-    await go_chu(page.getByLabel(/^mã$/i).first(), 'THAPDIEM12');
+    // getByLabel dang CHUOI chu khong phai regex neo /^mã$/. Playwright so
+    // regex voi van ban nhan CHUA chuan hoa khoang trang, nen /^mã$/ truot
+    // khi nhan nam tren dong rieng trong DOM; dang chuoi thi co trim.
+    await go_chu(page.getByLabel('Mã', { exact: true }).first(), 'THAPDIEM12');
     await go_chu(page.getByLabel(/tên chiến dịch/i).first(), 'Mùa thấp điểm');
     await go_chu(page.getByLabel(/giá trị giảm/i).first(), '12', { xoaTruoc: true });
     await go_chu(page.getByLabel(/số đêm tối thiểu/i).first(), '2', { xoaTruoc: true });
@@ -784,7 +793,9 @@ async function main() {
 
   await cap('Sửa dòng phụ đề của ảnh bìa.', 2600);
   await thu('sua phu de hero', async () => {
-    const o = page.getByLabel(/phụ đề|subtitle/i).first();
+    // Nhan that la "Tiêu đề phụ", khong phai "Phụ đề". Bon khoi noi dung dung
+    // chung bo nhan nay nen lay cai dau tien — khoi anh bia.
+    const o = page.getByLabel(/tiêu đề phụ/i).first();
     await go_chu(o, 'Nghỉ ngơi giữa miền Tây sông nước', { xoaTruoc: true });
     await bam(page.getByRole('button', { name: /lưu|cập nhật/i }).first(), { nhanManh: true });
     await doi(2600);
