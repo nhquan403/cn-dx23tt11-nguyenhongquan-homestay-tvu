@@ -33,3 +33,6 @@ thesis/abs/.demo-new-pw
 # Ban webm goc cua video trinh dien: dung lai duoc tu scripts/quay-demo.mjs,
 # va da co ban .mp4 nho hon mot phan nam trong repo.
 thesis/abs/*.webm
+# Thu muc tam cua Playwright luc dang quay. Script tu xoa khi quay xong; dong
+# nay la de phong truong hop quay hong giua chung va no con lai.
+thesis/abs/.video-tmp/
