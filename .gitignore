@@ -4,6 +4,10 @@ backend/target/
 *.jar
 !.mvn/wrapper/maven-wrapper.jar
 
+# Python — cache bytecode do chay cac script trong scripts/ sinh ra
+__pycache__/
+*.pyc
+
 # Node / Angular
 node_modules/
 frontend/dist/
