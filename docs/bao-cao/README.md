@@ -47,8 +47,8 @@ cat 00-phan-dau.md 01-mo-dau.md 02-chuong-1.md 03-chuong-2.md \
 
 ## Chỗ chèn hình và bảng
 
-**Hình** — 26 chỗ, đánh dấu bằng một dòng dạng `[Hình 3.5]`, mỗi hình đều có câu
-dẫn trong văn bản. Phân bố: Chương 1 có 2 hình, Chương 2 có 2, Chương 3 có 16,
+**Hình** — 23 chỗ, đánh dấu bằng một dòng dạng `[Hình 3.5]`, mỗi hình đều có câu
+dẫn trong văn bản. Phân bố: Chương 1 có 2 hình, Chương 2 có 2, Chương 3 có 13,
 Chương 4 có 3, Phụ lục có 3. Chú thích tự lấy từ câu dẫn trong chính phần chữ —
 bộ xuất nhận các động từ *thể hiện, minh hoạ, mô tả, so sánh, trình bày*, kể cả
 khi câu dẫn nằm giữa đoạn hoặc bị ngắt qua dòng.

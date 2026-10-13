@@ -97,9 +97,9 @@ Cách khắc phục của từng lỗi trình bày ở Phụ lục R.
 
 **Về lỗi số 4 và số 5:** cả hai chỉ phát hiện được khi **chụp màn hình bằng
 trình duyệt thật**. Việc biên dịch thành công không nói gì về việc trang có hiển
-thị đúng hay không. Hình 4.3 so sánh trước và sau khi khắc phục lỗi tương phản.
+thị đúng hay không. Hình 4.1 so sánh trước và sau khi khắc phục lỗi tương phản.
 
-[Hình 4.3]
+[Hình 4.1]
 
 **Về lỗi số 9:** lỗi này do một vòng rà soát mã độc lập tìm ra **sau khi** tác
 giả đã tự kiểm thử và cho rằng chức năng đã hoàn chỉnh. Đây là lý do đề tài giữ
@@ -122,9 +122,9 @@ cận nội dung web 2.0 và 2.1 mức A và AA [13], trên tổng 356 lần quy
 
 Đo vùng chạm ở 3 độ rộng màn hình: **không còn vùng chạm dưới 44×44 điểm ảnh**.
 
-Hình 4.1 thể hiện kết quả quét.
+Hình 4.2 thể hiện kết quả quét.
 
-[Hình 4.1]
+[Hình 4.2]
 
 ### 4.4.2. Kiểm thử bảo mật
 
@@ -137,10 +137,10 @@ Chi tiết ở Phụ lục M.
 
 ### 4.4.3. Kiểm thử đáp ứng
 
-Hình 4.2 thể hiện giao diện trên ba kích thước màn hình: điện thoại, máy tính
+Hình 4.3 thể hiện giao diện trên ba kích thước màn hình: điện thoại, máy tính
 bảng và máy tính để bàn.
 
-[Hình 4.2]
+[Hình 4.3]
 
 ### 4.4.4. Kiểm thử phía tầng giao diện
 
@@ -206,7 +206,7 @@ Các lệnh dùng để kiểm chứng lại từng con số trong chương này
   chỉ được kiểm chứng bằng cách gọi trực tiếp qua HTTP trên hệ thống đang chạy,
   chưa qua một lần chạy đầy đủ cả 136 ca.
 - Toàn bộ bản đóng gói đã được dựng lên và kiểm chứng: bốn dịch vụ đều báo
-  `healthy` (Hình 3.16), nginx phục vụ trang khách ở cổng 80, lời gọi
+  `healthy`, nginx phục vụ trang khách ở cổng 80, lời gọi
   `/api/room-types` đi xuyên qua nginx tới máy chủ ứng dụng trả về đủ bốn loại
   phòng, và thư xác nhận đi trọn đường hàng đợi thư → giao thức SMTP → hộp thư
   giả. Phần **chưa** kiểm chứng được chỉ còn là *tầng dựng ảnh*:

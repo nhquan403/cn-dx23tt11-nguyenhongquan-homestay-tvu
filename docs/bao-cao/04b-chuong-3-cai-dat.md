@@ -11,12 +11,8 @@ dự án (5h), hệ thống thiết kế (12h), lược đồ cơ sở dữ li�
 phân quyền (7h), lõi đặt phòng và chống trùng lịch (11h), thanh toán và webhook
 (10h), khu quản trị (14h), trang khách và quản lý nội dung (16h), đóng gói và
 tài liệu (7h), lịch khoá phòng (7h). Mỗi giai đoạn chỉ được đóng khi mọi tiêu
-chí nghiệm thu kiểm chứng được bằng lệnh.
-
-Hình 3.11 thể hiện sơ đồ phụ thuộc giữa các giai đoạn, trong đó hai cặp giai
-đoạn thực hiện song song được vì không dùng chung tệp nào.
-
-[Hình 3.11]
+chí nghiệm thu kiểm chứng được bằng lệnh. Hai cặp giai đoạn trong số đó thực
+hiện song song được vì không dùng chung tệp nào.
 
 Quy mô mã nguồn tại thời điểm hoàn thành: 176 tệp Java với 16 044 dòng, 101 tệp
 TypeScript với 13 270 dòng, 9 migration cơ sở dữ liệu, 19 lớp kiểm thử với 136
@@ -59,11 +55,11 @@ phải mệnh đề lọc: đặt sai chỗ biến nối trái thành nối tron
 biến mất khỏi kết quả thay vì trả về số không — trong khi tầng giao diện hiểu
 ngày vắng mặt là ngày không bị chặn.
 
-Hình 3.12 thể hiện trang chủ với thanh tìm phòng và lịch chọn ngày đang mở, trong
+Hình 3.10 thể hiện trang chủ với thanh tìm phòng và lịch chọn ngày đang mở, trong
 đó các ngày đã kín phòng bị chặn sẵn. Trang kết quả tìm phòng hiện nhãn số phòng
 còn lại và tổng tiền cả kỳ của khoảng ngày đã chọn.
 
-[Hình 3.12]
+[Hình 3.10]
 
 ### 3.8.2. Chức năng đặt phòng và vòng thử gán phòng
 
@@ -89,9 +85,9 @@ Hệ thống cũng chỉ bắt **đúng** mã `23P01`. Bắt chung mọi lỗi t
 khiến một lỗi khoá ngoại — lỗi lập trình thật — bị báo cho khách thành hết phòng
 và không bao giờ được phát hiện.
 
-Hình 3.13 thể hiện ba bước của luồng đặt phòng.
+Hình 3.11 thể hiện ba bước của luồng đặt phòng.
 
-[Hình 3.13]
+[Hình 3.11]
 
 ### 3.8.3. Chức năng thanh toán
 
@@ -100,9 +96,9 @@ hai chữ số thứ tự lần thử** để phân biệt các lần chuyển c
 đếm ngược 15 phút ứng với hạn giữ chỗ **có thật** trong cơ sở dữ liệu, không phải
 đồng hồ trang trí.
 
-Hình 3.14 thể hiện màn hình thanh toán.
+Hình 3.12 thể hiện màn hình thanh toán.
 
-[Hình 3.14]
+[Hình 3.12]
 
 **Xử lý webhook** theo bảng quyết định sau:
 
@@ -141,14 +137,14 @@ Mã nguồn migration tạo bảng khoảng đóng phòng trình bày ở Phụ 
 
 Khu quản trị gồm **mười một màn hình**, nạp lười theo tuyến.
 
-Hình 3.15 thể hiện trang tổng quan với biểu đồ doanh thu theo tháng, tỉ lệ lấp
+Hình 3.13 thể hiện trang tổng quan với biểu đồ doanh thu theo tháng, tỉ lệ lấp
 đầy và tỉ lệ huỷ. Ba màn hình còn lại của nhóm xử lý đơn là đối soát thanh toán
 với các khoản thiếu tiền và thừa tiền, danh sách đơn kèm bộ lọc theo trạng thái,
 và chi tiết một đơn — nơi dòng thời gian trạng thái, các lần thanh toán, hộp thư
 đi và ghi chú nội bộ hiện cùng lúc, vì đó là bốn thứ chủ homestay cần xem một
 lần khi có việc phải xử lý.
 
-[Hình 3.15]
+[Hình 3.13]
 
 ### 3.8.6. Quản lý nội dung và lọc HTML
 
@@ -313,6 +309,5 @@ git clone <địa-chỉ-kho> homestay-tvh && cd homestay-tvh
 docker compose up -d --build   # dựng và chạy 4 dịch vụ
 ```
 
-Hình 3.16 thể hiện trạng thái bốn dịch vụ sau khi khởi động.
-
-[Hình 3.16]
+Sau lệnh thứ ba, cả bốn dịch vụ `db`, `api`, `web` và `mailpit` đều báo trạng
+thái `healthy`; kết quả kiểm chứng bản đóng gói ghi ở mục 4.6.
