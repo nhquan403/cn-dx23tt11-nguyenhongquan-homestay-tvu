@@ -12,7 +12,12 @@
 | **Quản trị viên** | Chủ homestay và nhân viên | Token, vai trò `ADMIN` |
 | *Tác nhân hệ thống* | Nhà cung cấp thanh toán gọi webhook; bộ quét định kỳ | Khoá trong phần đầu yêu cầu, hoặc nội bộ |
 
-Hình 3.1 thể hiện biểu đồ use case tổng quát của hệ thống.
+Hình 3.1 thể hiện biểu đồ use case tổng quát với đủ mười một use case của hệ
+thống.
+
+Trong biểu đồ, *Khách có tài khoản* nối với *Khách vãng lai* bằng quan hệ kế
+thừa thay cho bốn đường liên kết trùng nhau: theo Bảng 3.1, tác nhân này làm
+được mọi thao tác của khách vãng lai và chỉ thêm UC7.
 
 [Hình 3.1]
 
@@ -299,10 +304,6 @@ mọi đường dẫn trừ ba đường tối thiểu, khi tài khoản còn c�
 | Chỉ có ở cấu hình trình diễn | — | Tài liệu giao diện tương tác |
 
 Bảng đầy đủ 82 thao tác nằm ở Phụ lục E.
-
-Hình 3.10 thể hiện giao diện tài liệu tương tác của hệ thống đang chạy.
-
-[Hình 3.10]
 
 ### 3.5.3. Giới hạn tần suất
 
