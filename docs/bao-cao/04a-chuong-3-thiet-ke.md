@@ -4,6 +4,7 @@
 
 ### 3.1.1. Xác định tác nhân
 
+[Bảng 3.1] Các tác nhân của hệ thống và cơ chế xác thực tương ứng
 | Tác nhân | Mô tả | Cơ chế xác thực |
 |---|---|---|
 | **Khách vãng lai** | Không có tài khoản. Đặt, tra cứu và huỷ đơn bằng mã đơn và số điện thoại | Không đăng nhập. Thao tác trên một đơn cụ thể cần mã đơn và số điện thoại, hoặc mã truy cập trong liên kết thư xác nhận |
@@ -17,6 +18,7 @@ Hình 3.1 thể hiện biểu đồ use case tổng quát của hệ thống.
 
 ### 3.1.2. Danh sách use case
 
+[Bảng 3.2] Danh sách use case và tác nhân chính
 | Mã | Tên use case | Tác nhân chính |
 |---|---|---|
 | UC1 | Tìm phòng trống | Khách vãng lai, Khách có tài khoản |
@@ -43,14 +45,15 @@ khi hai khách cùng đặt một phòng.
 
 ### 3.2.1. Tổng quan
 
-Lược đồ gồm **21 bảng nghiệp vụ**, dựng bởi **tám migration** Flyway từ `V1` tới
-`V8`. Bảng thứ 22 trong lược đồ công khai là sổ ghi chép của chính Flyway, không
+Lược đồ gồm **21 bảng nghiệp vụ**, dựng bởi **chín migration** Flyway từ `V1` tới
+`V9`. Bảng thứ 22 trong lược đồ công khai là sổ ghi chép của chính Flyway, không
 thuộc mô hình nghiệp vụ.
 
 Hình 3.2 thể hiện sơ đồ quan hệ thực thể tổng thể.
 
 [Hình 3.2]
 
+[Bảng 3.3] Các nhóm bảng dữ liệu theo migration
 | Nhóm | Migration | Các bảng | Vai trò |
 |---|---|---|---|
 | Người dùng và xác thực | V1 | `users`, `refresh_tokens` | Tài khoản, vai trò, phiên đăng nhập |
@@ -107,6 +110,7 @@ một phòng.
 Cùng một cơ chế được sử dụng cho hai bài toán khác nhau, cho thấy lựa chọn
 PostgreSQL không nhằm phục vụ một trường hợp duy nhất.
 
+[Bảng 3.4] Hai lần sử dụng ràng buộc loại trừ và điều được chống
 | Lần | Bảng | Ràng buộc | Chống điều gì |
 |---|---|---|---|
 | 1 | `booking_rooms` | `booking_rooms_no_overlap` | Hai đơn cùng giữ một phòng trong những ngày giao nhau |
@@ -150,6 +154,7 @@ biểu đồ lớp của các thực thể cốt lõi thuộc nhóm đặt phòn
 
 Hai lớp cơ sở trừu tượng được dùng lại cho nhiều thực thể:
 
+[Bảng 3.5] Các lớp cơ sở dùng chung và nhóm thực thể sử dụng
 | Lớp cơ sở | Cột cung cấp | Dùng cho nhóm bảng nào |
 |---|---|---|
 | `BaseAuditEntity` | `created_at` và `updated_at` | Bảng có vòng đời dài, có sửa đổi |
@@ -165,6 +170,7 @@ không có, nên không thể dùng chung một lớp cơ sở cho cả hai nhó
 thành phần duy nhất, vì mỗi lần chuyển kéo theo ba việc phụ dễ bỏ sót: ghi nhật
 ký, nhả phòng khi đơn không diễn ra, và hoàn lượt khuyến mãi.
 
+[Bảng 3.6] Tám trạng thái của đơn đặt phòng và ý nghĩa
 | Trạng thái | Ý nghĩa |
 |---|---|
 | `PENDING_PAYMENT` | Vừa tạo, đang giữ chỗ chờ tiền cọc |
@@ -215,6 +221,7 @@ Hình 3.9 thể hiện sơ đồ phân lớp của tầng máy chủ.
 
 [Hình 3.9]
 
+[Bảng 3.7] Trách nhiệm và giới hạn của từng lớp ở tầng máy chủ
 | Lớp | Trách nhiệm | Không được làm gì |
 |---|---|---|
 | **Điều khiển** | Nhận yêu cầu HTTP, kiểm tra định dạng đầu vào, ánh xạ sang đối tượng truyền dữ liệu | Không chứa quy tắc nghiệp vụ |
@@ -222,7 +229,7 @@ Hình 3.9 thể hiện sơ đồ phân lớp của tầng máy chủ.
 | **Truy cập dữ liệu** | Truy cập cơ sở dữ liệu qua JPA, và SQL thuần khi cần | Không chứa quy tắc nghiệp vụ |
 | **Cơ sở dữ liệu** | **Lớp bảo vệ cuối cùng** bằng ràng buộc toàn vẹn | — |
 
-**Hai thành phần được gom về một nơi duy nhất, và lý do giống nhau:**
+**Hai thành phần gom về một nơi duy nhất, cùng một lý do:**
 
 - Thành phần quản lý máy trạng thái là nơi **duy nhất** đổi trạng thái đơn.
 - Thành phần tính giá là nơi **duy nhất** tính tiền. Hai công thức tính tiền song
@@ -260,15 +267,14 @@ src/app
 
 ## 3.5. Thiết kế giao diện lập trình ứng dụng
 
-Hệ thống phơi bày **80 thao tác trên 63 đường dẫn**. Con số này đếm từ tài liệu
-mô tả giao diện của hệ thống **đang chạy**, không lấy từ kế hoạch.
+Hệ thống phơi bày **82 thao tác trên 65 đường dẫn**, đếm từ tài liệu mô tả giao
+diện của hệ thống **đang chạy** chứ không lấy từ kế hoạch.
 
 ### 3.5.1. Nguyên tắc phân quyền: mặc định là đóng
 
 Cấu hình bảo mật kết thúc bằng lệnh từ chối mọi yêu cầu chưa khớp quy tắc nào
-phía trên. Một endpoint mới mà người viết quên khai quyền sẽ **bị từ chối**, chứ
-không lọt ra công khai. Đây là lựa chọn an toàn khi thất bại thay vì mở khi thất
-bại.
+phía trên, nên một endpoint mới mà người viết quên khai quyền sẽ **bị từ chối**
+chứ không lọt ra công khai — an toàn khi thất bại thay vì mở khi thất bại.
 
 Một lớp kiểm thử giữ một **ma trận 30 tiền tố đường dẫn** và kiểm hai điều: mọi
 endpoint đã đăng ký phải nằm trong ma trận, và **cấm** khai một dòng bao trùm
@@ -280,6 +286,7 @@ mọi đường dẫn trừ ba đường tối thiểu, khi tài khoản còn c�
 
 ### 3.5.2. Bảng endpoint theo nhóm
 
+[Bảng 3.8] Phân nhóm endpoint theo quyền truy cập
 | Nhóm | Quyền | Ví dụ |
 |---|---|---|
 | Công khai — tra cứu và nội dung | Không cần đăng nhập | `GET /api/room-types`, `GET /api/availability` |
@@ -291,7 +298,7 @@ mọi đường dẫn trừ ba đường tối thiểu, khi tài khoản còn c�
 | Quản trị — báo cáo | `ADMIN` | `GET /api/admin/dashboard` |
 | Chỉ có ở cấu hình trình diễn | — | Tài liệu giao diện tương tác |
 
-Bảng đầy đủ 80 thao tác nằm ở Phụ lục C.
+Bảng đầy đủ 82 thao tác nằm ở Phụ lục E.
 
 Hình 3.10 thể hiện giao diện tài liệu tương tác của hệ thống đang chạy.
 
@@ -322,15 +329,15 @@ mã quan trọng nhất là `ROOM_NOT_AVAILABLE` (409) khi phòng vừa được
 
 ## 3.6. Thiết kế giao diện người dùng
 
-Bảng màu là **định nghĩa thương hiệu** của hệ thống. Mọi mã màu tập trung ở một
-tệp token duy nhất, và một script chạy trong quy trình kiểm tra chặn mọi mã màu
-viết trực tiếp ở nơi khác. Hai lớp bảo vệ bổ sung cho nhau: xoá bảng màu mặc
-định của thư viện định kiểu chặn được các lớp tiện ích màu sẵn có, còn script
-kiểm tra bắt trường hợp viết mã màu thẳng vào thuộc tính kiểu nội tuyến.
+Bảng màu là **định nghĩa thương hiệu** của hệ thống: mọi mã màu tập trung ở một
+tệp token duy nhất, và một script trong quy trình kiểm tra chặn mã màu viết ở nơi
+khác. Hai lớp bổ sung nhau — xoá bảng màu mặc định của thư viện định kiểu chặn
+các lớp tiện ích màu sẵn có, script bắt mã màu viết thẳng vào kiểu nội tuyến.
 
 Sáu quy ước tương tác bắt buộc, bám theo hướng dẫn khả năng tiếp cận mức A và
 AA [13]:
 
+[Bảng 3.9] Các quy ước thiết kế giao diện người dùng và lý do
 | Quy ước | Lý do |
 |---|---|
 | Vùng chạm tối thiểu 44×44 điểm ảnh trên di động | Ngón tay không chính xác như con trỏ chuột |

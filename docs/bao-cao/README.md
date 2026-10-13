@@ -45,8 +45,18 @@ cat 00-phan-dau.md 01-mo-dau.md 02-chuong-1.md 03-chuong-2.md \
 | Tài liệu tham khảo | **Định dạng IEEE**, xếp theo thứ tự từ điển, tách Tiếng Việt / Tiếng Anh |
 | Bìa | Bìa cứng, chữ nhũ vàng. Tên khoa: **KHOA KỸ THUẬT VÀ CÔNG NGHỆ** |
 
-## Chỗ chèn hình
+## Chỗ chèn hình và bảng
 
-28 chỗ, đánh dấu bằng một dòng dạng `[Hình 3.5]`, mỗi hình đều có câu dẫn trong
-văn bản. Phân bố: Chương 1 có 3 hình, Chương 2 có 2, Chương 3 có 21, Chương 4
-có 2.
+**Hình** — 26 chỗ, đánh dấu bằng một dòng dạng `[Hình 3.5]`, mỗi hình đều có câu
+dẫn trong văn bản. Phân bố: Chương 1 có 2 hình, Chương 2 có 2, Chương 3 có 16,
+Chương 4 có 3, Phụ lục có 3. Chú thích tự lấy từ câu dẫn trong chính phần chữ —
+bộ xuất nhận các động từ *thể hiện, minh hoạ, mô tả, so sánh, trình bày*, kể cả
+khi câu dẫn nằm giữa đoạn hoặc bị ngắt qua dòng.
+
+**Bảng** — 28 chỗ, đánh dấu bằng một dòng `[Bảng 3.4] mô tả ngắn` đặt **ngay
+trước** bảng. Quy định đòi đánh số bảng biểu ngang với hình vẽ, nên bảng nào
+cũng phải có dòng này; thiếu nó thì bảng ra Word không tên, không số.
+
+Hình cao-hẹp được bảo vệ bằng **sàn bề ngang 8,5cm**: trần chiều cao 7cm ép một
+biểu đồ dọc xuống còn 3–4cm ngang, và một sơ đồ không đọc được thì không còn là
+sơ đồ.

@@ -10,11 +10,10 @@ dạng JSON. Tầng giao diện không truy cập cơ sở dữ liệu; tầng m
 HTML.
 
 So với kiến trúc nguyên khối kết xuất phía máy chủ, kiến trúc tách rời phức tạp
-hơn lúc khởi đầu và cần thêm công sức tối ưu công cụ tìm kiếm. Đổi lại, hệ thống
-có **hai giao diện rất khác nhau** — trang bán hàng cho khách và khu quản trị
-mật độ cao — dùng chung **một** giao diện lập trình ứng dụng. Chính giao diện đó
-cũng dùng lại được nguyên vẹn nếu sau này phát triển ứng dụng di động, nên chi
-phí phức tạp ban đầu được bù lại.
+hơn lúc khởi đầu và cần thêm công sức tối ưu công cụ tìm kiếm. Đổi lại, **hai
+giao diện rất khác nhau** — trang bán hàng cho khách và khu quản trị mật độ cao
+— dùng chung **một** giao diện lập trình ứng dụng, và giao diện đó dùng lại được
+nguyên vẹn nếu sau này phát triển ứng dụng di động.
 
 Hình 2.1 thể hiện kiến trúc tổng thể của hệ thống khi triển khai.
 
@@ -49,6 +48,7 @@ Spring Boot là nền tảng xây dựng ứng dụng Java theo mô hình cấu 
 lượng cấu hình thủ công mà nhà phát triển phải viết [11]. Các mô-đun được đề tài
 sử dụng:
 
+[Bảng 2.1] Các mô-đun Spring Boot sử dụng và vai trò trong đề tài
 | Mô-đun | Vai trò trong đề tài |
 |---|---|
 | Spring Web MVC | Tầng điều khiển, ánh xạ REST |
@@ -61,11 +61,9 @@ sử dụng:
 
 ### 2.2.3. Giao dịch và hành vi huỷ giao dịch
 
-Một giao dịch cơ sở dữ liệu có bốn tính chất ACID: tính nguyên tử, tính nhất
-quán, tính cô lập và tính bền vững.
-
-Điểm mà đề tài buộc phải hiểu sâu là **hành vi huỷ giao dịch**. Khi PostgreSQL
-bác một câu lệnh vì vi phạm ràng buộc, **toàn bộ giao dịch bị đánh dấu hỏng**.
+Ngoài bốn tính chất ACID quen thuộc, điểm mà đề tài buộc phải hiểu sâu là
+**hành vi huỷ giao dịch**. Khi PostgreSQL bác một câu lệnh vì vi phạm ràng buộc,
+**toàn bộ giao dịch bị đánh dấu hỏng**.
 Mọi câu lệnh tiếp theo trong cùng giao dịch đó trả về mã lỗi `25P02` chứ không
 thực thi. Spring Framework cũng đánh dấu giao dịch chỉ được huỷ khi gặp ngoại lệ
 thời gian chạy [12].
@@ -78,10 +76,9 @@ chạy trong một giao dịch mới. Chi tiết cài đặt ở mục 4.3.2.
 Đề tài đặt `spring.jpa.hibernate.ddl-auto = validate` và không bao giờ dùng
 `update`.
 
-Chế độ `update` để Hibernate tự sửa lược đồ. Nó âm thầm thêm cột, không bao giờ
-xoá cột thừa, và không ghi lại những thay đổi đã thực hiện. Sau một thời gian, lược đồ
-máy phát triển và trên máy chạy thật khác nhau mà không có cách nào biết khác ở
-chỗ nào.
+Chế độ `update` để Hibernate tự sửa lược đồ: nó âm thầm thêm cột, không bao giờ
+xoá cột thừa và không ghi lại thay đổi nào. Sau một thời gian, lược đồ máy phát
+triển và máy chạy thật khác nhau mà không có cách nào biết khác ở chỗ nào.
 
 Chế độ `validate` chỉ **kiểm tra**: mọi cột mà thực thể khai báo phải tồn tại
 đúng kiểu trong cơ sở dữ liệu. Ứng dụng khởi động được nghĩa là **20 thực thể**
@@ -107,34 +104,26 @@ phải trong quá trình thực hiện, trình bày ở mục 4.3.
 
 ## 2.4. Hệ quản trị cơ sở dữ liệu PostgreSQL 16
 
-Đây là mục quan trọng nhất của chương. Toàn bộ lời giải cho bài toán cốt lõi nằm
-ở đây.
+Toàn bộ lời giải cho bài toán cốt lõi nằm ở mục này.
 
 ### 2.4.1. Mức cô lập giao dịch và giới hạn của nó
 
-PostgreSQL mặc định chạy ở mức cô lập **Read Committed** [9]. Ở mức này, một câu
-`SELECT` chỉ thấy ảnh chụp dữ liệu tại **thời điểm câu lệnh đó bắt đầu chạy** —
-nó chỉ thấy dữ liệu đã được commit trước đó, không thấy thay đổi chưa commit của
-giao dịch song song.
+PostgreSQL mặc định chạy ở mức cô lập **Read Committed** [9]: một câu `SELECT`
+chỉ thấy dữ liệu đã commit tại thời điểm câu lệnh đó bắt đầu chạy. Mức này
+**không ngăn được hai giao dịch song song cùng đọc rồi cùng ghi** — tài liệu nêu
+rõ ví dụ một giao dịch cập nhật giá trị trong khi giao dịch khác đang tìm theo
+giá trị cũ [9].
 
-Điều quan trọng là: **Read Committed không ngăn được hai giao dịch song song
-cùng đọc rồi cùng ghi.** Tài liệu PostgreSQL nêu rõ ví dụ một giao dịch cập nhật
-giá trị trong khi giao dịch khác đang tìm theo giá trị cũ, dẫn tới kết quả không
-như mong đợi [9].
-
-Nâng lên mức **Repeatable Read** thì mọi câu lệnh trong cùng giao dịch dùng chung
-một ảnh chụp tại thời điểm bắt đầu giao dịch, ngăn được hiện tượng đọc ảo. Mức
-**Serializable** ngăn thêm được bất thường tuần tự hoá, nhưng đánh đổi bằng việc
-giao dịch có thể bị bác với mã lỗi `40001` và ứng dụng phải thử lại toàn bộ từ
-đầu [9].
+Nâng lên **Repeatable Read** thì mọi câu lệnh trong cùng giao dịch dùng chung một
+ảnh chụp, ngăn được đọc ảo. Mức **Serializable** ngăn thêm bất thường tuần tự
+hoá, nhưng đổi lại giao dịch có thể bị bác với mã `40001` và ứng dụng phải thử
+lại từ đầu [9].
 
 Điểm mấu chốt cho đề tài: **ngay cả ở mức Serializable, tài liệu PostgreSQL vẫn
-khuyến cáo không dựa vào việc kiểm tra ở tầng ứng dụng trước khi ghi.** Tài liệu
-nêu rõ vẫn có thể gặp vi phạm ràng buộc duy nhất do xung đột giữa các giao dịch
-chồng lấn, kể cả sau khi đã kiểm tra tường minh rằng khoá chưa tồn tại [9].
-Khuyến nghị là **sử dụng ràng buộc toàn vẹn** thay vì kiểm tra ở tầng ứng dụng.
-
-Đây chính là căn cứ lý thuyết cho toàn bộ thiết kế của đồ án.
+khuyến cáo không dựa vào kiểm tra ở tầng ứng dụng trước khi ghi** — vẫn có thể
+gặp vi phạm ràng buộc duy nhất do xung đột giữa các giao dịch chồng lấn, kể cả
+sau khi đã kiểm tra tường minh rằng khoá chưa tồn tại [9]. Khuyến nghị là dùng
+**ràng buộc toàn vẹn**. Đó là căn cứ lý thuyết cho toàn bộ thiết kế của đồ án.
 
 ### 2.4.2. Kiểu dữ liệu khoảng
 
@@ -146,9 +135,8 @@ SELECT daterange('2026-03-08','2026-03-10','[)')
     && daterange('2026-03-10','2026-03-12','[)');   -- false, không giao nhau
 ```
 
-Ký hiệu `'[)'` là **khoảng nửa mở**: bao gồm cận dưới, không bao gồm cận trên.
-Ngữ nghĩa này trùng khớp với nghiệp vụ lưu trú, và đây là lý do quy ước nửa mở
-được lựa chọn.
+Ký hiệu `'[)'` là **khoảng nửa mở**: bao gồm cận dưới, không bao gồm cận trên —
+đúng ngữ nghĩa nghiệp vụ lưu trú, nên đề tài chọn quy ước này.
 
 ### 2.4.3. Ràng buộc loại trừ
 
@@ -172,13 +160,11 @@ SELECT ... WHERE NOT EXISTS (đơn nào giao ngày không?)   -- kiểm tra
 INSERT INTO booking_rooms ...                            -- rồi ghi
 ```
 
-Giữa hai câu lệnh đó có một khoảng thời gian. Hai giao dịch song song cùng đọc
-kết quả còn phòng rồi cùng ghi, và phòng bị bán hai lần. Mẫu này sai về nguyên
-lý như đã phân tích ở mục 2.4.1, không phải sai vì viết ẩu.
-
-Phương án khoá bi quan bịt được khe hở nhưng biến mọi lượt đặt cùng một loại
-phòng thành hàng đợi một luồng, và không còn đúng khi ứng dụng chạy nhiều bản
-song song.
+Giữa hai câu lệnh có một khoảng thời gian: hai giao dịch song song cùng đọc kết
+quả còn phòng rồi cùng ghi, và phòng bị bán hai lần. Mẫu này sai về nguyên lý
+như đã phân tích ở mục 2.4.1, không phải sai vì viết ẩu. Phương án khoá bi quan
+bịt được khe hở nhưng biến mọi lượt đặt cùng một loại phòng thành hàng đợi một
+luồng, và không còn đúng khi ứng dụng chạy nhiều bản song song.
 
 Với ràng buộc loại trừ, PostgreSQL bác một trong hai giao dịch ngay trong động
 cơ lưu trữ, bằng mã lỗi `SQLSTATE 23P01`. Không còn khe hở nào để chen vào.
@@ -236,6 +222,8 @@ sau dòng đầu tiên, vì lúc đó mới có một phòng trong khi đơn yê
 pháp là `CONSTRAINT TRIGGER ... DEFERRABLE INITIALLY DEFERRED`: PostgreSQL hoãn
 việc kiểm tra tới **thời điểm commit**, khi mọi dòng đã ghi xong.
 
+Mã nguồn đầy đủ của hai trigger này trình bày ở Phụ lục D.
+
 ## 2.5. Xác thực và phân quyền bằng JSON Web Token
 
 JSON Web Token là chuỗi ký tự gồm phần đầu, phần tải và chữ ký, đã ký bằng khoá
@@ -257,10 +245,10 @@ khẩu hoặc đăng xuất, số đó tăng lên và mọi token cũ mất hi�
 Flyway thực thi các tệp SQL đánh số theo thứ tự và ghi lại tệp nào đã chạy kèm
 giá trị băm của nó. Nguyên tắc **bất biến**: migration đã phát hành không bao
 giờ được sửa, vì sửa làm giá trị băm thay đổi và Flyway chặn khởi động. Muốn đổi
-lược đồ thì thêm một migration mới. Hệ thống hiện có tám migration.
+lược đồ thì thêm một migration mới. Hệ thống hiện có chín migration.
 
 Dữ liệu mẫu **cố ý không đi qua Flyway**. Nếu dữ liệu minh hoạ là một migration,
-việc chuyển sang môi trường thật trên cùng khối dữ liệu sẽ mang theo cả 40 đơn
+việc chuyển sang môi trường thật trên cùng khối dữ liệu sẽ mang theo cả 329 đơn
 giả. Dữ liệu mẫu được nạp bởi một thành phần riêng chỉ kích hoạt ở cấu hình
 trình diễn.
 
@@ -290,6 +278,7 @@ cấp.
 
 Ba vấn đề kỹ thuật phải giải quyết:
 
+[Bảng 2.2] Các vấn đề của thanh toán qua webhook và cách giải quyết
 | Vấn đề | Cách giải quyết |
 |---|---|
 | Bất kỳ ai cũng gọi được endpoint webhook | Xác thực bằng khoá trong phần đầu yêu cầu |

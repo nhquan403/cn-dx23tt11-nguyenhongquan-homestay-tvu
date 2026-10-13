@@ -34,16 +34,44 @@ def figure_files():
 FIGS = figure_files()
 
 CAPTIONS = {}
+# Cac dong tu dung de dan mot hinh trong phan chu. Ban dau chi bat 'thể hiện'
+# va chi o DAU dong, nen 10 trong 31 hinh khong lay duoc mo ta — khong phai vi
+# chung khong duoc nhac toi, ma vi cau dan viet bang dong tu khac ('minh hoạ',
+# 'mô tả', 'so sánh') hoac nam giua cau. Mot hinh khong co mo ta thi chu thich
+# chi con 'Hình 3.4 (Nguồn: tác giả)', va danh muc hinh o phan dau cung trong.
+DONG_TU_DAN = r'(?:thể hiện|minh hoạ|minh họa|mô tả|so sánh|trình bày)'
+
 def load_captions():
-    """Lay mo ta hinh tu cau dan '(Hình X.Y) the hien ...' trong chinh phan chu."""
+    """Lay mo ta hinh tu cau dan 'Hình X.Y <dong tu> ...' trong chinh phan chu."""
+    mau = re.compile(r'Hình ([0-9A-Z]+\.[0-9]+)\s+' + DONG_TU_DAN + r'\s+')
     for f in sorted(os.listdir(DOCS)):
-        if not f.endswith('.md'): continue
-        for line in open(os.path.join(DOCS, f), encoding='utf-8'):
-            m = re.match(r'Hình ([0-9A-Z]+\.[0-9]+) thể hiện (.+)', line.strip())
-            if m and m.group(1) not in CAPTIONS:
-                t = m.group(2).rstrip('.').strip()
-                t = re.sub(r'\s*,?\s*(trong đó|và Hình).*$', '', t)
-                CAPTIONS[m.group(1)] = t[0].upper() + t[1:]
+        if not f.endswith('.md'):
+            continue
+        noi_dung = open(os.path.join(DOCS, f), encoding='utf-8').read()
+        # Gop cac dong cua cung mot doan lai truoc khi doi chieu. Markdown ngat
+        # dong o cot 80 nen mot cau dan nhu "Hình 3.4 thể hiện" thuong bi cat
+        # ngay giua: dong tu o cuoi dong nay, mo ta o dau dong sau.
+        for doan in re.split(r'\n\s*\n', noi_dung):
+            doan = ' '.join(doan.split())
+            if doan.startswith('[Hình'):
+                continue
+            # Quet TUNG vi tri cau dan roi cat tay, khong dung mot nhom bat
+            # tham lam: mot doan hay co hai cau dan lien nhau ("Hình 3.17 thể
+            # hiện ... Hình 3.18 thể hiện ..."), va nhom tham lam se nuot cau
+            # thu hai vao mo ta cua cau thu nhat — hinh 3.18 mat mo ta.
+            moc = list(mau.finditer(doan))
+            for k, m in enumerate(moc):
+                so = m.group(1)
+                if so in CAPTIONS:
+                    continue
+                het = moc[k + 1].start() if k + 1 < len(moc) else len(doan)
+                t = doan[m.end():het].strip()
+                # Cat o cho cau chuyen y hoac o het cau dau tien.
+                t = re.split(r'\s*,?\s*(?:trong đó|còn Hình|và Hình)\b', t)[0]
+                t = re.split(r'(?<=[^0-9])\.\s', t)[0]
+                t = t.rstrip(' .,;:').replace('**', '').replace('`', '').strip()
+                if t:
+                    CAPTIONS[so] = t[0].upper() + t[1:]
 load_captions()
 
 # ── dinh dang chung ──────────────────────────────────────────────────────────
@@ -183,10 +211,25 @@ def add_figure(doc, num, width_cm):
     w_cm = width_cm
     if size:
         w_px, h_px = size
-        # khong de mot hinh cao qua 17cm, neu khong no chiem tron trang
+        # Hai rang buoc nguoc chieu nhau, va chieu DOC DUOC thang.
+        #
+        # Tran chieu cao giu cho hinh khong chiem tron trang. Nhung ap tran do
+        # len mot hinh cao-hep thi no bop be ngang lai theo: bieu do use case
+        # 1320x2415 o tran 7cm chi con 3,8cm ngang, so do quy trinh bay buoc
+        # con 3,2cm — in ra khong doc duoc chu nao. Mot so do khong doc duoc
+        # thi khong con la so do.
+        #
+        # Nen them SAN be ngang 8,5cm: hinh nao bi tran chieu cao bop hep hon
+        # muc do thi duoc cao hon tran, toi 18cm. Hinh cao hon nua moi bi thu
+        # lai theo chieu cao.
         w_cm = min(w_cm, 15.0)
-        if h_px / w_px * w_cm > 10:
-            w_cm = 10 * w_px / h_px
+        cao = h_px / w_px * w_cm
+        if cao > 7:
+            w_cm = 7 * w_px / h_px
+            if w_cm < 8.5:
+                w_cm = 8.5
+                if h_px / w_px * w_cm > 18:
+                    w_cm = 18 * w_px / h_px
     p = doc.add_paragraph(); body_format(p, before=6, after=2, align=WD_ALIGN_PARAGRAPH.CENTER)
     p.add_run().add_picture(path, width=Cm(w_cm))
     cap = doc.add_paragraph()
@@ -336,6 +379,23 @@ def render_markdown(doc, path, width_cm, first_chapter_break=True):
         if re.match(r'^\[Hình ([0-9A-Z]+\.[0-9]+)\]$', s):
             flush()
             add_figure(doc, re.match(r'^\[Hình ([0-9A-Z]+\.[0-9]+)\]$', s).group(1), width_cm)
+            i += 1; continue
+        # Chu thich bang, dat NGAY TRUOC bang. Quy dinh doi "danh so bang
+        # bieu, hinh ve, do thi"; truoc day chi hinh duoc danh so con bang thi
+        # khong, nen moi bang trong quyen la mot bang khong ten.
+        #
+        # Dat truoc bang chu khong phai sau, giong bao cao mau cua khoa: nguoi
+        # doc biet minh sap doc bang gi truoc khi doc so lieu.
+        m_bang = re.match(r'^\[Bảng ([0-9A-Z]+\.[0-9]+)\]\s*(.*)$', s)
+        if m_bang:
+            flush()
+            cap = doc.add_paragraph()
+            body_format(cap, size=12, spacing=1.0, before=8, after=2,
+                        align=WD_ALIGN_PARAGRAPH.CENTER)
+            set_font(cap.add_run(f'Bảng {m_bang.group(1)}'), 12, bold=True)
+            mo_ta = m_bang.group(2).strip().rstrip('.')
+            set_font(cap.add_run(f' — {mo_ta} (Nguồn: tác giả)' if mo_ta
+                                 else ' (Nguồn: tác giả)'), 12, italic=True)
             i += 1; continue
         if s.startswith('|'):
             flush(); rows, can_le = [], []

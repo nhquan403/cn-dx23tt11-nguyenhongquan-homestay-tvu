@@ -4,7 +4,7 @@
 
 Đề tài đã xây dựng hoàn chỉnh một website giới thiệu và đặt phòng homestay gồm
 ba khối: trang bán hàng cho khách, khu quản trị cho chủ homestay, và giao diện
-lập trình ứng dụng với 80 thao tác trên 63 đường dẫn. Hệ thống chạy được bằng ba
+lập trình ứng dụng với 82 thao tác trên 65 đường dẫn. Hệ thống chạy được bằng ba
 lệnh, kèm dữ liệu minh hoạ đủ để trình diễn mọi trạng thái nghiệp vụ.
 
 **Về mặt kỹ thuật**, kết quả đáng kể nhất không phải số lượng chức năng mà là

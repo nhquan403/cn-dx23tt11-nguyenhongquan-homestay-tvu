@@ -42,6 +42,7 @@ khu quản trị cho chủ homestay, và giao diện lập trình ứng dụng k
 
 Tám mục đích cụ thể cùng tiêu chí nghiệm thu tương ứng:
 
+[Bảng 0.1] Bốn mục đích nghiên cứu và tiêu chí nghiệm thu tương ứng
 | # | Mục đích | Tiêu chí nghiệm thu |
 |---|---|---|
 | 1 | Khách tìm được phòng trống theo ngày và đặt phòng thành công | Đặt được đơn từ trang chủ tới khi có mã QR |
@@ -57,13 +58,12 @@ Tám mục đích cụ thể cùng tiêu chí nghiệm thu tương ứng:
 
 Đề tài nghiên cứu ba đối tượng:
 
-1. **Quy trình nghiệp vụ** đặt phòng lưu trú ngắn ngày của cơ sở homestay quy mô
-   nhỏ, từ lúc khách tìm phòng tới lúc trả phòng.
-2. **Cơ chế bảo đảm toàn vẹn dữ liệu khi có tranh chấp** trong hệ quản trị cơ sở
-   dữ liệu quan hệ PostgreSQL, cụ thể là kiểu dữ liệu khoảng, ràng buộc loại trừ
-   và chỉ mục GiST.
+1. **Quy trình nghiệp vụ** đặt phòng lưu trú ngắn ngày của homestay quy mô nhỏ,
+   từ lúc khách tìm phòng tới lúc trả phòng.
+2. **Cơ chế bảo đảm toàn vẹn dữ liệu khi có tranh chấp** trong PostgreSQL: kiểu
+   dữ liệu khoảng, ràng buộc loại trừ và chỉ mục GiST.
 3. **Kiến trúc ứng dụng web tách rời** giữa tầng giao diện và tầng máy chủ, giao
-   tiếp qua giao diện lập trình ứng dụng theo kiểu REST.
+   tiếp qua giao diện lập trình ứng dụng REST.
 
 ## 4. Phạm vi nghiên cứu
 
@@ -79,6 +79,7 @@ Tailwind CSS 4 ở tầng giao diện; PostgreSQL 16 làm cơ sở dữ liệu; 
 
 **Ngoài phạm vi.** Việc nêu rõ giới hạn là một phần của thiết kế:
 
+[Bảng 0.2] Những nội dung không thực hiện trong phạm vi đồ án và lý do
 | Không thực hiện | Lý do |
 |---|---|
 | Kết nối cổng thanh toán thật | Đề tài không yêu cầu; hệ thống viết đúng luồng thật và đọc khoá từ biến môi trường |

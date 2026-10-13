@@ -51,17 +51,18 @@ cơ sở homestay quy mô nhỏ, cùng ba điểm rủi ro chính.
 
 [Hình 1.2]
 
-Bảy bước của quy trình đều có nhược điểm. Khách xem ảnh trên trang mạng xã hội
-nên không biết giá và tình trạng phòng. Việc hỏi phòng trống phụ thuộc giờ giấc
-chủ nhà. **Bước tra lịch bằng trí nhớ là nguồn gốc của việc đặt trùng phòng.**
-Báo giá tính nhẩm dễ nhầm khi khách ở nhiều đêm hoặc đặt nhiều phòng. Đối chiếu
-tiền cọc làm bằng mắt trên sao kê. Xác nhận không để lại bằng chứng nào ngoài
-đoạn hội thoại. Và toàn bộ dữ liệu nằm trên sổ giấy, không thống kê được.
+Bảy bước đều có nhược điểm: khách xem ảnh trên mạng xã hội nên không biết giá và
+tình trạng phòng; hỏi phòng trống phụ thuộc giờ giấc chủ nhà; báo giá tính nhẩm
+dễ nhầm khi ở nhiều đêm hoặc nhiều phòng; đối chiếu tiền cọc làm bằng mắt trên
+sao kê; xác nhận không để lại bằng chứng ngoài đoạn hội thoại; dữ liệu nằm trên
+sổ giấy nên không thống kê được. **Riêng bước tra lịch bằng trí nhớ là nguồn gốc
+của việc đặt trùng phòng.**
 
 ### 1.2.2. Khảo sát người dùng
 
 Đề tài xác định **ba nhóm người dùng** với nhu cầu khác hẳn nhau.
 
+[Bảng 1.1] Nhu cầu của ba nhóm người dùng và hệ quả thiết kế
 | Nhóm | Cần gì | Hệ quả thiết kế |
 |---|---|---|
 | **Khách vãng lai** — chiếm đa số | Xem phòng, biết giá, đặt được phòng; không muốn tạo tài khoản | Tài khoản là **tuỳ chọn**, không phải điều kiện. Bắt đăng ký trước khi đặt là chỗ mất khách nhiều nhất của một trang đặt phòng |
@@ -73,22 +74,17 @@ tiền cọc làm bằng mắt trên sao kê. Xác nhận không để lại b�
 Đề tài khảo sát hai nền tảng đặt phòng lớn nhất tại thị trường Việt Nam là
 Booking.com và Agoda, cùng mô hình Airbnb cho phân khúc lưu trú cá nhân.
 
-Hình 1.3 thể hiện trang kết quả tìm kiếm của Booking.com với bốn thành phần
-được phân tích: thanh tìm kiếm cố định, thẻ phòng, tổng tiền cả kỳ và nhãn
-khan hiếm.
-
-[Hình 1.3]
+Bốn thành phần được phân tích trên trang kết quả tìm kiếm của các nền tảng này
+là thanh tìm kiếm cố định, thẻ phòng, tổng tiền cả kỳ và nhãn khan hiếm.
 
 ### 1.3.1. So sánh với hệ thống của đề tài
 
-Điểm khác biệt căn bản: ba nền tảng trên là **sàn trung gian nhiều cơ sở**, thu
-hoa hồng 15–20% mỗi đơn, còn hệ thống của đề tài phục vụ **một cơ sở duy nhất**
-và không thu hoa hồng. Về chức năng, đề tài giữ những điểm mạnh đã được kiểm
-chứng của cả ba: cho đặt phòng không cần tài khoản, hiển thị tổng tiền cả kỳ ở
-mọi bước, và chặn sẵn ngày hết phòng ngay trong lịch chọn ngày. Khác biệt về
-thanh toán: ba nền tảng dùng thẻ, đề tài dùng chuyển khoản mã QR — phù hợp với
-thói quen thanh toán trong nước và không đòi hỏi tài khoản cổng thanh toán quốc
-tế.
+Khác biệt căn bản: ba nền tảng trên là **sàn trung gian nhiều cơ sở**, thu hoa
+hồng 15–20% mỗi đơn, còn hệ thống của đề tài phục vụ **một cơ sở duy nhất**. Đề
+tài giữ những điểm mạnh đã kiểm chứng của cả ba — đặt phòng không cần tài khoản,
+hiện tổng tiền cả kỳ ở mọi bước, chặn sẵn ngày hết phòng trong lịch — nhưng dùng
+chuyển khoản mã QR thay cho thẻ, hợp thói quen trong nước và không cần tài khoản
+cổng thanh toán quốc tế.
 
 ### 1.3.2. Mẫu thiết kế áp dụng và mẫu cố ý không áp dụng
 
@@ -102,11 +98,10 @@ dùng cho hạn giữ chỗ **có thật** trong cơ sở dữ liệu, không ph
 Và hệ thống **không hiển thị số người đang xem** — vì hệ thống không đo được số
 đó.
 
-Luận điểm: các nhãn khan hiếm trên nền tảng lớn thường không tương ứng với dữ
-liệu thật. Đồ án giữ lại hình thức của chúng, vì chúng thật sự giúp khách quyết
-định nhanh, nhưng buộc mọi con số phải có nguồn gốc kiểm chứng được. Lựa chọn
-này khả thi chính vì ràng buộc ở tầng cơ sở dữ liệu bảo đảm con số phòng còn
-trống luôn đúng.
+Luận điểm: nhãn khan hiếm trên nền tảng lớn thường không tương ứng dữ liệu thật.
+Đồ án giữ hình thức của chúng vì chúng giúp khách quyết định nhanh, nhưng buộc
+mọi con số phải kiểm chứng được — khả thi chính nhờ ràng buộc ở tầng cơ sở dữ
+liệu.
 
 ## 1.4. Xác định yêu cầu
 
@@ -114,6 +109,7 @@ trống luôn đúng.
 
 Đề tài xác định **32 yêu cầu chức năng** chia ba nhóm theo tác nhân:
 
+[Bảng 1.2] Ba nhóm yêu cầu chức năng theo tác nhân
 | Nhóm | Mã | Số lượng | Nội dung chính |
 |---|---|---:|---|
 | **A — Khách** | CN-01…CN-14 | 14 | Xem loại phòng và tiện nghi; tìm phòng theo ngày; xem lịch từng đêm; gửi yêu cầu đặt phòng; xem chi phí dự kiến; áp mã khuyến mãi; thanh toán mã QR; tra cứu và huỷ đơn; nhận thư xác nhận; viết đánh giá; đăng ký và xem lại đơn; đọc tin tức |
@@ -139,6 +135,7 @@ trên, đã cài đặt và kiểm thử.
 
 **Ngoài phạm vi và lý do:**
 
+[Bảng 1.3] Những chức năng hệ thống không có và lý do
 | Không có | Lý do |
 |---|---|
 | Cổng thanh toán thật | Đề tài không yêu cầu; hệ thống viết đúng luồng thật, chỉ thiếu tài khoản thật |
@@ -146,3 +143,5 @@ trên, đã cài đặt và kiểm thử.
 | Ứng dụng di động | Website đã đáp ứng; xây dựng ứng dụng di động là một đề tài riêng |
 | Nhiều chi nhánh | Bài toán khác hẳn về mô hình dữ liệu |
 | Giao thức HTTPS trong bản đóng gói | Cần tên miền và chứng chỉ thật; đây là giới hạn đã biết, trình bày ở mục 5.7 |
+
+Bảng tổng hợp toàn bộ công nghệ sử dụng theo từng tầng trình bày ở Phụ lục L.

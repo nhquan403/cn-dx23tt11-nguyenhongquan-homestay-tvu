@@ -1,30 +1,26 @@
 ## 3.7. Môi trường và quy trình phát triển
 
-Hệ thống phát triển bằng IntelliJ IDEA và Visual Studio Code, quản lý phụ thuộc
-bằng Maven và npm, quản lý mã nguồn bằng Git trên GitHub, cơ sở dữ liệu cục bộ
-chạy trong container.
+Hệ thống phát triển bằng IntelliJ IDEA và Visual Studio Code, phụ thuộc quản lý
+bằng Maven và npm, mã nguồn trên Git/GitHub, cơ sở dữ liệu cục bộ chạy trong
+container. Yêu cầu tối thiểu để chạy: Docker kèm Compose v2 cho đường chạy
+khuyến nghị, hoặc JDK 21, Node.js 20.19 trở lên và **PostgreSQL 16** nếu chạy
+thủ công — PostgreSQL 16 là điều kiện cứng vì hệ thống cần `btree_gist`.
 
-Yêu cầu tối thiểu để chạy hệ thống: Docker có Compose phiên bản 2 cho đường chạy
-khuyến nghị; hoặc JDK 21, Node.js 20.19 trở lên và **PostgreSQL 16** nếu chạy
-thủ công. PostgreSQL 16 là điều kiện cứng vì hệ thống cần phần mở rộng
-`btree_gist`.
-
-Đề tài thực hiện theo **mười giai đoạn** tuần tự, tổng khối lượng khoảng 97 giờ
-công: khởi tạo dự án (5h), hệ thống thiết kế (12h), lược đồ cơ sở dữ liệu (8h),
-xác thực và phân quyền (7h), lõi đặt phòng và chống trùng lịch (11h), thanh toán
-và webhook (10h), khu quản trị (14h), trang khách và quản lý nội dung (16h),
-đóng gói và tài liệu (7h), lịch khoá phòng theo khoảng ngày (7h). Mỗi giai đoạn
-có tiêu chí nghiệm thu riêng và chỉ được đóng khi mọi tiêu chí kiểm chứng được
-bằng lệnh.
+Đề tài thực hiện theo **mười giai đoạn** tuần tự, khoảng 97 giờ công: khởi tạo
+dự án (5h), hệ thống thiết kế (12h), lược đồ cơ sở dữ liệu (8h), xác thực và
+phân quyền (7h), lõi đặt phòng và chống trùng lịch (11h), thanh toán và webhook
+(10h), khu quản trị (14h), trang khách và quản lý nội dung (16h), đóng gói và
+tài liệu (7h), lịch khoá phòng (7h). Mỗi giai đoạn chỉ được đóng khi mọi tiêu
+chí nghiệm thu kiểm chứng được bằng lệnh.
 
 Hình 3.11 thể hiện sơ đồ phụ thuộc giữa các giai đoạn, trong đó hai cặp giai
 đoạn thực hiện song song được vì không dùng chung tệp nào.
 
 [Hình 3.11]
 
-Quy mô mã nguồn tại thời điểm hoàn thành: 174 tệp Java với 15 644 dòng, 100 tệp
-TypeScript với 12 737 dòng, 8 migration cơ sở dữ liệu, 18 lớp kiểm thử với 129
-ca, 31 commit trải từ 07/09/2026 tới 20/09/2026.
+Quy mô mã nguồn tại thời điểm hoàn thành: 176 tệp Java với 16 044 dòng, 101 tệp
+TypeScript với 13 270 dòng, 9 migration cơ sở dữ liệu, 19 lớp kiểm thử với 136
+ca, 59 commit trải từ 20/09/2026 tới 12/10/2026.
 
 ## 3.8. Cài đặt các chức năng chính
 
@@ -34,6 +30,7 @@ ca, 31 commit trải từ 07/09/2026 tới 20/09/2026.
 truy vấn phòng trống** phục vụ bốn màn hình khác nhau, tất cả đặt trong một lớp
 truy cập dữ liệu duy nhất:
 
+[Bảng 3.10] Các truy vấn của chức năng tìm phòng trống
 | Truy vấn | Phục vụ | Hậu quả nếu sai |
 |---|---|---|
 | Đếm phòng trống theo loại | Trang danh sách phòng, bước hai của luồng đặt phòng | Khách thấy sai số phòng còn lại |
@@ -56,20 +53,17 @@ một lần gọi, thay vì lặp từng đêm. Khoảng tối đa là 120 ngày
 cơ sở dữ liệu cho một lần mở lịch đủ để người dùng cảm nhận được độ trễ.
 
 **Điểm kỹ thuật thứ ba: vị trí của điều kiện lọc trong phép nối trái.** Truy vấn
-lịch toàn homestay dùng phép nối trái để bảo đảm mọi đêm đều xuất hiện trong kết
-quả, kể cả đêm không còn phòng nào. Điều kiện lọc khoảng đóng phòng phải nằm
-trong mệnh đề điều kiện nối, không phải mệnh đề lọc. Đặt sai chỗ sẽ biến phép
-nối trái thành phép nối trong, và những đêm hết phòng biến mất khỏi kết quả thay
-vì trả về số không — trong khi tầng giao diện hiểu ngày vắng mặt là ngày không
-bị chặn.
+lịch toàn homestay dùng phép nối trái để mọi đêm đều xuất hiện, kể cả đêm không
+còn phòng. Điều kiện lọc khoảng đóng phòng phải nằm trong mệnh đề nối chứ không
+phải mệnh đề lọc: đặt sai chỗ biến nối trái thành nối trong, những đêm hết phòng
+biến mất khỏi kết quả thay vì trả về số không — trong khi tầng giao diện hiểu
+ngày vắng mặt là ngày không bị chặn.
 
 Hình 3.12 thể hiện trang chủ với thanh tìm phòng và lịch chọn ngày đang mở, trong
-đó các ngày đã kín phòng bị chặn sẵn. Hình 3.13 thể hiện kết quả tìm phòng với
-nhãn số phòng còn lại và tổng tiền cả kỳ.
+đó các ngày đã kín phòng bị chặn sẵn. Trang kết quả tìm phòng hiện nhãn số phòng
+còn lại và tổng tiền cả kỳ của khoảng ngày đã chọn.
 
 [Hình 3.12]
-
-[Hình 3.13]
 
 ### 3.8.2. Chức năng đặt phòng và vòng thử gán phòng
 
@@ -87,32 +81,32 @@ Với mỗi phòng ứng viên còn rảnh:
 Hết phòng để thử → trả về lỗi ROOM_NOT_AVAILABLE mã 409
 ```
 
-**Dòng "mở một giao dịch mới" không phải tuỳ chọn.** Khi PostgreSQL bác một câu
-lệnh vì vi phạm ràng buộc, toàn bộ giao dịch bị đánh dấu hỏng; mọi câu lệnh tiếp
-theo trong cùng giao dịch đó trả về mã `25P02` chứ không thực thi. Việc thử phòng
-tiếp theo trong cùng giao dịch là **không thể thành công**.
+**Dòng "mở một giao dịch mới" không phải tuỳ chọn:** giao dịch bị đánh dấu hỏng
+sau khi vi phạm ràng buộc, mọi câu lệnh sau đó trả `25P02`, nên thử phòng tiếp
+theo trong cùng giao dịch là **không thể thành công**.
 
 Hệ thống cũng chỉ bắt **đúng** mã `23P01`. Bắt chung mọi lỗi toàn vẹn dữ liệu sẽ
-khiến một lỗi khoá ngoại — tức là lỗi lập trình thật — bị báo cho khách thành hết
-phòng, và lỗi đó không bao giờ được phát hiện.
+khiến một lỗi khoá ngoại — lỗi lập trình thật — bị báo cho khách thành hết phòng
+và không bao giờ được phát hiện.
 
-Hình 3.14 thể hiện ba bước của luồng đặt phòng.
+Hình 3.13 thể hiện ba bước của luồng đặt phòng.
 
-[Hình 3.14]
+[Hình 3.13]
 
 ### 3.8.3. Chức năng thanh toán
 
-Hệ thống sinh mã QR theo chuẩn VietQR, nội dung chuyển khoản là **mã đơn ghép
-hai chữ số thứ tự lần thử** để phân biệt các lần chuyển khoản của cùng một đơn.
-Đồng hồ đếm ngược 15 phút trên màn hình ứng với hạn giữ chỗ **có thật** trong cơ
-sở dữ liệu, không phải đồng hồ trang trí.
+Hệ thống sinh mã QR theo chuẩn VietQR; nội dung chuyển khoản là **mã đơn ghép
+hai chữ số thứ tự lần thử** để phân biệt các lần chuyển của cùng một đơn. Đồng hồ
+đếm ngược 15 phút ứng với hạn giữ chỗ **có thật** trong cơ sở dữ liệu, không phải
+đồng hồ trang trí.
 
-Hình 3.15 thể hiện màn hình thanh toán.
+Hình 3.14 thể hiện màn hình thanh toán.
 
-[Hình 3.15]
+[Hình 3.14]
 
 **Xử lý webhook** theo bảng quyết định sau:
 
+[Bảng 3.11] Các tình huống thanh toán bất thường và cách xử lý
 | Tình huống | Xử lý |
 |---|---|
 | Đủ tiền cọc | Chuyển sang `CONFIRMED`, gửi thư xác nhận |
@@ -141,24 +135,20 @@ mã nào**. Cả bốn màn hình khách đều đọc phòng trống qua bốn 
 ở tầng dữ liệu làm cả bốn tự đúng theo — kết quả của việc gom mọi truy vấn phòng
 trống vào một lớp duy nhất từ giai đoạn năm.
 
+Mã nguồn migration tạo bảng khoảng đóng phòng trình bày ở Phụ lục F.
+
 ### 3.8.5. Khu quản trị
 
 Khu quản trị gồm **mười một màn hình**, nạp lười theo tuyến.
 
-Hình 3.16 thể hiện trang tổng quan với biểu đồ doanh thu theo tháng, tỉ lệ lấp
-đầy và tỉ lệ huỷ. Hình 3.17 thể hiện màn hình đối soát thanh toán với các khoản
-thiếu tiền và thừa tiền. Hình 3.18 thể hiện danh sách đơn đặt phòng kèm bộ lọc
-theo trạng thái. Hình 3.19 thể hiện chi tiết một đơn: dòng thời gian trạng thái,
-các lần thanh toán, hộp thư đi và ghi chú nội bộ — bốn thứ mà chủ homestay cần
-xem cùng lúc khi có việc phải xử lý.
+Hình 3.15 thể hiện trang tổng quan với biểu đồ doanh thu theo tháng, tỉ lệ lấp
+đầy và tỉ lệ huỷ. Ba màn hình còn lại của nhóm xử lý đơn là đối soát thanh toán
+với các khoản thiếu tiền và thừa tiền, danh sách đơn kèm bộ lọc theo trạng thái,
+và chi tiết một đơn — nơi dòng thời gian trạng thái, các lần thanh toán, hộp thư
+đi và ghi chú nội bộ hiện cùng lúc, vì đó là bốn thứ chủ homestay cần xem một
+lần khi có việc phải xử lý.
 
-[Hình 3.16]
-
-[Hình 3.17]
-
-[Hình 3.18]
-
-[Hình 3.19]
+[Hình 3.15]
 
 ### 3.8.6. Quản lý nội dung và lọc HTML
 
@@ -228,6 +218,7 @@ vào tệp biến môi trường với quyền truy cập hạn chế.
 
 ### 3.9.5. Các lớp bảo vệ khác
 
+[Bảng 3.12] Các lớp bảo vệ bổ sung của hệ thống
 | Lớp | Biện pháp |
 |---|---|
 | Tiêu đề bảo mật | Chính sách bảo mật nội dung, chống nhúng khung, chống đoán kiểu tệp |
@@ -241,6 +232,7 @@ vào tệp biến môi trường với quyền truy cập hạn chế.
 
 Bốn dịch vụ:
 
+[Bảng 3.13] Các dịch vụ trong tệp đóng gói Docker Compose
 | Dịch vụ | Ảnh nền | Cổng mở ra máy chủ |
 |---|---|---|
 | Máy chủ web | `nginx:alpine` | **80** |
@@ -255,11 +247,14 @@ web chuyển tiếp, như đã trình bày ở mục 3.9.3.
 Ảnh ứng dụng chạy bằng **người dùng không có quyền quản trị**, và được dựng bằng
 tệp Dockerfile nhiều tầng nên ảnh cuối không chứa công cụ biên dịch.
 
+Nội dung đầy đủ của tệp đóng gói trình bày ở Phụ lục G.
+
 ### 3.10.2. Cấu hình máy chủ web
 
 Máy chủ web phải chuyển tiếp **bốn nhóm đường dẫn** chứ không chỉ nhóm giao diện
 lập trình ứng dụng:
 
+[Bảng 3.14] Cấu hình máy chủ web và hậu quả nếu thiếu
 | Đường dẫn | Hậu quả nếu quên chuyển tiếp |
 |---|---|
 | `/api/**` | Toàn bộ hệ thống không hoạt động |
@@ -276,6 +271,7 @@ rơi vào khối tĩnh và trả về lỗi.
 
 Hệ thống chỉ có **hai** cấu hình, cố ý không nhiều hơn:
 
+[Bảng 3.15] Hai cấu hình chạy của hệ thống
 | Cấu hình | Sử dụng khi | Bao gồm |
 |---|---|---|
 | Trình diễn | Phát triển và bản đem bảo vệ | Dữ liệu mẫu, tài liệu tương tác, trang thư viện component |
@@ -317,9 +313,6 @@ git clone <địa-chỉ-kho> homestay-tvh && cd homestay-tvh
 docker compose up -d --build   # dựng và chạy 4 dịch vụ
 ```
 
-Hình 3.20 thể hiện trạng thái bốn dịch vụ sau khi khởi động, và Hình 3.21 thể
-hiện hộp thư giả lập với thư xác nhận đã gửi.
+Hình 3.16 thể hiện trạng thái bốn dịch vụ sau khi khởi động.
 
-[Hình 3.20]
-
-[Hình 3.21]
+[Hình 3.16]

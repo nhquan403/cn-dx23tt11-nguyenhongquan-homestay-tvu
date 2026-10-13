@@ -58,7 +58,7 @@ phòng trên đơn. Đặt một phía là để lọt trường hợp còn lạ
 
 ## Phụ lục E — Bảng endpoint đầy đủ
 
-Bảng đầy đủ 80 thao tác trên 63 đường dẫn được liệt kê trong tài liệu kỹ thuật
+Bảng đầy đủ 82 thao tác trên 65 đường dẫn được liệt kê trong tài liệu kỹ thuật
 `docs/api.md` của dự án, và xem được trực tiếp qua giao diện tài liệu tương tác
 của hệ thống đang chạy ở cấu hình trình diễn.
 
@@ -125,7 +125,7 @@ location ^~ /uploads/     { ... }
 
 ---
 
-## Phụ lục I — Chi tiết 18 lớp kiểm thử
+## Phụ lục I — Chi tiết 19 lớp kiểm thử
 
 ### 4.2.1. Bảng tổng hợp theo lớp
 
@@ -353,3 +353,23 @@ Hạn mức đầy đủ của mục 3.5.3.
 | `ip:lookup` | 10 lần mỗi phút | Tra cứu đơn |
 | `code:lookup` | 5 lần mỗi giờ | Tra cứu đơn, theo mã đơn |
 | `ip:cancel` | 10 lần mỗi phút | Huỷ đơn |
+
+## Phụ lục R — Nhật ký mười một lỗi và cách khắc phục
+
+Bảng đầy đủ bốn cột của mục 4.3. Phần thân bài giữ hiện tượng và nguyên
+nhân gốc vì đó là phần có giá trị rút kinh nghiệm; cách khắc phục cụ thể
+của từng lỗi là thông tin tra cứu nên đặt ở đây.
+
+| # | Hiện tượng | Nguyên nhân gốc | Cách khắc phục |
+|---|---|---|---|
+| 1 | Giao dịch thử phòng tiếp theo luôn thất bại | Bắt lỗi ràng buộc rồi thử tiếp **trong cùng giao dịch**; PostgreSQL đã huỷ giao dịch nên mọi lệnh sau trả `25P02` | Mỗi lượt thử chạy trong một giao dịch mới |
+| 2 | Website báo thiếu phòng so với thực tế | Truy vấn lấy tổng trừ đi số đã đặt trừ **hai lần** phòng bảo trì đang có đơn | Đếm trực tiếp phòng vừa khả dụng vừa rảnh |
+| 3 | Giao dịch bị bác khi khách trả phòng | Nhả phòng lúc chuyển sang `CHECKED_OUT` làm trigger kiểm số phòng bác cả giao dịch | Trạng thái `CHECKED_OUT` không nhả phòng |
+| 4 | **Toàn bộ trang web hiển thị không có định kiểu** | Chính sách bảo mật nội dung chặn thuộc tính sự kiện mà công cụ tối ưu định kiểu tự sinh ra | Tắt tính năng tối ưu đó thay vì nới lỏng chính sách bảo mật |
+| 5 | **Mọi nút bấm chính có độ tương phản khoảng 2:1** | Tệp định kiểu nền **không nằm trong tầng CSS** nên thắng mọi lớp tiện ích bất kể độ ưu tiên | Bọc tệp nền trong tầng cơ sở |
+| 6 | Ảnh tải lên trả về lỗi 404 | Khối biểu thức chính quy của máy chủ web thắng khối tiền tố thường | Dùng cú pháp tiền tố ưu tiên cho cả bốn khối chuyển tiếp |
+| 7 | Màn hình thanh toán trắng trơn | Component gọi hàm đọc tham số đầu vào **trong hàm khởi tạo**, trước khi khung ứng dụng gán tham số | Chuyển sang phương thức chạy sau khi khởi tạo |
+| 8 | Bộ nạp dữ liệu mẫu cộng dồn mỗi lần khởi động | Điều kiện chống trùng khoá theo ngày tương đối nên mỗi ngày lại khớp khác | Đổi điều kiện sang khoá toàn bảng |
+| 9 | Khu quản trị đóng nhầm phòng không hiển thị | Khối giao diện giữ định danh phòng cũ sau khi bộ lọc của màn hình cha thay đổi | Đối chiếu định danh với danh sách phòng đang hiển thị |
+| 10 | **Danh sách đơn nói "bấm vào mã đơn để mở chi tiết" nhưng không bấm được** | Ô mã đơn là ô bảng thường; chỉ một liên kết ví dụ dưới bảng mở được đơn **đầu tiên**, mười chín đơn còn lại không có lối vào | Thêm kiểu cột liên kết cho bảng dữ liệu dùng chung, mã đơn của mọi hàng thành thẻ liên kết thật |
+| 11 | Ô chọn tệp ảnh không có tên cho trình đọc màn hình | Ô ẩn bằng lớp chỉ-đọc-màn-hình nhưng **vẫn nằm trong thứ tự Tab**, thành một điểm dừng không tên | Bỏ ô khỏi thứ tự Tab và đặt nhãn cho nó; nút bấm nhìn thấy được mới là lối vào |

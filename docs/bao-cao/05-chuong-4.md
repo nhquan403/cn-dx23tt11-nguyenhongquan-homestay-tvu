@@ -6,7 +6,7 @@ kiểm thử, đánh giá hiệu năng và khả năng tiếp cận, đối chi�
 
 ## 4.1. Chiến lược kiểm thử
 
-Hệ thống có **129 ca kiểm thử tự động trong 18 lớp**, tất cả đều thành công.
+Hệ thống có **136 ca kiểm thử tự động trong 19 lớp**.
 
 ### 4.1.1. Lý do không sử dụng cơ sở dữ liệu giả lập
 
@@ -26,6 +26,7 @@ khai, vừa chứng minh luôn rằng ứng dụng thật sự đòi hai biến 
 
 ### 4.1.2. Các cấp độ kiểm thử
 
+[Bảng 4.1] Ba cấp độ kiểm thử và phạm vi kiểm của từng cấp
 | Cấp độ | Ví dụ lớp | Kiểm điều gì |
 |---|---|---|
 | Kiểm thử đơn vị | Lọc HTML, xuất tệp CSV | Logic thuần, không cần cơ sở dữ liệu |
@@ -35,22 +36,23 @@ khai, vừa chứng minh luôn rằng ứng dụng thật sự đòi hai biến 
 
 Dự án không cấu hình pha kiểm thử tích hợp riêng; công cụ chạy kiểm thử được nới
 để nhận cả lớp có hậu tố chỉ kiểm thử tích hợp, nên lệnh kiểm chứng gồm biên
-dịch, chạy toàn bộ 129 ca và đóng gói.
+dịch, chạy toàn bộ 136 ca và đóng gói.
 
 ## 4.2. Kết quả kiểm thử tự động
 
 ### 4.2.1. Tổng hợp theo nhóm
 
+[Bảng 4.2] Tổng hợp số ca kiểm thử tự động theo nhóm
 | Nhóm | Số lớp | Số ca | Trọng tâm |
 |---|---:|---:|---|
 | Lược đồ và ràng buộc | 3 | 19 | Migration dựng đúng 21 bảng; từng ràng buộc kiểm tra thật sự chặn |
 | Đặt phòng | 4 | 26 | Tranh chấp đa luồng, đếm phòng trống, máy trạng thái, quét hết hạn |
 | Ngày khả dụng | 1 | 9 | Khoảng đóng phòng trừ đúng ở cả bốn truy vấn |
-| Thanh toán | 2 | 15 | Webhook, chống cộng tiền hai lần, cửa sổ tranh chấp |
+| Thanh toán | 3 | 22 | Webhook, chống cộng tiền hai lần, cửa sổ tranh chấp, nút mô phỏng chuyển khoản |
 | Xác thực và phân quyền | 2 | 10 | Vòng đời token, ma trận 30 tiền tố |
 | Nội dung và đánh giá | 3 | 32 | Lọc HTML, nội dung công khai, quy tắc đánh giá |
 | Báo cáo và lưu trữ | 3 | 23 | Số liệu tổng quan, xuất CSV, tải ảnh |
-| **Tổng** | **18** | **129** | |
+| **Tổng** | **19** | **136** | |
 
 Bảng chi tiết từng lớp kiểm thử trình bày ở Phụ lục I.
 
@@ -76,19 +78,22 @@ tiền biến mất im lặng.
 Mười một lỗi dưới đây đều là lỗi **đã xảy ra thật** trong quá trình làm, kèm
 nguyên nhân gốc chứ không phải triệu chứng.
 
-| # | Hiện tượng | Nguyên nhân gốc | Cách khắc phục |
-|---|---|---|---|
-| 1 | Giao dịch thử phòng tiếp theo luôn thất bại | Bắt lỗi ràng buộc rồi thử tiếp **trong cùng giao dịch**; PostgreSQL đã huỷ giao dịch nên mọi lệnh sau trả `25P02` | Mỗi lượt thử chạy trong một giao dịch mới |
-| 2 | Website báo thiếu phòng so với thực tế | Truy vấn lấy tổng trừ đi số đã đặt trừ **hai lần** phòng bảo trì đang có đơn | Đếm trực tiếp phòng vừa khả dụng vừa rảnh |
-| 3 | Giao dịch bị bác khi khách trả phòng | Nhả phòng lúc chuyển sang `CHECKED_OUT` làm trigger kiểm số phòng bác cả giao dịch | Trạng thái `CHECKED_OUT` không nhả phòng |
-| 4 | **Toàn bộ trang web hiển thị không có định kiểu** | Chính sách bảo mật nội dung chặn thuộc tính sự kiện mà công cụ tối ưu định kiểu tự sinh ra | Tắt tính năng tối ưu đó thay vì nới lỏng chính sách bảo mật |
-| 5 | **Mọi nút bấm chính có độ tương phản khoảng 2:1** | Tệp định kiểu nền **không nằm trong tầng CSS** nên thắng mọi lớp tiện ích bất kể độ ưu tiên | Bọc tệp nền trong tầng cơ sở |
-| 6 | Ảnh tải lên trả về lỗi 404 | Khối biểu thức chính quy của máy chủ web thắng khối tiền tố thường | Dùng cú pháp tiền tố ưu tiên cho cả bốn khối chuyển tiếp |
-| 7 | Màn hình thanh toán trắng trơn | Component gọi hàm đọc tham số đầu vào **trong hàm khởi tạo**, trước khi khung ứng dụng gán tham số | Chuyển sang phương thức chạy sau khi khởi tạo |
-| 8 | Bộ nạp dữ liệu mẫu cộng dồn mỗi lần khởi động | Điều kiện chống trùng khoá theo ngày tương đối nên mỗi ngày lại khớp khác | Đổi điều kiện sang khoá toàn bảng |
-| 9 | Khu quản trị đóng nhầm phòng không hiển thị | Khối giao diện giữ định danh phòng cũ sau khi bộ lọc của màn hình cha thay đổi | Đối chiếu định danh với danh sách phòng đang hiển thị |
-| 10 | **Danh sách đơn nói "bấm vào mã đơn để mở chi tiết" nhưng không bấm được** | Ô mã đơn là ô bảng thường; chỉ một liên kết ví dụ dưới bảng mở được đơn **đầu tiên**, mười chín đơn còn lại không có lối vào | Thêm kiểu cột liên kết cho bảng dữ liệu dùng chung, mã đơn của mọi hàng thành thẻ liên kết thật |
-| 11 | Ô chọn tệp ảnh không có tên cho trình đọc màn hình | Ô ẩn bằng lớp chỉ-đọc-màn-hình nhưng **vẫn nằm trong thứ tự Tab**, thành một điểm dừng không tên | Bỏ ô khỏi thứ tự Tab và đặt nhãn cho nó; nút bấm nhìn thấy được mới là lối vào |
+[Bảng 4.3] Mười một lỗi phát hiện trong quá trình thực hiện và nguyên nhân gốc
+| # | Hiện tượng | Nguyên nhân gốc |
+|---|---|---|
+| 1 | Giao dịch thử phòng tiếp theo luôn thất bại | Bắt lỗi ràng buộc rồi thử tiếp **trong cùng giao dịch**; PostgreSQL đã huỷ giao dịch nên mọi lệnh sau trả `25P02` |
+| 2 | Website báo thiếu phòng so với thực tế | Truy vấn lấy tổng trừ đi số đã đặt trừ **hai lần** phòng bảo trì đang có đơn |
+| 3 | Giao dịch bị bác khi khách trả phòng | Nhả phòng lúc chuyển sang `CHECKED_OUT` làm trigger kiểm số phòng bác cả giao dịch |
+| 4 | **Toàn bộ trang web hiển thị không có định kiểu** | Chính sách bảo mật nội dung chặn thuộc tính sự kiện mà công cụ tối ưu định kiểu tự sinh ra |
+| 5 | **Mọi nút bấm chính có độ tương phản khoảng 2:1** | Tệp định kiểu nền **không nằm trong tầng CSS** nên thắng mọi lớp tiện ích bất kể độ ưu tiên |
+| 6 | Ảnh tải lên trả về lỗi 404 | Khối biểu thức chính quy của máy chủ web thắng khối tiền tố thường |
+| 7 | Màn hình thanh toán trắng trơn | Component gọi hàm đọc tham số đầu vào **trong hàm khởi tạo**, trước khi khung ứng dụng gán tham số |
+| 8 | Bộ nạp dữ liệu mẫu cộng dồn mỗi lần khởi động | Điều kiện chống trùng khoá theo ngày tương đối nên mỗi ngày lại khớp khác |
+| 9 | Khu quản trị đóng nhầm phòng không hiển thị | Khối giao diện giữ định danh phòng cũ sau khi bộ lọc của màn hình cha thay đổi |
+| 10 | **Danh sách đơn nói "bấm vào mã đơn để mở chi tiết" nhưng không bấm được** | Ô mã đơn là ô bảng thường; chỉ một liên kết ví dụ dưới bảng mở được đơn **đầu tiên**, mười chín đơn còn lại không có lối vào |
+| 11 | Ô chọn tệp ảnh không có tên cho trình đọc màn hình | Ô ẩn bằng lớp chỉ-đọc-màn-hình nhưng **vẫn nằm trong thứ tự Tab**, thành một điểm dừng không tên |
+
+Cách khắc phục của từng lỗi trình bày ở Phụ lục R.
 
 **Về lỗi số 4 và số 5:** cả hai chỉ phát hiện được khi **chụp màn hình bằng
 trình duyệt thật**. Việc biên dịch thành công không nói gì về việc trang có hiển
@@ -110,11 +115,10 @@ quét khả năng tiếp cận từ sáu lên mười màn hình quản trị. B
 
 ### 4.4.1. Khả năng tiếp cận
 
-Quét tự động bằng axe-core trên **17 màn hình** — 7 công khai và 10 quản trị —
-ngay trên bản đóng gói đang chạy, đi qua đúng máy chủ web và đúng chính sách bảo
-mật nội dung của bản triển khai: **không còn lỗi vi phạm** hướng dẫn khả năng
-tiếp cận nội dung web phiên bản 2.0 và 2.1 ở mức A và AA [13], trên tổng 356 lần
-quy tắc đạt.
+Quét tự động bằng axe-core trên **17 màn hình** (7 công khai, 10 quản trị) ngay
+trên bản đóng gói đang chạy, đi qua đúng máy chủ web và đúng chính sách bảo mật
+nội dung của bản triển khai: **không còn lỗi vi phạm** hướng dẫn khả năng tiếp
+cận nội dung web 2.0 và 2.1 mức A và AA [13], trên tổng 356 lần quy tắc đạt.
 
 Đo vùng chạm ở 3 độ rộng màn hình: **không còn vùng chạm dưới 44×44 điểm ảnh**.
 
@@ -124,13 +128,12 @@ Hình 4.1 thể hiện kết quả quét.
 
 ### 4.4.2. Kiểm thử bảo mật
 
-Chín kịch bản tấn công được thử trên hệ thống đang chạy, **tất cả đều bị chặn**:
-giả mạo tiêu đề địa chỉ để vượt giới hạn tần suất; gọi endpoint quản trị không
-token hoặc bằng token vai trò khách; dùng token cũ sau khi đổi mật khẩu; gọi
-webhook không khoá xác thực; gửi lại cùng một webhook; chèn thẻ kịch bản vào nội
-dung quản lý; xem trạng thái thanh toán chỉ bằng mã đơn; và truy cập đơn của
-người khác qua tham số đường dẫn. Bảng chi tiết từng kịch bản và kết quả trình
-bày ở Phụ lục M.
+Chín kịch bản tấn công thử trên hệ thống đang chạy, **tất cả đều bị chặn**: giả
+mạo tiêu đề địa chỉ để vượt giới hạn tần suất; gọi endpoint quản trị không token
+hoặc bằng token vai trò khách; dùng token cũ sau khi đổi mật khẩu; gọi webhook
+không khoá; gửi lại cùng một webhook; chèn thẻ kịch bản vào nội dung; xem trạng
+thái thanh toán chỉ bằng mã đơn; truy cập đơn người khác qua tham số đường dẫn.
+Chi tiết ở Phụ lục M.
 
 ### 4.4.3. Kiểm thử đáp ứng
 
@@ -154,17 +157,19 @@ trực. **Đây là một giới hạn đã biết**, trình bày ở mục 4.7.
 
 ## 4.5. Kiểm thử thủ công trước khi bảo vệ
 
-Ngoài bộ kiểm thử tự động, đề tài xác định một danh sách **mười bước kiểm thử
-thủ công** cần chạy trên bản đóng gói trước khi trình diễn, phủ toàn bộ luồng
-nghiệp vụ chính: từ xem trang chủ, đặt đơn tới khi ra mã QR, tra cứu và huỷ đơn,
-đăng nhập quản trị và đổi mật khẩu bắt buộc, đối soát thanh toán, sửa nội dung
-trang chủ, xem thư xác nhận, tới đóng phòng theo khoảng ngày và kiểm chứng số
-phòng giảm đúng một. Danh sách đầy đủ trình bày ở Phụ lục N.
+Ngoài bộ kiểm thử tự động, đề tài xác định **mười bước kiểm thử thủ công** chạy
+trên bản đóng gói trước khi trình diễn, phủ toàn bộ luồng nghiệp vụ chính: xem
+trang chủ, đặt đơn tới khi ra mã QR, tra cứu và huỷ đơn, đăng nhập quản trị và
+đổi mật khẩu bắt buộc, đối soát thanh toán, sửa nội dung, xem thư xác nhận, đóng
+phòng theo khoảng ngày và kiểm chứng số phòng giảm đúng một. Đầy đủ ở Phụ lục N.
+
+Các lệnh dùng để kiểm chứng lại từng con số trong chương này trình bày ở Phụ lục H.
 
 ## 4.6. Đánh giá kết quả đạt được
 
 ### 4.6.1. Đối chiếu với mục đích ban đầu
 
+[Bảng 4.4] Đối chiếu kết quả đạt được với bốn mục đích ban đầu
 | # | Mục đích | Kết quả | Bằng chứng |
 |---|---|---|---|
 | 1 | Khách tìm và đặt phòng thành công | Đạt | Kiểm thử thủ công và 6 ca tự động |
@@ -178,6 +183,7 @@ phòng giảm đúng một. Danh sách đầy đủ trình bày ở Phụ lục 
 
 ### 4.6.2. Đối chiếu với yêu cầu của đề tài
 
+[Bảng 4.5] Mức đáp ứng các yêu cầu của đề tài
 | Yêu cầu | Đáp ứng |
 |---|---|
 | Hiển thị phòng, tiện nghi và hình ảnh | Đạt |
@@ -189,17 +195,21 @@ phòng giảm đúng một. Danh sách đầy đủ trình bày ở Phụ lục 
 | Hệ thống kiểm tra trùng ngày | Đạt — thực hiện ở tầng cơ sở dữ liệu |
 | Tính chi phí dự kiến | Đạt — một nơi tính tiền duy nhất |
 | Không yêu cầu thanh toán thật | Đạt — có endpoint mô phỏng |
-| Có dữ liệu minh hoạ để trình diễn | Đạt — 40 đơn đủ tám trạng thái |
+| Có dữ liệu minh hoạ để trình diễn | Đạt — 329 đơn đủ tám trạng thái |
 
 ### 4.6.3. Những điều chưa kiểm chứng được
 
 Đề tài nêu rõ giới hạn của chính quá trình kiểm thử:
 
+- Lần chạy đầy đủ `./mvnw verify` gần nhất cho **129 ca xanh** trên bộ kiểm thử
+  khi đó. Bảy ca của lớp kiểm thử nút mô phỏng chuyển khoản bổ sung sau đó mới
+  chỉ được kiểm chứng bằng cách gọi trực tiếp qua HTTP trên hệ thống đang chạy,
+  chưa qua một lần chạy đầy đủ cả 136 ca.
 - Toàn bộ bản đóng gói đã được dựng lên và kiểm chứng: bốn dịch vụ đều báo
-  `healthy` (Hình 3.20), nginx phục vụ trang khách ở cổng 80, lời gọi
+  `healthy` (Hình 3.16), nginx phục vụ trang khách ở cổng 80, lời gọi
   `/api/room-types` đi xuyên qua nginx tới máy chủ ứng dụng trả về đủ bốn loại
   phòng, và thư xác nhận đi trọn đường hàng đợi thư → giao thức SMTP → hộp thư
-  giả (Hình 3.21). Phần **chưa** kiểm chứng được chỉ còn là *tầng dựng ảnh*:
+  giả. Phần **chưa** kiểm chứng được chỉ còn là *tầng dựng ảnh*:
   môi trường phát triển có proxy chặn kho phụ thuộc Maven và npm từ bên trong
   container dựng ảnh, nên hai tệp `Dockerfile` được kiểm chứng ở tầng chạy với
   tệp jar và thư mục tĩnh dựng sẵn bên ngoài, chưa phải bằng một lệnh
@@ -210,6 +220,7 @@ phòng giảm đúng một. Danh sách đầy đủ trình bày ở Phụ lục 
 
 ## 4.7. Các giới hạn đã biết của hệ thống
 
+[Bảng 4.6] Các giới hạn đã biết của hệ thống và hướng khắc phục
 | # | Giới hạn | Ảnh hưởng | Hướng khắc phục |
 |---|---|---|---|
 | 1 | Giới hạn tần suất lưu trong bộ nhớ tiến trình | Chỉ đúng khi chạy **một** bản ứng dụng | Chuyển sang bộ nhớ đệm dùng chung khi mở rộng |
