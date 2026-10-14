@@ -7,7 +7,7 @@ Nội dung quyển báo cáo, tách theo chương để mỗi tệp không vư�
 
 | # | Tệp | Nội dung | Tính vào 30–50 trang |
 |---|---|---|---|
-| 1 | `00-phan-dau.md` | Bìa, nhận xét, lời mở đầu, lời cảm ơn, mục lục, danh mục, viết tắt, tóm tắt | Không |
+| 1 | `00-phan-dau.md` | Nguồn của 13 trang đầu: thông tin cá nhân, lời mở đầu, lời cảm ơn, bảng viết tắt, tóm tắt | Không |
 | 2 | `01-mo-dau.md` | MỞ ĐẦU — lí do, mục đích, đối tượng, phạm vi | **Có** |
 | 3 | `02-chuong-1.md` | CHƯƠNG 1. TỔNG QUAN | **Có** |
 | 4 | `03-chuong-2.md` | CHƯƠNG 2. NGHIÊN CỨU LÝ THUYẾT | **Có** |

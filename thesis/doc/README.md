@@ -1,14 +1,15 @@
 # Bản Word của quyển báo cáo
 
-Hai tệp ở đây được **sinh ra từ `docs/bao-cao/`**, không sửa tay. Sửa nội dung
+Các tệp ở đây được **sinh ra từ `docs/bao-cao/`**, không sửa tay. Sửa nội dung
 thì sửa Markdown rồi dựng lại; sửa thẳng vào `.docx` sẽ mất ở lần dựng sau.
 
-| Tệp | Chứa gì | Số trang đo được |
+| Tệp | Chứa gì | Số trang |
 |---|---|---:|
-| `bao-cao-noi-dung.docx` | MỞ ĐẦU + Chương 1 → Chương 5 — **đây là phần bị tính trần 30–50 trang** | 52 |
-| `bao-cao-tltk-phu-luc.docx` | Danh mục tài liệu tham khảo + Phụ lục A–Q — *không tính vào số trang* | 30 |
-| `de-cuong-do-an.docx` | **Đề cương** nộp cho GVHD *trước* khi làm — không thuộc quyển báo cáo | 11 |
-| `de-cuong-xem-truoc.png` | Ảnh xem nhanh cả 11 trang đề cương, không dùng để nộp | — |
+| `bao-cao-tron-bo.docx` | **Quyển nộp** — các trang đầu theo BM5 + nội dung + tài liệu tham khảo + phụ lục | 97 |
+| `bao-cao-noi-dung.docx` | Chỉ MỞ ĐẦU + Chương 1 → Chương 5 — **phần bị tính trần 30–50 trang** | 47 |
+| `bao-cao-tltk-phu-luc.docx` | Chỉ tài liệu tham khảo + phụ lục A–R — *không tính vào số trang* | 30 |
+| `de-cuong-do-an.docx` | **Đề cương** nộp cho GVHD *trước* khi làm — không thuộc quyển báo cáo | 16 |
+| `de-cuong-xem-truoc.png` | Ảnh xem nhanh các trang đề cương, không dùng để nộp | — |
 
 Bản PDF tương ứng ở `../pdf/`.
 
@@ -16,10 +17,16 @@ Bản PDF tương ứng ở `../pdf/`.
 
 ```sh
 pip install python-docx
+
+# Quyển nộp, đủ các trang đầu
+python3 scripts/xuat-ban-word.py tron-bo thesis/doc/bao-cao-tron-bo.docx \
+    "ThS. Nguyễn Nhứt Lam" "Nguyễn Hồng Quân"
+
+# Hai bản tách phần, dùng để đếm trang và để in riêng tập phụ lục
 python3 scripts/xuat-ban-word.py noi-dung thesis/doc/bao-cao-noi-dung.docx \
-    "Họ tên GVHD" "Họ tên SVTH"
+    "ThS. Nguyễn Nhứt Lam" "Nguyễn Hồng Quân"
 python3 scripts/xuat-ban-word.py phu-luc thesis/doc/bao-cao-tltk-phu-luc.docx \
-    "Họ tên GVHD" "Họ tên SVTH"
+    "ThS. Nguyễn Nhứt Lam" "Nguyễn Hồng Quân"
 
 # Đề cương — truyền thẳng đường dẫn tệp Markdown
 python3 scripts/xuat-ban-word.py docs/de-cuong-do-an.md thesis/doc/de-cuong-do-an.docx
@@ -27,21 +34,37 @@ python3 scripts/xuat-ban-word.py docs/de-cuong-do-an.md thesis/doc/de-cuong-do-a
 
 Không truyền hai tham số cuối thì chân trang để dấu chấm cho điền tay.
 
+Chế độ `tron-bo` cần `libreoffice` và `pdftotext` vì nó phải **dán thử rồi đo**
+mới biết mỗi mục rơi vào trang nào. Ba chế độ còn lại chỉ cần `python-docx`.
+
 Script đã áp sẵn: Times New Roman 13pt, giãn dòng 1.5, cách đoạn trước và sau
 6pt, khổ A4, lề trên 2cm – dưới 2cm – trái 3cm – phải 2cm, số trang góc phải
 dưới, chân trang `GVHD:` bên trái và `SVTH:` bên phải. Hình được chèn theo dấu
 chỗ đặt `[Hình X.Y]` kèm chú thích và dòng nguồn.
 
-## Bốn việc còn phải làm tay trong Word
+## Mười ba trang đầu dựng tự động
 
-1. **Mười ba trang đầu.** Bìa chính, bìa phụ, các trang nhận xét, lời mở đầu,
-   lời cảm ơn, mục lục, danh mục bảng–sơ đồ–hình, ký hiệu viết tắt, tóm tắt.
-   `docs/bao-cao/00-phan-dau.md` ghi rõ từng trang gồm gì và cỡ chữ nào, theo
-   biểu mẫu BM5 — phải dựng tay cho đúng mẫu, không chép sang được.
-2. **Mục lục và danh mục hình.** Dùng chức năng sinh mục lục tự động của Word
-   sau khi đã ghép xong; không quá bốn cấp tiểu mục.
-3. **Chú thích Hình 1.3.** Ảnh chụp từ trang web bên ngoài nên dòng nguồn phải
-   ghi địa chỉ và ngày chụp, không phải "Nguồn: tác giả".
-4. **Hai trang cuối cùng.** Phần nội dung đã từ 66 xuống 52 trang, còn dư 2 so
-   với trần 50. Mục 5.3 của `docs/huong-dan-lam-bao-cao.md` ghi rõ đã cắt những gì và
-   ba việc cắt tiếp nếu thầy hướng dẫn yêu cầu đúng 50.
+`bao-cao-tron-bo.docx` đã có sẵn, theo đúng thứ tự của biểu mẫu BM5: bìa chính,
+bìa phụ, lời mở đầu, lời cảm ơn, nhận xét của cơ quan thực tập, nhận xét của
+giảng viên hướng dẫn, bản nhận xét của giảng viên hướng dẫn, nhận xét của giảng
+viên chấm, bản nhận xét của cán bộ chấm, mục lục, danh mục bảng–sơ đồ–hình, ký
+hiệu các cụm từ viết tắt, tóm tắt đồ án.
+
+Mười ba trang đó chiếm 20 trang giấy — mục lục dài 5 trang, danh mục 2 trang.
+
+Thông tin cá nhân in trên bìa và trên các bản nhận xét lấy từ khối chú thích ở
+đầu `docs/bao-cao/00-phan-dau.md`. Sửa ở đó, đừng sửa trong mã.
+
+Mục lục, danh mục và ký hiệu viết tắt **sinh tự động**: số trang là số đo được
+trên chính bản dán thử, không gõ tay, nên không lệch. Các trang đầu không đánh
+số; phần nội dung đánh số Ả Rập bắt đầu lại từ 1.
+
+## Còn phải làm tay
+
+1. **In bìa chính** trên bìa cứng, chữ nhũ vàng — việc của nhà in.
+2. **Khoá học** đang để `2023–2027`, suy từ mã lớp `DX23TT11`. Kiểm lại trước
+   khi nộp; sai thì sửa dòng `<!-- khoa-hoc: ... -->`.
+3. **Nơi và ngày trên bìa** đang để `Trà Vinh, tháng 10 năm 2026` theo BM5.
+   Đề cương đã nộp lại ghi `TP. Hồ Chí Minh` — nếu khoá của bạn dùng cách ghi
+   đó thì sửa dòng `<!-- noi-ngay: ... -->` cho khớp.
+4. **Hình 1.3** là tuỳ chọn, chưa có. Xem `docs/images/bao-cao/README.md`.

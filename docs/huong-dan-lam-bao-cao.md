@@ -58,21 +58,25 @@
 
 ### 2.1. Các trang đầu — theo mục 1 "CẤU TRÚC" của quy định
 
-| Thứ tự | Trang | Biểu mẫu | Nằm ở tệp |
+| Thứ tự | Trang | Biểu mẫu | Dựng ra sao |
 |---|---|---|---|
-| 1 | Bìa chính | BM5, bìa cứng chữ nhũ vàng | `00-phan-dau.md` mục 1 |
-| 2 | Bìa phụ (trang lót) | BM5, giấy thường | `00-phan-dau.md` mục 2 |
-| 3 | Nhận xét của cơ quan thực tập | BM5 *(nếu có)* | `00-phan-dau.md` mục 3 |
-| 4 | Nhận xét của GVHD — trang tự do | BM5 | `00-phan-dau.md` mục 4 |
-| 5 | Bản nhận xét của GVHD — mẫu UBND | BM5 | `00-phan-dau.md` mục 4 |
-| 6 | Nhận xét của giảng viên chấm — trang tự do | BM5 | `00-phan-dau.md` mục 5 |
-| 7 | Bản nhận xét của cán bộ chấm — mẫu UBND | BM5 | `00-phan-dau.md` mục 5 |
-| 8 | **LỜI MỞ ĐẦU** | BM5, xếp sau trang lót | `00-phan-dau.md` mục 6 |
-| 9 | **LỜI CẢM ƠN** | BM5, xếp sau lời mở đầu | `00-phan-dau.md` mục 7 |
-| 10 | **MỤC LỤC** | Sinh tự động, tối đa 4 cấp | `00-phan-dau.md` mục 8 |
-| 11 | **DANH MỤC CÁC BẢNG, SƠ ĐỒ, HÌNH** | BM5, gộp một danh mục | `00-phan-dau.md` mục 9 |
-| 12 | **KÍ HIỆU CÁC CỤM TỪ VIẾT TẮT** | BM5, xếp theo bảng chữ cái | `00-phan-dau.md` mục 10 |
-| 13 | **TÓM TẮT ĐỒ ÁN** | Quy định mục 2 "BỐ CỤC" | `00-phan-dau.md` mục 11 |
+| 1 | Bìa chính | BM5, bìa cứng chữ nhũ vàng | Tự động |
+| 2 | Bìa phụ (trang lót) | BM5, giấy thường | Tự động |
+| 3 | **LỜI MỞ ĐẦU** | BM5, xếp sau trang lót | Tự động, văn ở `00-phan-dau.md` |
+| 4 | **LỜI CẢM ƠN** | BM5, xếp sau lời mở đầu | Tự động, văn ở `00-phan-dau.md` |
+| 5 | Nhận xét của cơ quan thực tập | BM5 *(nếu có)* | Tự động, trang để trống |
+| 6 | Nhận xét của GVHD — trang tự do | BM5 | Tự động, trang để trống |
+| 7 | Bản nhận xét của GVHD — mẫu UBND | BM5, bảy mục | Tự động, điền sẵn thông tin đề tài |
+| 8 | Nhận xét của giảng viên chấm — trang tự do | BM5 | Tự động, trang để trống |
+| 9 | Bản nhận xét của cán bộ chấm — mẫu UBND | BM5, ba phần I/II/III | Tự động, điền sẵn thông tin đề tài |
+| 10 | **MỤC LỤC** | Tối đa 4 cấp | Tự động, số trang đo trên bản dán thử |
+| 11 | **DANH MỤC CÁC BẢNG, SƠ ĐỒ, HÌNH** | BM5, gộp một danh mục | Tự động |
+| 12 | **KÍ HIỆU CÁC CỤM TỪ VIẾT TẮT** | BM5, xếp theo bảng chữ cái | Tự động, bảng ở `00-phan-dau.md` |
+| 13 | **TÓM TẮT ĐỒ ÁN** | Quy định mục 2 "BỐ CỤC" | Tự động, văn ở `00-phan-dau.md` |
+
+Thứ tự trên lấy theo chuỗi *"xếp sau trang ..."* ghi trong chính BM5, và khớp
+với bản báo cáo mẫu đã được khoa duyệt. Toàn bộ mười ba trang do
+`scripts/xuat-ban-word.py tron-bo` dựng ra, không phải gõ tay trong Word.
 
 > **Không có Lời cam đoan.** Quy định của khoa không yêu cầu trang này. Bản đề
 > cương trước có, và đã gỡ bỏ.
