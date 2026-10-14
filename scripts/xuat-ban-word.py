@@ -648,8 +648,483 @@ def new_doc(gvhd='...', svth='...'):
     footer_and_numbering(s, gvhd, svth)
     return doc, 21 - 3 - 2   # be ngang vung chu, cm
 
+
+# ══ CAC TRANG DAU THEO BIEU MAU BM5 ══════════════════════════════════════════
+#
+# Nguon du lieu la 'docs/bao-cao/00-phan-dau.md': khoi chu thich o dau tep giu
+# thong tin ca nhan, cac muc '## ...' giu van ban. Co chu va cach dan dong nam
+# o day chu khong nam trong tep Markdown — van la van, trinh bay la trinh bay.
+#
+# Thu tu cac trang lay theo chuoi "xep sau trang ..." ghi trong chinh BM5, va
+# khop voi ban bao cao mau da duoc khoa duyet.
+
+PHAN_DAU = os.path.join(DOCS, '00-phan-dau.md')
+LE_PHAI_CM = 15.8          # diem dung tab can phai, bang be ngang vung chu
+
+def doc_phan_dau():
+    s = open(PHAN_DAU, encoding='utf-8').read()
+    meta = dict(re.findall(r'<!--\s*([a-z-]+):\s*(.+?)\s*-->', s))
+    muc = {}
+    for m in re.finditer(r'^## (.+?)\n(.*?)(?=^## |\Z)', s, re.M | re.S):
+        muc[m.group(1).strip()] = m.group(2).strip()
+    phan = [x.strip() for x in meta.get('sinh-vien', '').split('|')]
+    phan += [''] * (3 - len(phan))
+    meta['ho-ten'], meta['mssv'], meta['lop'] = phan[0], phan[1], phan[2]
+    return meta, muc
+
+def _bo_danh_dau(s):
+    """Bo cu phap Markdown trong mot dong tieu de de con lai dung chu in ra."""
+    s = re.sub(r'`([^`]*)`', r'\1', s)
+    s = re.sub(r'\*\*([^*]*)\*\*', r'\1', s)
+    s = re.sub(r'\*([^*]*)\*', r'\1', s)
+    return ' '.join(s.split())
+
+def _dong(doc, txt, co=13, dam=False, ngh=False, truoc=0, sau=0,
+          canh=WD_ALIGN_PARAGRAPH.CENTER, thut=None, gian=1.5, giu=False):
+    p = doc.add_paragraph()
+    body_format(p, size=co, spacing=gian, before=truoc, after=sau, align=canh)
+    if thut is not None:
+        p.paragraph_format.left_indent = Cm(thut)
+    if giu:
+        # Tieu de mot muc phai sang trang CUNG voi dong cham cua no, khong de
+        # dong cham tro troi mot minh o dau trang sau.
+        p.paragraph_format.keep_with_next = True
+    if txt:
+        set_font(p.add_run(txt), co, bold=dam, italic=ngh)
+    return p
+
+def _ke_cham(doc, so_dong=1, thut=0.0, gian=1.7):
+    """Dong trong co cham keo het be ngang, de nguoi cham ghi tay vao.
+
+    Cham rai bang diem dung tab can phai chu khong go tay: go tay thi do dai
+    phu thuoc co chu, va khong bao gio khit le phai."""
+    for k in range(so_dong):
+        p = doc.add_paragraph()
+        body_format(p, size=13, spacing=gian, before=0, after=0,
+                    align=WD_ALIGN_PARAGRAPH.LEFT)
+        if thut:
+            p.paragraph_format.left_indent = Cm(thut)
+        # Ca cum cham phai sang trang cung nhau: de vai dong cham tro troi o
+        # dau trang sau thi nhin nhu trang in hong.
+        if k < so_dong - 1:
+            p.paragraph_format.keep_with_next = True
+        p.paragraph_format.tab_stops.add_tab_stop(
+            Cm(LE_PHAI_CM - thut), WD_TAB_ALIGNMENT.RIGHT, WD_TAB_LEADER.DOTS)
+        set_font(p.add_run('\t'), 13)
+
+def _khoi_ky(doc, chuc_danh, ngay=None):
+    """Khoi ky ten nam o nua phai to giay theo le trinh bay van ban hanh chinh,
+    cac dong trong khoi can giua VOI NHAU."""
+    THUT = 6.2   # du rong cho dong ngay thang nam tron mot dong
+    if ngay:
+        _dong(doc, ngay, 13, truoc=18, sau=0, thut=THUT)
+    _dong(doc, chuc_danh, 13, truoc=0 if ngay else 18, sau=0, thut=THUT)
+    _dong(doc, '(Ký & ghi rõ họ tên)', 13, ngh=True, sau=0, thut=THUT)
+
+def _tieu_ngu(doc):
+    """Tieu ngu hai cot cua van ban hanh chinh. Dung bang khong vien vi hai cot
+    phai thang hang voi nhau du chu hai ben dai ngan khac nhau. Gach ngang nam
+    trong chinh o ben phai nen luon can giua duoi quoc hieu."""
+    t = doc.add_table(rows=3, cols=2)
+    t.alignment = WD_TABLE_ALIGNMENT.CENTER
+    rong = (6.3, 9.5)
+    # Phai khoa be ngang: de bang tu gian thi Word bop cot phai lai va quoc
+    # hieu xuong hai dong, lech han voi cot trai.
+    t.autofit = False
+    lay = OxmlElement('w:tblLayout'); lay.set(qn('w:type'), 'fixed')
+    t._tbl.tblPr.append(lay)
+    for j, r in enumerate(rong):
+        t.columns[j].width = Cm(r)
+    o_chu = (('UBND TỈNH TRÀ VINH', 'CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM'),
+             ('TRƯỜNG ĐẠI HỌC TRÀ VINH', 'Độc lập – Tự do – Hạnh phúc'),
+             ('', '———————————'))
+    for i, hang in enumerate(o_chu):
+        for j, txt in enumerate(hang):
+            o = t.cell(i, j)
+            o.width = Cm(rong[j])
+            p = o.paragraphs[0]
+            body_format(p, size=12, spacing=1.1, before=0,
+                        after=6 if i == 2 else 0,
+                        align=WD_ALIGN_PARAGRAPH.CENTER)
+            if txt:
+                set_font(p.add_run(txt), 12, bold=(i == 0 or (i == 1 and j == 1)))
+
+def _o_dien(doc, nhan, gt, co=13, truoc=2, sau=2):
+    """Mot dong 'Nhan: gia tri' — gia tri trong thi rai cham cho nguoi ta ghi."""
+    p = doc.add_paragraph()
+    body_format(p, size=co, spacing=1.45, before=truoc, after=sau,
+                align=WD_ALIGN_PARAGRAPH.LEFT)
+    set_font(p.add_run(nhan + ' '), co)
+    if gt:
+        set_font(p.add_run(gt), co, bold=True)
+    else:
+        p.paragraph_format.tab_stops.add_tab_stop(
+            Cm(LE_PHAI_CM), WD_TAB_ALIGNMENT.RIGHT, WD_TAB_LEADER.DOTS)
+        set_font(p.add_run('\t'), co)
+
+# ── tung trang ───────────────────────────────────────────────────────────────
+
+def trang_bia_bm5(doc, meta):
+    """Bia chinh va trang lot giong het nhau — chi khac chat lieu giay khi in,
+    nen dung chung mot ham."""
+    _dong(doc, 'TRƯỜNG ĐẠI HỌC TRÀ VINH', 16, dam=True, truoc=14, sau=4)
+    _dong(doc, 'KHOA KỸ THUẬT VÀ CÔNG NGHỆ', 16, dam=True, sau=12)
+    if os.path.exists(LOGO):
+        p = doc.add_paragraph()
+        body_format(p, before=4, after=12, align=WD_ALIGN_PARAGRAPH.CENTER)
+        p.add_run().add_picture(LOGO, width=Cm(3.4))
+    _dong(doc, meta.get('loai', 'ĐỒ ÁN THỰC TẬP CHUYÊN NGÀNH'), 16, dam=True,
+          truoc=10, sau=34)
+    de_tai = meta.get('de-tai', '')
+    _dong(doc, de_tai, 18 if len(de_tai) <= 64 else 16, dam=True, sau=62,
+          gian=1.35)
+    for nhan, gt in (('Giảng viên hướng dẫn:', meta.get('gvhd', '')),
+                     ('Sinh viên thực hiện:', meta.get('ho-ten', '')),
+                     ('Mã số sinh viên:', meta.get('mssv', '')),
+                     ('Lớp:', meta.get('lop', '')),
+                     ('Khoá:', meta.get('khoa-hoc', ''))):
+        p = doc.add_paragraph()
+        body_format(p, size=14, spacing=1.4, before=1, after=1,
+                    align=WD_ALIGN_PARAGRAPH.LEFT)
+        p.paragraph_format.left_indent = Cm(3.2)
+        set_font(p.add_run(nhan + ' '), 14)
+        set_font(p.add_run((gt or TRONG).upper()), 14, bold=True)
+    # Word khong neo duoc mot doan vao day trang, nen khoang cach nay do tu
+    # ban xuat: khoi tren co do cao co dinh, dong nay ket thuc cach le duoi
+    # khoang 2cm nhu ban bao cao mau. Doi bo cuc bia thi phai do lai.
+    _dong(doc, meta.get('noi-ngay', ''), 13, dam=True, truoc=176)
+
+def trang_van(doc, tieu_de, than):
+    _dong(doc, tieu_de, 14, dam=True, truoc=10, sau=12)
+    for doan in re.split(r'\n\s*\n', than.strip()):
+        doan = ' '.join(doan.split())
+        if doan:
+            p = doc.add_paragraph(); body_format(p)
+            add_inline(p, doan)
+
+def trang_nhan_xet(doc, phu, chuc_danh, so_dong=15):
+    """Trang nhan xet de trong theo mau: tieu de, dong ghi chu ai nhan xet,
+    cac dong cham, roi khoi ky."""
+    _dong(doc, 'NHẬN XÉT', 14, dam=True, truoc=10, sau=2)
+    _dong(doc, f'({phu})', 13, sau=12)
+    _ke_cham(doc, so_dong)
+    _khoi_ky(doc, chuc_danh)
+
+def trang_ban_nhan_xet_gvhd(doc, meta):
+    _tieu_ngu(doc)
+    _dong(doc, 'BẢN NHẬN XÉT ' + meta.get('loai', 'ĐỒ ÁN THỰC TẬP CHUYÊN NGÀNH'),
+          14, dam=True, truoc=10, sau=2)
+    _dong(doc, '(Của giảng viên hướng dẫn)', 13, sau=10)
+    _o_dien(doc, 'Họ và tên sinh viên:',
+            f"{meta.get('ho-ten', '')}          MSSV: {meta.get('mssv', '')}")
+    _o_dien(doc, 'Ngành:',
+            f"{meta.get('nganh', '')}          Khoá: {meta.get('khoa-hoc', '')}")
+    _o_dien(doc, 'Tên đồ án:', meta.get('de-tai', ''))
+    _o_dien(doc, 'Họ và tên Giảng viên hướng dẫn:', meta.get('gvhd', ''))
+    _o_dien(doc, 'Chức danh:', '')
+    _o_dien(doc, 'Học vị:', meta.get('hoc-vi', ''))
+    _dong(doc, 'NHẬN XÉT', 13, dam=True, truoc=10, sau=4)
+    for n, ten in enumerate((
+            'Nội dung đồ án', 'Ưu điểm', 'Khuyết điểm', 'Điểm mới đồ án',
+            'Giá trị thực tế trên đồ án', 'Đề nghị sửa chữa bổ sung',
+            'Đánh giá'), 1):
+        _dong(doc, f'{n}. {ten}:', 13, dam=True, truoc=6, sau=2,
+              canh=WD_ALIGN_PARAGRAPH.LEFT, giu=True)
+        _ke_cham(doc, 2)
+    _khoi_ky(doc, 'Giảng viên hướng dẫn',
+             ngay='Trà Vinh, ngày …… tháng …… năm 20……')
+
+def trang_ban_nhan_xet_cham(doc, meta):
+    _tieu_ngu(doc)
+    _dong(doc, 'BẢN NHẬN XÉT ' + meta.get('loai', 'ĐỒ ÁN THỰC TẬP CHUYÊN NGÀNH'),
+          14, dam=True, truoc=10, sau=2)
+    _dong(doc, '(Của cán bộ chấm đồ án)', 13, sau=10)
+    for nhan in ('Họ và tên người nhận xét:', 'Chức danh:', 'Học vị:',
+                 'Chuyên ngành:', 'Cơ quan công tác:'):
+        _o_dien(doc, nhan, '')
+    _o_dien(doc, 'Tên sinh viên:', meta.get('ho-ten', ''))
+    _o_dien(doc, 'Tên đề tài đồ án:', meta.get('de-tai', ''))
+    _dong(doc, 'I. Ý KIẾN NHẬN XÉT', 13, dam=True, truoc=10, sau=4,
+          canh=WD_ALIGN_PARAGRAPH.LEFT, giu=True)
+    for n, ten in enumerate(('Nội dung', 'Điểm mới các kết quả của đồ án',
+                             'Ứng dụng thực tế'), 1):
+        _dong(doc, f'{n}. {ten}:', 13, dam=True, truoc=6, sau=2,
+              canh=WD_ALIGN_PARAGRAPH.LEFT, giu=True)
+        _ke_cham(doc, 2)
+    _dong(doc, 'II. CÁC VẤN ĐỀ CẦN LÀM RÕ', 13, dam=True, truoc=10, sau=2,
+          canh=WD_ALIGN_PARAGRAPH.LEFT, giu=True)
+    _dong(doc, '(Các câu hỏi của giảng viên phản biện)', 13, ngh=True, sau=2,
+          canh=WD_ALIGN_PARAGRAPH.LEFT, giu=True)
+    _ke_cham(doc, 4)
+    _dong(doc, 'III. KẾT LUẬN', 13, dam=True, truoc=10, sau=2,
+          canh=WD_ALIGN_PARAGRAPH.LEFT, giu=True)
+    _dong(doc, '(Ghi rõ đồng ý hay không đồng ý cho bảo vệ đồ án)', 13,
+          ngh=True, sau=2, canh=WD_ALIGN_PARAGRAPH.LEFT, giu=True)
+    _ke_cham(doc, 3)
+    _khoi_ky(doc, 'Người nhận xét',
+             ngay='……………, ngày …… tháng …… năm 20……')
+
+def _dong_dan(doc, ten, trang, dam=False, thut=0.0, co=13, gian=1.25, treo=0.0):
+    """Mot dong 'ten .......... so trang' dung cho muc luc va danh muc.
+
+    'treo' la do thut cua cac dong goi tiep khi ten dai qua mot dong — chu
+    thich hinh vo qua hai dong thi dong thu hai phai lui vao duoi chu, khong
+    bat dau lai o le trai nhu mot muc moi."""
+    p = doc.add_paragraph()
+    body_format(p, size=co, spacing=gian, before=1, after=1,
+                align=WD_ALIGN_PARAGRAPH.LEFT)
+    if thut or treo:
+        p.paragraph_format.left_indent = Cm(thut + treo)
+        if treo:
+            p.paragraph_format.first_line_indent = Cm(-treo)
+    p.paragraph_format.tab_stops.add_tab_stop(
+        Cm(LE_PHAI_CM - thut - treo), WD_TAB_ALIGNMENT.RIGHT, WD_TAB_LEADER.DOTS)
+    set_font(p.add_run(ten), co, bold=dam)
+    set_font(p.add_run('\t' + ('' if trang is None else str(trang))), co,
+             bold=dam)
+
+def trang_muc_luc(doc, muc):
+    """muc: danh sach (cap, ten, so trang). Cap mot in dam in hoa theo quy dinh."""
+    _dong(doc, 'MỤC LỤC', 14, dam=True, truoc=10, sau=12)
+    thut = {1: 0.0, 2: 0.6, 3: 1.2, 4: 1.8}
+    for cap, ten, trang in muc:
+        _dong_dan(doc, ten.upper() if cap == 1 else ten, trang,
+                  dam=(cap == 1), thut=thut[cap])
+
+def trang_danh_muc(doc, bang, hinh):
+    _dong(doc, 'DANH MỤC CÁC BẢNG, SƠ ĐỒ, HÌNH', 14, dam=True, truoc=10, sau=10)
+    for nhan, ds in (('BẢNG', bang), ('HÌNH', hinh)):
+        if not ds:
+            continue
+        _dong(doc, nhan, 13, dam=True, truoc=8, sau=4,
+              canh=WD_ALIGN_PARAGRAPH.LEFT)
+        for so, mo_ta, trang in ds:
+            _dong_dan(doc, f'{nhan.capitalize()} {so}. {mo_ta}', trang,
+                      thut=0.6, co=12.5, treo=1.5)
+
+def trang_viet_tat(doc, hang):
+    _dong(doc, 'KÍ HIỆU CÁC CỤM TỪ VIẾT TẮT', 14, dam=True, truoc=10, sau=12)
+    t = doc.add_table(rows=len(hang) + 1, cols=2)
+    t.style = 'Table Grid'
+    t.alignment = WD_TABLE_ALIGNMENT.CENTER
+    for j, (txt, rong) in enumerate((('Viết tắt', 3.2), ('Nghĩa đầy đủ', 12.6))):
+        o = t.cell(0, j); o.width = Cm(rong)
+        p = o.paragraphs[0]
+        body_format(p, size=12.5, spacing=1.0, before=3, after=3,
+                    align=WD_ALIGN_PARAGRAPH.CENTER)
+        set_font(p.add_run(txt), 12.5, bold=True)
+        shade(o, 'EFEFEF')
+    for i, (tat, nghia) in enumerate(hang, 1):
+        for j, (txt, rong) in enumerate(((tat, 3.2), (nghia, 12.6))):
+            o = t.cell(i, j); o.width = Cm(rong)
+            p = o.paragraphs[0]
+            body_format(p, size=12.5, spacing=1.0, before=2, after=2,
+                        align=WD_ALIGN_PARAGRAPH.LEFT if j else
+                        WD_ALIGN_PARAGRAPH.CENTER)
+            set_font(p.add_run(txt), 12.5, bold=(j == 0))
+
+# ── do so trang that tren ban PDF cua phan noi dung ──────────────────────────
+
+def _chuan(s):
+    return ' '.join(s.split())
+
+def chu_tung_trang(pdf):
+    """Chu cua tung trang trong tep PDF, da gom moi khoang trang ve mot dau
+    cach. Gom nhu vay thi mot tieu de bi ngat qua hai dong van khop duoc."""
+    import subprocess, tempfile
+    with tempfile.TemporaryDirectory() as d:
+        txt = os.path.join(d, 'x.txt')
+        subprocess.run(['pdftotext', '-layout', pdf, txt], check=True)
+        noi = open(txt, encoding='utf-8').read()
+    ra = [_chuan(t) for t in noi.split('\f')]
+    # pdftotext ket thuc bang mot dau ngat trang nen luon thua mot phan tu rong
+    while ra and not ra[-1]:
+        ra.pop()
+    return ra
+
+def tim_trang(trang, moc, tu=0):
+    """So trang dau tien tu 'tu' tro di co chua 'moc'.
+
+    Tim tien dan chu khong tim lai tu dau moi lan: mot cum chu nhu '1.1.' co
+    the xuat hien o nhieu cho, nhung cac muc trong bai thi noi tiep nhau."""
+    m = _chuan(moc)
+    if m:
+        for i in range(tu, len(trang)):
+            if m in trang[i]:
+                return i + 1, i
+    return None, tu
+
+def danh_sach_muc(files):
+    ra = []
+    for f in files:
+        for line in open(os.path.join(DOCS, f), encoding='utf-8'):
+            m = re.match(r'^(#{1,4})\s+(.+)$', line.strip())
+            if m:
+                ra.append((len(m.group(1)), _bo_danh_dau(m.group(2))))
+    return ra
+
+def danh_sach_bang(files):
+    ra = []
+    for f in files:
+        s = open(os.path.join(DOCS, f), encoding='utf-8').read()
+        for m in re.finditer(r'^\[Bảng ([0-9A-Z]+\.[0-9]+)\]\s*(.*)$', s, re.M):
+            ra.append((m.group(1), _bo_danh_dau(m.group(2)).rstrip('.')))
+    return ra
+
+def danh_sach_hinh(files):
+    ra = []
+    for f in files:
+        s = open(os.path.join(DOCS, f), encoding='utf-8').read()
+        for m in re.finditer(r'^\[Hình ([0-9A-Z]+\.[0-9]+)\]$', s, re.M):
+            so = m.group(1)
+            ra.append((so, CAPTIONS.get(so, '').rstrip('.')))
+    return ra
+
+def bang_viet_tat(md):
+    """Doc bang hai cot trong Markdown thanh danh sach cap (viet tat, nghia)."""
+    ra = []
+    for line in md.split('\n'):
+        line = line.strip()
+        if not line.startswith('|'):
+            continue
+        o = [x.strip() for x in line.strip('|').split('|')]
+        if len(o) != 2 or set(o[0]) <= set('-: ') or o[0] == 'Viết tắt':
+            continue
+        ra.append((_bo_danh_dau(o[0]), _bo_danh_dau(o[1])))
+    return ra
+
+def _bat_dau_danh_so(section, so=1):
+    """Bat so trang dem lai tu 'so' o section nay."""
+    e = OxmlElement('w:pgNumType')
+    e.set(qn('w:start'), str(so))
+    section._sectPr.append(e)
+
+def _khung_trang(sec):
+    sec.page_width, sec.page_height = Cm(21), Cm(29.7)
+    sec.top_margin, sec.bottom_margin = Cm(2), Cm(2)
+    sec.left_margin, sec.right_margin = Cm(3), Cm(2)
+    return 21 - 3 - 2
+
+def _dung_tron_bo(out, meta, van, muc, bang, hinh, files, gvhd, svth):
+    """Dung ban tron bo vao mot tep docx. Tach rieng de goi duoc hai lan: luot
+    do va luot that chi khac nhau o cot so trang truyen vao."""
+    doc = Document()
+    st = doc.styles['Normal']
+    st.font.name = FONT; st.font.size = Pt(13)
+    st.element.rPr.rFonts.set(qn('w:eastAsia'), FONT)
+    pf = st.paragraph_format
+    pf.line_spacing_rule = WD_LINE_SPACING.MULTIPLE; pf.line_spacing = 1.5
+    pf.space_before = Pt(6); pf.space_after = Pt(6)
+    _khung_trang(doc.sections[0])
+
+    cac_trang = [
+        lambda: trang_bia_bm5(doc, meta),
+        lambda: trang_bia_bm5(doc, meta),
+        lambda: trang_van(doc, 'LỜI MỞ ĐẦU', van.get('LỜI MỞ ĐẦU', '')),
+        lambda: trang_van(doc, 'LỜI CẢM ƠN', van.get('LỜI CẢM ƠN', '')),
+        lambda: trang_nhan_xet(doc, 'Của cơ quan thực tập, nếu có',
+                               'Xác nhận của cơ quan thực tập'),
+        lambda: trang_nhan_xet(doc, 'Của giảng viên hướng dẫn',
+                               'Giảng viên hướng dẫn'),
+        lambda: trang_ban_nhan_xet_gvhd(doc, meta),
+        lambda: trang_nhan_xet(doc, 'Của giảng viên chấm', 'Giảng viên chấm'),
+        lambda: trang_ban_nhan_xet_cham(doc, meta),
+        lambda: trang_muc_luc(doc, muc),
+        lambda: trang_danh_muc(doc, bang, hinh),
+        lambda: trang_viet_tat(doc, bang_viet_tat(
+            van.get('KÍ HIỆU CÁC CỤM TỪ VIẾT TẮT', ''))),
+        # BM5 khong co mau cho trang nay nhung muc 2 "BO CUC" cua quy dinh thi
+        # doi, nen trinh bay no nhu mot trang van binh thuong.
+        lambda: trang_van(doc, 'TÓM TẮT ĐỒ ÁN', van.get('TÓM TẮT ĐỒ ÁN', '')),
+    ]
+    for k, ve in enumerate(cac_trang):
+        ve()
+        if k < len(cac_trang) - 1:
+            doc.add_page_break()
+
+    sec = doc.add_section(WD_SECTION.NEW_PAGE)
+    w = _khung_trang(sec)
+    footer_and_numbering(sec, gvhd, svth)
+    _bat_dau_danh_so(sec, 1)
+    for n, f in enumerate(files):
+        render_markdown(doc, os.path.join(DOCS, f), w,
+                        first_chapter_break=(n > 0))
+    doc.save(out)
+
+def xuat_tron_bo(out, files, gvhd, svth):
+    """Ban tron bo: cac trang dau theo BM5 roi den phan noi dung.
+
+    So trang in trong muc luc phai la so trang THAT, nen phai dan thu roi do
+    chu khong tinh ra duoc. Nhung do mot lan van chua chac dung: ban dan thu
+    va ban that khong ngat trang giong het nhau o vai cho. Nen lam thanh vong
+    lap — dung, do, neu so do duoc khac so da in thi dung lai bang so moi —
+    cho toi khi hai ban trung nhau. Thuong chi het hai luot.
+
+    Cac trang dau khong danh so, phan noi dung dem lai tu 1."""
+    import subprocess, tempfile
+    meta, van = doc_phan_dau()
+    ds_muc = danh_sach_muc(files)
+    ds_bang = danh_sach_bang(files)
+    ds_hinh = danh_sach_hinh(files)
+    viet_tat = bang_viet_tat(van.get('KÍ HIỆU CÁC CỤM TỪ VIẾT TẮT', ''))
+
+    def do_tren(than):
+        muc, vt = [], 0
+        for cap, ten in ds_muc:
+            so, vt = tim_trang(than, ten.upper() if cap == 1 else ten, vt)
+            muc.append((cap, ten, so))
+        bang, vt = [], 0
+        for so_b, mo_ta in ds_bang:
+            so, vt = tim_trang(than, f'Bảng {so_b}', vt)
+            bang.append((so_b, mo_ta, so))
+        hinh, vt = [], 0
+        for so_h, mo_ta in ds_hinh:
+            so, vt = tim_trang(than, f'Hình {so_h}', vt)
+            hinh.append((so_h, mo_ta, so))
+        return muc, bang, hinh
+
+    ban = ([(c, t, None) for c, t in ds_muc],
+           [(a, b, None) for a, b in ds_bang],
+           [(a, b, None) for a, b in ds_hinh])
+    with tempfile.TemporaryDirectory() as d:
+        tam = os.path.join(d, 'thu.docx')
+        for luot in range(1, 5):
+            _dung_tron_bo(tam, meta, van, *ban, files, gvhd, svth)
+            subprocess.run(['libreoffice', '--headless', '--convert-to', 'pdf',
+                            '--outdir', d, tam], check=True,
+                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            tat_ca = chu_tung_trang(os.path.join(d, 'thu.pdf'))
+            # Phan noi dung bat dau o trang dau tien co chan trang; cac trang
+            # dau khong co chan trang nen khong the lan.
+            dau = next((k for k, t in enumerate(tat_ca)
+                        if 'GVHD:' in t and 'SVTH:' in t), None)
+            if dau is None:
+                raise SystemExit('khong thay phan noi dung trong ban dan thu')
+            than = tat_ca[dau:]
+            moi = do_tren(than)
+            xong = (moi == ban)
+            print(f'  luốt {luot}: {dau} trang đầu + {len(than)} trang nội dung'
+                  + ('  — số trang đã khớp' if xong else '  — dựng lại theo số vừa đo'))
+            ban = moi
+            if xong:
+                break
+        else:
+            print('  CANH BAO: so trang chua on dinh sau 4 luot')
+        _dung_tron_bo(out, meta, van, *ban, files, gvhd, svth)
+
+    muc, bang, hinh = ban
+    thieu = ([t for _, t, x in muc if x is None]
+             + [f'Bảng {b}' for b, _, x in bang if x is None]
+             + [f'Hình {h}' for h, _, x in hinh if x is None])
+    if thieu:
+        print('  KHONG DO DUOC so trang cua: ' + '; '.join(thieu))
+    print(f'  -> {out}  ({len(files)} tệp nội dung, '
+          f'{os.path.getsize(out)/1024:.0f} KB)')
+    print(f'  mục lục: {len(muc)} mục · danh mục: {len(bang)} bảng, '
+          f'{len(hinh)} hình · viết tắt: {len(viet_tat)} cụm')
+
 if __name__ == '__main__':
-    which = sys.argv[1]           # 'noi-dung' | 'day-du'
+    which = sys.argv[1]   # 'noi-dung' | 'phu-luc' | 'day-du' | 'tron-bo'
     out   = sys.argv[2]
     gvhd  = sys.argv[3] if len(sys.argv) > 3 else '..........................'
     svth  = sys.argv[4] if len(sys.argv) > 4 else '..........................'
@@ -662,6 +1137,9 @@ if __name__ == '__main__':
     # trong Word theo dung bieu mau chu khong phai chep sang.
     # Che do thu tu: mot duong dan tep Markdown bat ky, de xuat de cuong hoac
     # bat cu tai lieu nao khac theo cung mot dinh dang.
+    if which == 'tron-bo':
+        xuat_tron_bo(out, CONTENT + SAU, gvhd, svth)
+        sys.exit(0)
     if which.endswith('.md'):
         files = [which if os.path.isabs(which) else os.path.join(ROOT, which)]
     else:

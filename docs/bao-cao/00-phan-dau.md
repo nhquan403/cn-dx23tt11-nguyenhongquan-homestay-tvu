@@ -1,55 +1,25 @@
+<!-- de-tai: XÂY DỰNG WEBSITE GIỚI THIỆU VÀ ĐẶT PHÒNG HOMESTAY — HOMESTAY TVH -->
+<!-- loai: ĐỒ ÁN THỰC TẬP CHUYÊN NGÀNH -->
+<!-- sinh-vien: Nguyễn Hồng Quân | 170123592 | DX23TT11 -->
+<!-- nganh: Công nghệ Thông tin -->
+<!-- khoa-hoc: 2023–2027 -->
+<!-- gvhd: ThS. Nguyễn Nhứt Lam -->
+<!-- hoc-vi: Thạc sĩ -->
+<!-- noi-ngay: Trà Vinh, tháng 10 năm 2026 -->
+
 # CÁC TRANG ĐẦU
 
-> Thứ tự các trang đầu theo đúng mục 1 "CẤU TRÚC" của quy định và bộ biểu mẫu
-> BM5 của Khoa Kỹ thuật và Công nghệ — Trường Đại học Trà Vinh.
+Tệp này là **nguồn dữ liệu** của các trang đầu, không phải bản mô tả. Bộ xuất
+bản đọc khối chú thích ở đầu tệp và các mục dưới đây rồi dựng thẳng ra Word
+theo biểu mẫu BM5 của Khoa Kỹ thuật và Công nghệ — Trường Đại học Trà Vinh.
 
-## 1. Bìa chính
+Sửa thông tin cá nhân thì sửa khối chú thích ở đầu tệp, đừng sửa trong mã.
 
-*(In trên bìa cứng, chữ nhũ vàng)*
-
-TRƯỜNG ĐẠI HỌC TRÀ VINH *(Bold, size 16)*
-KHOA KỸ THUẬT VÀ CÔNG NGHỆ *(Bold, size 16)*
-
-*(logo trường, căn giữa)*
-
-**ĐỒ ÁN THỰC TẬP CHUYÊN NGÀNH** *(Bold, size 16)*
-
-**XÂY DỰNG WEBSITE GIỚI THIỆU VÀ ĐẶT PHÒNG HOMESTAY
-— HOMESTAY TVH —**
-*(Bold, size 18–30 tuỳ số chữ của tên đề tài)*
-
-Giảng viên hướng dẫn: ......................... *(Bold, size 14, in hoa)*
-Sinh viên thực hiện: ......................... *(Bold, size 14, in hoa)*
-Mã số sinh viên: ......................... *(Bold, size 14, in hoa)*
-Lớp: ......................... *(Bold, size 14, in hoa)*
-Khoá: ......................... *(Bold, size 14, in hoa)*
-
-Trà Vinh, tháng ... năm ... *(Bold, size 13)*
-
-## 2. Bìa phụ (trang lót)
-
-*(In giấy thường, nội dung giống bìa chính)*
-
-## 3. Nhận xét của cơ quan thực tập
-
-*(Bold, size 14 — xếp sau trang Lời cảm ơn theo biểu mẫu; để trống nếu không có
-cơ quan thực tập)*
-
-## 4. Nhận xét của giảng viên hướng dẫn
-
-*(Hai biểu mẫu: trang nhận xét tự do, và BẢN NHẬN XÉT ĐỒ ÁN THỰC TẬP CHUYÊN
-NGÀNH theo mẫu có tiêu đề UBND tỉnh Trà Vinh. Để trống, giảng viên ghi)*
-
-## 5. Nhận xét của giảng viên chấm
-
-*(Hai biểu mẫu: trang nhận xét tự do, và BẢN NHẬN XÉT của cán bộ chấm đồ án có
-mục "Các vấn đề cần làm rõ". Để trống)*
+Chạy: `python3 scripts/xuat-ban-word.py tron-bo thesis/doc/bao-cao-tron-bo.docx`
 
 ---
 
-## 6. LỜI MỞ ĐẦU
-
-*(Bold, size 14 — xếp sau trang lót)*
+## LỜI MỞ ĐẦU
 
 Du lịch homestay tại Trà Vinh đang phát triển cùng làn sóng du lịch trải nghiệm
 và du lịch cộng đồng. Phần lớn cơ sở trong nhóm này do hộ gia đình tự vận hành,
@@ -69,14 +39,12 @@ thử đa luồng trên hệ quản trị cơ sở dữ liệu thật.
 Do thời gian và kiến thức còn hạn chế, đồ án không tránh khỏi thiếu sót. Em rất
 mong nhận được ý kiến đóng góp của quý Thầy Cô.
 
-## 7. LỜI CẢM ƠN
+## LỜI CẢM ƠN
 
-*(Bold, size 14 — xếp sau trang Lời mở đầu)*
-
-Em xin gửi lời cảm ơn chân thành đến Thầy/Cô ......................... đã tận
-tình hướng dẫn, góp ý và tạo điều kiện cho em hoàn thành đồ án này. Những nhận
-xét thẳng thắn của Thầy/Cô trong các buổi báo cáo tiến độ đã giúp em nhận ra
-nhiều thiếu sót mà bản thân không tự thấy được.
+Em xin gửi lời cảm ơn chân thành đến ThS. Nguyễn Nhứt Lam đã tận tình hướng
+dẫn, góp ý và tạo điều kiện cho em hoàn thành đồ án này. Những nhận xét thẳng
+thắn của Thầy trong các buổi báo cáo tiến độ đã giúp em nhận ra nhiều thiếu sót
+mà bản thân không tự thấy được.
 
 Em cũng xin cảm ơn quý Thầy Cô Khoa Kỹ thuật và Công nghệ — Trường Đại học Trà
 Vinh đã truyền đạt kiến thức nền tảng trong suốt quá trình học tập. Đặc biệt,
@@ -87,34 +55,7 @@ Cuối cùng, em xin cảm ơn gia đình và những người đã luôn ủng 
 
 Em xin chân thành cảm ơn!
 
-*Trà Vinh, ngày ... tháng ... năm 20...*
-*Sinh viên thực hiện*
-
----
-
-## 8. MỤC LỤC
-
-*(Bold, size 14 — sinh tự động. In đậm và in hoa tiêu đề các chương và mục lớn.
-Các tiểu mục trình bày trong mục lục **không quá 04 cấp**)*
-
-## 9. DANH MỤC CÁC BẢNG, SƠ ĐỒ, HÌNH
-
-*(In đậm, in hoa, size 14 — xếp sau trang Mục lục)*
-
-Đánh số theo quy ước: chữ số thứ nhất chỉ tên chương, chữ số thứ hai chỉ thứ tự
-trong chương. Ở cuối mỗi bảng, sơ đồ, hình phải có ghi chú, giải thích, **nêu rõ
-nguồn trích hoặc sao chụp**.
-
-| Loại | Số lượng |
-|---|---|
-| HÌNH | 28 |
-| BẢNG | *(sinh tự động từ caption)* |
-| SƠ ĐỒ | *(các biểu đồ UML được đánh là SƠ ĐỒ)* |
-
-## 10. KÍ HIỆU CÁC CỤM TỪ VIẾT TẮT
-
-*(size 14 — xếp sau trang Danh mục các bảng, sơ đồ, hình. Xếp theo thứ tự bảng
-chữ cái. Không lạm dụng chữ viết tắt)*
+## KÍ HIỆU CÁC CỤM TỪ VIẾT TẮT
 
 | Viết tắt | Nghĩa đầy đủ |
 |---|---|
@@ -140,7 +81,7 @@ chữ cái. Không lạm dụng chữ viết tắt)*
 
 ---
 
-## 11. TÓM TẮT ĐỒ ÁN
+## TÓM TẮT ĐỒ ÁN
 
 Đồ án xây dựng website giới thiệu và đặt phòng cho cơ sở lưu trú Homestay TVH,
 giải quyết ba vấn đề của quy trình đặt phòng thủ công hiện nay: kênh đặt phòng
@@ -162,9 +103,42 @@ dùng Java 21 và Spring Boot 3.5.6, tầng giao diện dùng Angular 21, cơ s�
 PostgreSQL 16, đóng gói bằng Docker Compose. Thanh toán đặt cọc qua mã QR theo
 chuẩn VietQR với webhook tự xác nhận.
 
-**Kết quả đạt được.** Hệ thống hoàn chỉnh với 80 thao tác trên 63 đường dẫn, 21
-bảng dữ liệu dựng bởi 8 migration, 20 thực thể. Bộ kiểm thử tự động gồm 129 ca
-trong 18 lớp chạy trên PostgreSQL thật, tất cả thành công, trong đó ba ca kiểm
-thử đa luồng chứng minh trực tiếp rằng hệ thống không bán trùng phòng. Giao diện
-không còn lỗi vi phạm chuẩn khả năng tiếp cận mức A và AA. Toàn hệ thống chạy
-được bằng ba lệnh kèm dữ liệu minh hoạ đủ tám trạng thái đơn.
+**Kết quả đạt được.** Hệ thống hoàn chỉnh với 82 thao tác trên 65 đường dẫn, 21
+bảng dữ liệu dựng bởi chín migration, 20 thực thể. Bộ kiểm thử tự động gồm 136
+ca trong 19 lớp chạy trên PostgreSQL thật, trong đó ba ca kiểm thử đa luồng
+chứng minh trực tiếp rằng hệ thống không bán trùng phòng; lần chạy đầy đủ gần
+nhất xanh 129 ca, bảy ca còn lại của lớp kiểm thử nút mô phỏng chuyển khoản mới
+chỉ kiểm chứng được bằng cách gọi trực tiếp qua HTTP. Giao diện không còn lỗi vi
+phạm chuẩn khả năng tiếp cận mức A và AA. Toàn hệ thống chạy được bằng ba lệnh
+kèm dữ liệu minh hoạ đủ tám trạng thái đơn.
+
+---
+
+## Quy cách trình bày các trang đầu
+
+Thứ tự dưới đây lấy theo chuỗi *"xếp sau trang ..."* ghi trong chính biểu mẫu
+BM5, và khớp với thứ tự của bản báo cáo mẫu đã được duyệt của khoa.
+
+| # | Trang | Quy cách |
+|---|---|---|
+| 1 | Bìa chính | In bìa cứng, chữ nhũ vàng. Tên trường và tên khoa bold size 16; tên đề tài bold size 18–30 tuỳ độ dài; dòng thông tin bold size 14 in hoa; dòng nơi — ngày bold size 13 |
+| 2 | Bìa phụ (trang lót) | In giấy thường, nội dung giống bìa chính |
+| 3 | LỜI MỞ ĐẦU | Bold, size 14, xếp sau trang lót |
+| 4 | LỜI CẢM ƠN | Bold, size 14, xếp sau trang lời mở đầu |
+| 5 | NHẬN XÉT (của cơ quan thực tập, nếu có) | Bold, size 14, xếp sau trang lời cảm ơn |
+| 6 | NHẬN XÉT (của giảng viên hướng dẫn) | Bold, size 14, xếp sau trang nhận xét của cơ quan thực tập |
+| 7 | BẢN NHẬN XÉT ĐỒ ÁN THỰC TẬP CHUYÊN NGÀNH (của giảng viên hướng dẫn) | Có tiêu ngữ UBND tỉnh Trà Vinh, tám mục nhận xét |
+| 8 | NHẬN XÉT (của giảng viên chấm) | Bold, size 14, xếp sau trang nhận xét của giảng viên hướng dẫn |
+| 9 | BẢN NHẬN XÉT ĐỒ ÁN THỰC TẬP CHUYÊN NGÀNH (của cán bộ chấm đồ án) | Có tiêu ngữ, ba phần I/II/III |
+| 10 | MỤC LỤC | Bold size 14. In đậm và in hoa tiêu đề chương và mục lớn. Tiểu mục **không quá 04 cấp** |
+| 11 | DANH MỤC CÁC BẢNG, SƠ ĐỒ, HÌNH | In đậm, in hoa, size 14, xếp sau trang mục lục |
+| 12 | KÍ HIỆU CÁC CỤM TỪ VIẾT TẮT | Size 14, xếp sau trang danh mục. Xếp theo thứ tự bảng chữ cái |
+| 13 | TÓM TẮT ĐỒ ÁN | Mục 2 "BỐ CỤC" của quy định đòi trang này; BM5 không có mẫu riêng nên trình bày như một trang văn |
+
+Các trang đầu **không đánh số**; phần nội dung đánh số Ả Rập bắt đầu lại từ 1,
+đặt ở chân trang bên phải. Nhờ vậy số trang trong mục lục không đổi khi số
+trang đầu thay đổi.
+
+Bảng, sơ đồ, hình đánh số theo chương: chữ số thứ nhất chỉ chương, chữ số thứ
+hai chỉ thứ tự trong chương. Cuối mỗi cái phải có chú thích **nêu rõ nguồn
+trích hoặc sao chụp**.
