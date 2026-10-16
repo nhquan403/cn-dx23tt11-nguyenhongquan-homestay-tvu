@@ -2,13 +2,18 @@
 
 | Tệp | Nội dung |
 |---|---|
-| `slide-bao-ve.pptx` | 20 slide, khổ 16:9, tiêu đề 44pt, nội dung 32pt |
+| `slide-bao-ve.pptx` | 20 slide, khổ 16:9, tiêu đề 44pt, nội dung 32pt, **có ghi chú người trình bày ở cả 20 slide** |
 | `slide-bao-ve.pdf` | Bản PDF của cùng bộ slide, để chiếu khi máy không có PowerPoint |
 | `poster.pdf` | Poster **60cm × 90cm hướng đứng**, đúng kích thước vật lý, đem đi in là ra đúng cỡ |
 | `poster-xem-truoc.png` | Ảnh xem nhanh của poster, không dùng để in |
 
-Kịch bản nói cho từng slide ở **`docs/kich-ban-bao-ve.md`**, và cũng nằm ngay
-trong phần ghi chú của từng slide khi mở bằng PowerPoint.
+Kịch bản nói cho từng slide ở **`docs/kich-ban-bao-ve.md`**, bản in được ở
+`../doc/kich-ban-bao-ve.docx` và `../pdf/kich-ban-bao-ve.pdf` (6 trang), và
+cũng nằm ngay trong phần ghi chú của từng slide — mở PowerPoint ở chế độ người
+trình bày là thấy lời nói ngay dưới slide, không cần cầm thêm giấy.
+
+Bảng màu của slide **đọc thẳng** từ `frontend/src/styles/tokens.css`, nên đổi
+màu giao diện thì slide tự đổi theo, không phải sửa hai chỗ.
 
 ## Dựng lại
 
@@ -26,10 +31,14 @@ hai** script để slide và kịch bản nói không lệch nhau.
 
 ## Việc còn phải làm tay
 
-1. **Điền thông tin sinh viên ở slide bìa và trên poster**: tên GVHD, tên SVTH,
-   mã số, lớp. Hiện là dấu chấm cho điền tay, giống các trang bìa của quyển báo
-   cáo. Sửa trong `scripts/noi-dung-slide.py` và `scripts/tao-poster.mjs` rồi
-   dựng lại, đừng sửa thẳng vào tệp đã xuất.
+1. **Poster**: tên GVHD, tên SVTH, mã số và lớp trên poster vẫn là dấu chấm
+   cho điền tay, và `scripts/tao-poster.mjs` còn chép tay bảng màu cũ
+   (`#0F5C4C`) nên poster lệch tông so với slide và sản phẩm. Sửa hai chỗ đó
+   rồi dựng lại, đừng sửa thẳng vào tệp đã xuất.
+
+   *Slide bìa thì không phải điền tay nữa* — `tao-slide.py` đọc thẳng khối chú
+   thích ở đầu `docs/bao-cao/00-phan-dau.md`, cùng nguồn với bìa quyển báo cáo,
+   nên hai bìa không bao giờ nói hai điều khác nhau.
 2. **Tập nói và bấm giờ.** Hội đồng cho 10–20 phút *kể cả hỏi đáp*, nên phần
    trình bày chỉ nên 10–12 phút — trung bình 35 giây một slide.
 3. **Đặt in poster** trên giấy A0 hoặc bạt, 60cm × 90cm. Nội dung poster lấy

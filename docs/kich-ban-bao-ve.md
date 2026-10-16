@@ -101,7 +101,7 @@ nên **10–12 phút**. Với 20 slide, trung bình **35 giây một slide**. Ba
 
 > Ràng buộc loại trừ là thứ MySQL không có. Chỉ số GiST cho phép so sánh chồng lấn — việc mà chỉ số B-tree không làm được. Khi hai giao dịch cùng ghi, PostgreSQL bác một cái, và hệ thống bắt đúng mã lỗi đó rồi thử phòng tiếp theo trong một giao dịch MỚI.
 
-## Slide 11 — Cơ sở dữ liệu: 21 bảng, 8 migration
+## Slide 11 — Cơ sở dữ liệu: 21 bảng, 9 migration
 
 **Hình:** `hinh-3-3-erd-dat-phong.png`
 
@@ -127,7 +127,7 @@ nên **10–12 phút**. Với 20 slide, trung bình **35 giây một slide**. Ba
 
 ## Slide 14 — Giao diện khách: ba bước đặt phòng
 
-**Hình:** `hinh-3-14-ba-buoc-dat-phong.png`
+**Hình:** `hinh-3-11-ba-buoc-dat-phong.png`
 
 **Nói:**
 
@@ -135,7 +135,7 @@ nên **10–12 phút**. Với 20 slide, trung bình **35 giây một slide**. Ba
 
 ## Slide 15 — Khu quản trị: 11 màn hình
 
-**Hình:** `hinh-3-16-dashboard.png`
+**Hình:** `hinh-3-13-dashboard.png`
 
 **Nói:**
 
@@ -143,21 +143,21 @@ nên **10–12 phút**. Với 20 slide, trung bình **35 giây một slide**. Ba
 
 ## Slide 16 — Kết quả kiểm thử
 
-**Trên slide:** 129 ca kiểm thử, tất cả đạt · Kiểm thử đa luồng với PostgreSQL thật, không giả lập · 11 lỗi thực tế đã tìm ra và khắc phục · Ma trận phân quyền: 30 tiền tố đường dẫn đều được khai
+**Trên slide:** 136 ca kiểm thử trong 19 lớp · Kiểm thử đa luồng với PostgreSQL thật, không giả lập · 11 lỗi thực tế đã tìm ra và khắc phục · Ma trận phân quyền: 30 tiền tố đường dẫn đều được khai
 
 **Nói:**
 
-> Kiểm thử tích hợp chạy trên PostgreSQL thật qua Testcontainers, vì ràng buộc loại trừ là tính năng của PostgreSQL — giả lập bằng cơ sở dữ liệu trong bộ nhớ thì đúng thứ cần kiểm lại không tồn tại.
+> Kiểm thử tích hợp chạy trên PostgreSQL thật qua Testcontainers, vì ràng buộc loại trừ là tính năng của PostgreSQL — giả lập bằng cơ sở dữ liệu trong bộ nhớ thì đúng thứ cần kiểm lại không tồn tại. Nếu thầy cô hỏi: lần chạy đầy đủ gần nhất xanh 129 ca; bảy ca của lớp kiểm thử nút mô phỏng chuyển khoản bổ sung sau đó em mới kiểm chứng bằng cách gọi trực tiếp qua HTTP, chưa qua một lần chạy đầy đủ cả 136 ca.
 
 ## Slide 17 — Khả năng tiếp cận và triển khai
 
-**Trên slide:** Quét 17 màn hình: 0 vi phạm WCAG 2.1 mức A và AA · Kiểm ở ba độ rộng màn hình, vùng chạm tối thiểu 44×44 điểm ảnh · docker compose up -d: bốn dịch vụ đều healthy
+**Trên slide:** Quét 17 màn hình: 0 vi phạm WCAG 2.1 mức A và AA, 353 lần quy tắc đạt · Kiểm ở ba độ rộng màn hình, vùng chạm tối thiểu 44×44 điểm ảnh · docker compose up -d: bốn dịch vụ đều healthy
 
-**Hình:** `hinh-3-20-docker-compose-ps.png`
+**Hình:** `hinh-4-2-quet-kha-nang-tiep-can.png`
 
 **Nói:**
 
-> Quét tự động ngay trên bản đóng gói đang chạy, đi qua đúng máy chủ web và đúng chính sách bảo mật nội dung của bản triển khai.
+> Bảng trên slide là kết quả quét thật, không phải con số em tự ghi: mỗi dòng là một màn hình, cột giữa là số vi phạm. Quét ngay trên bản đóng gói đang chạy, đi qua đúng máy chủ web và đúng chính sách bảo mật nội dung của bản triển khai.
 
 ## Slide 18 — Giới hạn đã biết
 
