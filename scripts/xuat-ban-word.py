@@ -771,7 +771,7 @@ def trang_bia_bm5(doc, meta):
     _dong(doc, 'KHOA KỸ THUẬT VÀ CÔNG NGHỆ', 16, dam=True, sau=12)
     if os.path.exists(LOGO):
         p = doc.add_paragraph()
-        body_format(p, before=4, after=12, align=WD_ALIGN_PARAGRAPH.CENTER)
+        body_format(p, before=22, after=26, align=WD_ALIGN_PARAGRAPH.CENTER)
         p.add_run().add_picture(LOGO, width=Cm(3.4))
     _dong(doc, meta.get('loai', 'ĐỒ ÁN THỰC TẬP CHUYÊN NGÀNH'), 16, dam=True,
           truoc=10, sau=34)
@@ -786,13 +786,13 @@ def trang_bia_bm5(doc, meta):
         p = doc.add_paragraph()
         body_format(p, size=14, spacing=1.4, before=1, after=1,
                     align=WD_ALIGN_PARAGRAPH.LEFT)
-        p.paragraph_format.left_indent = Cm(3.2)
+        p.paragraph_format.left_indent = Cm(2.4)
         set_font(p.add_run(nhan + ' '), 14)
         set_font(p.add_run((gt or TRONG).upper()), 14, bold=True)
     # Word khong neo duoc mot doan vao day trang, nen khoang cach nay do tu
     # ban xuat: khoi tren co do cao co dinh, dong nay ket thuc cach le duoi
     # khoang 2cm nhu ban bao cao mau. Doi bo cuc bia thi phai do lai.
-    _dong(doc, meta.get('noi-ngay', ''), 13, dam=True, truoc=176)
+    _dong(doc, meta.get('noi-ngay', ''), 13, dam=True, truoc=144)
 
 def trang_van(doc, tieu_de, than):
     _dong(doc, tieu_de, 14, dam=True, truoc=10, sau=12)

@@ -64,7 +64,7 @@ số; phần nội dung đánh số Ả Rập bắt đầu lại từ 1.
 1. **In bìa chính** trên bìa cứng, chữ nhũ vàng — việc của nhà in.
 2. **Khoá học** đang để `2023–2027`, suy từ mã lớp `DX23TT11`. Kiểm lại trước
    khi nộp; sai thì sửa dòng `<!-- khoa-hoc: ... -->`.
-3. **Nơi và ngày trên bìa** đang để `Trà Vinh, tháng 10 năm 2026` theo BM5.
-   Đề cương đã nộp lại ghi `TP. Hồ Chí Minh` — nếu khoá của bạn dùng cách ghi
-   đó thì sửa dòng `<!-- noi-ngay: ... -->` cho khớp.
+3. **Nơi và ngày trên bìa** đang để `TP. Hồ Chí Minh, tháng 10 năm 2026`, khớp
+   với đề cương đã nộp và với bản báo cáo mẫu của khoa. Đổi tháng khi nộp thì
+   sửa dòng `<!-- noi-ngay: ... -->`.
 4. **Hình 1.3** là tuỳ chọn, chưa có. Xem `docs/images/bao-cao/README.md`.

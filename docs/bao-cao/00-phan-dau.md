@@ -5,7 +5,7 @@
 <!-- khoa-hoc: 2023–2027 -->
 <!-- gvhd: ThS. Nguyễn Nhứt Lam -->
 <!-- hoc-vi: Thạc sĩ -->
-<!-- noi-ngay: Trà Vinh, tháng 10 năm 2026 -->
+<!-- noi-ngay: TP. Hồ Chí Minh, tháng 10 năm 2026 -->
 
 # CÁC TRANG ĐẦU
 
