@@ -9,7 +9,7 @@ Cach dung:
     pip install python-pptx
     python3 scripts/tao-slide.py thesis/abs/slide-bao-ve.pptx
 """
-import os, sys, struct
+import os, re, sys, struct
 from pptx import Presentation
 from pptx.util import Cm, Pt
 from pptx.dml.color import RGBColor
@@ -18,13 +18,45 @@ from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 IMGS = os.path.join(ROOT, 'docs', 'images', 'bao-cao')
 
-# Bang mau lay tu tokens.css cua chinh du an, de slide va san pham cung mot he mau.
-XANH   = RGBColor(0x0F, 0x5C, 0x4C)
-DAM    = RGBColor(0x1C, 0x19, 0x17)
-NHAT   = RGBColor(0x6B, 0x62, 0x5A)
-NEN    = RGBColor(0xFB, 0xF9, 0xF6)
-TRANG  = RGBColor(0xFF, 0xFF, 0xFF)
-CAM    = RGBColor(0xB4, 0x41, 0x0E)
+# Bang mau DOC THANG tu tokens.css cua giao dien, khong chep tay.
+#
+# Ban truoc chep tay sau ma mau vao day. Giao dien doi bang mau mot lan giua
+# chung ky va khong ai nho sua lai cho nay, nen bo slide mang mau cu trong khi
+# san pham tren man hinh da mau khac. Doc thang thi khong lech duoc nua.
+TOKENS = os.path.join(ROOT, 'frontend', 'src', 'styles', 'tokens.css')
+PHAN_DAU = os.path.join(ROOT, 'docs', 'bao-cao', '00-phan-dau.md')
+
+def doc_thong_tin():
+    """Ten de tai va thong tin sinh vien lay tu CUNG MOT NGUON voi quyen bao
+    cao, de bia slide va bia bao cao khong bao gio noi hai dieu khac nhau."""
+    try:
+        s = open(PHAN_DAU, encoding='utf-8').read()
+    except OSError:
+        return {}
+    m = dict(re.findall(r'<!--\s*([a-z-]+):\s*(.+?)\s*-->', s))
+    phan = [x.strip() for x in m.get('sinh-vien', '').split('|')] + ['', '', '']
+    m['ho-ten'], m['mssv'], m['lop'] = phan[0], phan[1], phan[2]
+    return m
+
+def doc_mau(ten, lui):
+    """Doc mot bien --color-* trong tokens.css. Thieu thi dung mau lui."""
+    try:
+        s = open(TOKENS, encoding='utf-8').read()
+        m = re.search(r'--color-' + ten + r':\s*#([0-9A-Fa-f]{6})', s)
+        if m:
+            v = int(m.group(1), 16)
+            return RGBColor((v >> 16) & 255, (v >> 8) & 255, v & 255)
+    except OSError:
+        pass
+    v = int(lui, 16)
+    return RGBColor((v >> 16) & 255, (v >> 8) & 255, v & 255)
+
+XANH   = doc_mau('primary', '0E5C63')
+DAM    = doc_mau('text', '1A1A17')
+NHAT   = doc_mau('text-muted', '5C574E')
+NEN    = doc_mau('bg', 'FBF9F6')
+TRANG  = doc_mau('surface', 'FFFFFF')
+CAM    = doc_mau('price', 'A83E1E')
 
 FONT = 'Times New Roman'
 W, H = Cm(33.87), Cm(19.05)          # 16:9
@@ -65,18 +97,29 @@ def textbox(slide, l, t, w, h, anchor=MSO_ANCHOR.TOP):
 def add_notes(slide, text):
     slide.notes_slide.notes_text_frame.text = text
 
+CHAM = '. . . . . . . . . . . . . . .'
+
 def cover(prs, notes):
+    tt = doc_thong_tin()
+    # Ten de tai tren bia slide ngat lam hai dong cho can giua dep; tach o dau
+    # tien sau tu "VA" neu co, khong thi cat giua theo so tu.
+    ten = (tt.get('de-tai') or 'XÂY DỰNG WEBSITE GIỚI THIỆU VÀ ĐẶT PHÒNG HOMESTAY TVH')
+    ten = ten.replace(' — ', ' – ')
+    tu = ten.split()
+    k = next((i for i, w in enumerate(tu) if w == 'VÀ' and i > 2), len(tu) // 2)
+    ten_de_tai = ' '.join(tu[:k]) + '\n' + ' '.join(tu[k:])
     s = prs.slides.add_slide(prs.slide_layouts[6])
     bg(s, XANH)
     tf = textbox(s, Cm(2.5), Cm(3.2), W - Cm(5), Cm(12), MSO_ANCHOR.MIDDLE)
     for txt, size, bold, color, space in [
         ('TRƯỜNG ĐẠI HỌC TRÀ VINH', 20, False, RGBColor(0xC8, 0xDE, 0xD6), 4),
         ('KHOA KỸ THUẬT VÀ CÔNG NGHỆ', 20, False, RGBColor(0xC8, 0xDE, 0xD6), 26),
-        ('ĐỒ ÁN THỰC TẬP CHUYÊN NGÀNH', 24, False, RGBColor(0xC8, 0xDE, 0xD6), 12),
-        ('XÂY DỰNG WEBSITE GIỚI THIỆU\nVÀ ĐẶT PHÒNG HOMESTAY TVH', 40, True, TRANG, 30),
-        ('Giảng viên hướng dẫn:  . . . . . . . . . . . . . . . . . . . .', 20, False, RGBColor(0xC8, 0xDE, 0xD6), 4),
-        ('Sinh viên thực hiện:  . . . . . . . . . . . . . . . . . . . .', 20, False, RGBColor(0xC8, 0xDE, 0xD6), 4),
-        ('Mã số sinh viên:  . . . . . . . . . . .      Lớp:  . . . . . . . . . . .', 20, False, RGBColor(0xC8, 0xDE, 0xD6), 0),
+        (tt.get('loai', 'ĐỒ ÁN THỰC TẬP CHUYÊN NGÀNH'), 24, False, RGBColor(0xC8, 0xDE, 0xD6), 12),
+        (ten_de_tai, 40, True, TRANG, 30),
+        ('Giảng viên hướng dẫn:  ' + (tt.get('gvhd') or CHAM), 20, False, RGBColor(0xC8, 0xDE, 0xD6), 4),
+        ('Sinh viên thực hiện:  ' + (tt.get('ho-ten') or CHAM), 20, False, RGBColor(0xC8, 0xDE, 0xD6), 4),
+        ('Mã số sinh viên:  ' + (tt.get('mssv') or CHAM)
+         + '      Lớp:  ' + (tt.get('lop') or CHAM), 20, False, RGBColor(0xC8, 0xDE, 0xD6), 0),
     ]:
         for i, line in enumerate(txt.split('\n')):
             p = tf.paragraphs[0] if (tf.paragraphs[0].runs == [] and not tf.paragraphs[0].text and len(tf.paragraphs) == 1) else tf.add_paragraph()
@@ -111,7 +154,12 @@ def content(prs, title, bullets, image, notes):
     p.runs[0].text = title
 
     top = Cm(4.4)
-    has_img = image and os.path.exists(os.path.join(IMGS, image))
+    # Thieu anh thi BAO LOI chu khong lang le bo qua. Ban truoc bo qua, nen ba
+    # ten anh cu van nam trong noi dung slide rat lau ma khong ai biet — slide
+    # cu the chi don gian la trong mot mang.
+    if image and not os.path.exists(os.path.join(IMGS, image)):
+        raise SystemExit(f'thieu anh cho slide "{title}": {image}')
+    has_img = bool(image)
 
     if bullets:
         bw = (W - Cm(3.6)) if not has_img else Cm(14.5)

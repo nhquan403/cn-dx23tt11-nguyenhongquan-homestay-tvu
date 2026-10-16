@@ -85,7 +85,7 @@ SLIDES = [
   "PostgreSQL bác một cái, và hệ thống bắt đúng mã lỗi đó rồi thử phòng tiếp theo "
   "trong một giao dịch MỚI."),
 
- ("Cơ sở dữ liệu: 21 bảng, 8 migration",
+ ("Cơ sở dữ liệu: 21 bảng, 9 migration",
   [], "hinh-3-3-erd-dat-phong.png",
   "Đây là nhóm bảng đặt phòng — nơi đặt ràng buộc quan trọng nhất. Lược đồ do "
   "công cụ migration quản lý, và migration là bất biến: đã chạy thì không sửa, "
@@ -104,34 +104,38 @@ SLIDES = [
   "khoản, chiều tiền, chống xử lý trùng, và số tiền."),
 
  ("Giao diện khách: ba bước đặt phòng",
-  [], "hinh-3-14-ba-buoc-dat-phong.png",
+  [], "hinh-3-11-ba-buoc-dat-phong.png",
   "Ba bước: chọn ngày, chọn phòng, xác nhận. Giá hiển thị là tổng cả kỳ chứ không "
   "phải giá một đêm — đây là điều khách thực sự muốn biết. Ngày đã hết phòng bị "
   "chặn ngay trong lịch, không để khách chọn rồi mới báo lỗi."),
 
  ("Khu quản trị: 11 màn hình",
-  [], "hinh-3-16-dashboard.png",
+  [], "hinh-3-13-dashboard.png",
   "Trang tổng quan: giá trị booking theo tháng, tỉ lệ lấp đầy, tỉ lệ huỷ, và số "
   "khoản tiền đang chờ đối soát. Khu quản trị ưu tiên mật độ thông tin vì chủ "
   "homestay dùng nó hằng ngày."),
 
  ("Kết quả kiểm thử",
-  ["129 ca kiểm thử, tất cả đạt",
+  ["136 ca kiểm thử trong 19 lớp",
    "Kiểm thử đa luồng với PostgreSQL thật, không giả lập",
    "11 lỗi thực tế đã tìm ra và khắc phục",
    "Ma trận phân quyền: 30 tiền tố đường dẫn đều được khai"],
   None,
   "Kiểm thử tích hợp chạy trên PostgreSQL thật qua Testcontainers, vì ràng buộc "
   "loại trừ là tính năng của PostgreSQL — giả lập bằng cơ sở dữ liệu trong bộ nhớ "
-  "thì đúng thứ cần kiểm lại không tồn tại."),
+  "thì đúng thứ cần kiểm lại không tồn tại. Nếu thầy cô hỏi: lần chạy đầy đủ gần "
+  "nhất xanh 129 ca; bảy ca của lớp kiểm thử nút mô phỏng chuyển khoản bổ sung sau "
+  "đó em mới kiểm chứng bằng cách gọi trực tiếp qua HTTP, chưa qua một lần chạy "
+  "đầy đủ cả 136 ca."),
 
  ("Khả năng tiếp cận và triển khai",
-  ["Quét 17 màn hình: 0 vi phạm WCAG 2.1 mức A và AA",
+  ["Quét 17 màn hình: 0 vi phạm WCAG 2.1 mức A và AA, 353 lần quy tắc đạt",
    "Kiểm ở ba độ rộng màn hình, vùng chạm tối thiểu 44×44 điểm ảnh",
    "docker compose up -d: bốn dịch vụ đều healthy"],
-  "hinh-3-20-docker-compose-ps.png",
-  "Quét tự động ngay trên bản đóng gói đang chạy, đi qua đúng máy chủ web và đúng "
-  "chính sách bảo mật nội dung của bản triển khai."),
+  "hinh-4-2-quet-kha-nang-tiep-can.png",
+  "Bảng trên slide là kết quả quét thật, không phải con số em tự ghi: mỗi dòng là "
+  "một màn hình, cột giữa là số vi phạm. Quét ngay trên bản đóng gói đang chạy, đi "
+  "qua đúng máy chủ web và đúng chính sách bảo mật nội dung của bản triển khai."),
 
  ("Giới hạn đã biết",
   ["Chưa có bảng giá theo từng đêm — giá hiện là giá cố định theo loại phòng",
