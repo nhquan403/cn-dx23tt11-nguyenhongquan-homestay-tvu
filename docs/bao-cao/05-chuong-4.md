@@ -118,7 +118,7 @@ quét khả năng tiếp cận từ sáu lên mười màn hình quản trị. B
 Quét tự động bằng axe-core trên **17 màn hình** (7 công khai, 10 quản trị) ngay
 trên bản đóng gói đang chạy, đi qua đúng máy chủ web và đúng chính sách bảo mật
 nội dung của bản triển khai: **không còn lỗi vi phạm** hướng dẫn khả năng tiếp
-cận nội dung web 2.0 và 2.1 mức A và AA [13], trên tổng 356 lần quy tắc đạt.
+cận nội dung web 2.0 và 2.1 mức A và AA [13], trên tổng 353 lần quy tắc đạt.
 
 Đo vùng chạm ở 3 độ rộng màn hình: **không còn vùng chạm dưới 44×44 điểm ảnh**.
 

@@ -4,7 +4,19 @@ Mỗi tệp ở đây ứng với đúng một dấu chỗ đặt `[Hình X.Y]` 
 Tên tệp theo khuôn `hinh-<chương>-<số>-<mô-tả-không-dấu>.png`, nên khi chèn vào
 Word chỉ cần đọc theo thứ tự tên tệp là ra đúng thứ tự hình trong báo cáo.
 
-Ảnh chụp giao diện lấy ở tỉ lệ điểm ảnh gấp đôi hoặc gấp ba để in A4 không rỗ.
+Ảnh chụp giao diện lấy ở tỉ lệ điểm ảnh gấp đôi để in A4 không rỗ, và **không
+chụp tay**: `scripts/chup-anh-bao-cao.mjs` dựng lại cả mười tấm trên bản đang
+chạy thật. Chụp tay thì mỗi lần ra một khổ khác nhau, và lần sau ghép vào Word
+lại phải căn lại từ đầu.
+
+```sh
+# cần một bản đang chạy và mật khẩu quản trị trong một tệp
+node scripts/chup-anh-bao-cao.mjs http://127.0.0.1:4300 /đường/dẫn/mật-khẩu
+node scripts/quet-kha-nang-tiep-can.mjs http://127.0.0.1:4300 /đường/dẫn/mật-khẩu
+```
+
+Giao diện đổi thì phải chạy lại hai lệnh trên, nếu không quyển báo cáo sẽ mô tả
+một giao diện không còn tồn tại.
 
 Số hình phải chạy **theo thứ tự xuất hiện** trong bài. Khi thêm hoặc bớt một
 hình thì phải đánh số lại cả dãy, đổi tên tệp theo, rồi chạy lại bộ xuất bản —
@@ -27,16 +39,34 @@ hình thì phải đánh số lại cả dãy, đổi tên tệp theo, rồi ch�
 | 3.7 | `hinh-3-7-tuan-tu-thanh-toan.png` | Mermaid |
 | 3.8 | `hinh-3-8-tuan-tu-tien-ve-muon.png` | Mermaid |
 | 3.9 | `hinh-3-9-phan-lop-backend.png` | Mermaid |
-| 3.10 | `hinh-3-10-trang-chu.png` | Ảnh chụp trang chủ |
-| 3.11 | `hinh-3-11-ba-buoc-dat-phong.png` | Ghép ba ảnh của ba bước đặt phòng thật |
-| 3.12 | `hinh-3-12-thanh-toan.png` | Ảnh chụp màn hình thanh toán của một đơn thật, mã QR tải từ dịch vụ thật |
-| 3.13 | `hinh-3-13-dashboard.png` | Ảnh chụp trang tổng quan quản trị |
-| 4.1 | `hinh-4-1-do-tuong-phan.png` | Đối chiếu độ tương phản nút chính trước và sau khi sửa |
-| 4.2 | `hinh-4-2-quet-kha-nang-tiep-can.png` | Kết quả axe-core trên 17 màn hình |
-| 4.3 | `hinh-4-3-ba-kich-thuoc-man-hinh.png` | Ghép ba ảnh ở ba độ rộng màn hình |
-| A.1 | `hinh-a-1-ngay-kha-dung.png` | Ảnh chụp màn hình quản lý ngày khả dụng |
-| A.2 | `hinh-a-2-doi-mat-khau.png` | Ảnh chụp bước buộc đổi mật khẩu tạm |
-| A.3 | `hinh-a-3-chi-tiet-loai-phong.png` | Ảnh chụp trang chi tiết loại phòng |
+| 3.10 | `hinh-3-10-trang-chu.png` | Chụp tự động — trang chủ, mở sẵn lịch chọn ngày |
+| 3.11 | `hinh-3-11-ba-buoc-dat-phong.png` | Chụp tự động — ghép ba bước của trình tự `/dat-phong` |
+| 3.12 | `hinh-3-12-thanh-toan.png` | Chụp tự động — màn thanh toán của một đơn đặt thật, mã QR lấy từ dịch vụ thật |
+| 3.13 | `hinh-3-13-dashboard.png` | Chụp tự động — trang tổng quan quản trị |
+| 4.1 | `hinh-4-1-do-tuong-phan.png` | Dựng tự động từ màu **đo trên trang đang chạy**, không gõ tay mã màu |
+| 4.2 | `hinh-4-2-quet-kha-nang-tiep-can.png` | Bảng kết quả do `quet-kha-nang-tiep-can.mjs` quét và dựng ra |
+| 4.3 | `hinh-4-3-ba-kich-thuoc-man-hinh.png` | Chụp tự động ở ba độ rộng 390 / 820 / 1440 px rồi ghép |
+| A.1 | `hinh-a-1-ngay-kha-dung.png` | Chụp tự động — màn quản lý phòng và ngày khả dụng |
+| A.2 | `hinh-a-2-doi-mat-khau.png` | Chụp tự động — bước buộc đổi mật khẩu tạm ở lần đăng nhập đầu |
+| A.3 | `hinh-a-3-chi-tiet-loai-phong.png` | Chụp tự động — trang chi tiết loại phòng |
+
+## Vì sao mười tấm ảnh được chụp lại
+
+Mười tấm ảnh giao diện trong quyển báo cáo được chụp lần đầu ngày 20/09/2026.
+Sau mốc đó giao diện đi qua **tám lần sửa liên tiếp**: đổi bảng màu sang xanh
+biển, tự host bộ chữ và thay bộ token, thay emoji bằng icon SVG, dựng lại bố
+cục trang chủ và toàn bộ khu khách theo ngôn ngữ tạp chí, dựng lại khu quản
+trị quanh bảng biểu, đổi ngưỡng hiện thanh điều hướng ngang, và đưa nhãn của ô
+chọn ngày ra ngoài.
+
+Nói cách khác, mọi tấm ảnh giao diện trong quyển đều đang tả một giao diện
+không còn tồn tại. Cả mười tấm đã được chụp lại trên bản đang chạy.
+
+Hai tấm không phải ảnh chụp cũng phải dựng lại vì cùng lý do: Hình 4.1 ghi mã
+màu của nút chính (bảng màu đã đổi từ `#0F5C4C` sang `#0E5C63`), còn Hình 4.2
+là bảng kết quả quét khả năng tiếp cận — quét lại trên giao diện mới cho **0
+vi phạm trên 17 màn hình**, nhưng số lần quy tắc đạt là **353** chứ không phải
+356 như bản cũ, nên mục 4.4.1 của báo cáo đã sửa theo.
 
 ## Những hình đã bỏ và lý do
 
