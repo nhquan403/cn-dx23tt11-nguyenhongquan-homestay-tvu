@@ -2,13 +2,13 @@
 
 | Tệp | Nội dung |
 |---|---|
-| `slide-bao-ve.pptx` | 20 slide, khổ 16:9, tiêu đề 44pt, nội dung 32pt, **có ghi chú người trình bày ở cả 20 slide** |
+| `slide-bao-ve.pptx` | 28 slide, khổ 16:9, tiêu đề 44pt, nội dung 32pt, **có ghi chú người trình bày ở cả 28 slide** |
 | `slide-bao-ve.pdf` | Bản PDF của cùng bộ slide, để chiếu khi máy không có PowerPoint |
 | `poster.pdf` | Poster **60cm × 90cm hướng đứng**, đúng kích thước vật lý, đem đi in là ra đúng cỡ |
 | `poster-xem-truoc.png` | Ảnh xem nhanh của poster, không dùng để in |
 
 Kịch bản nói cho từng slide ở **`docs/kich-ban-bao-ve.md`**, bản in được ở
-`../doc/kich-ban-bao-ve.docx` và `../pdf/kich-ban-bao-ve.pdf` (6 trang), và
+`../doc/kich-ban-bao-ve.docx` và `../pdf/kich-ban-bao-ve.pdf` (17 trang), và
 cũng nằm ngay trong phần ghi chú của từng slide — mở PowerPoint ở chế độ người
 trình bày là thấy lời nói ngay dưới slide, không cần cầm thêm giấy.
 
@@ -21,6 +21,10 @@ màu giao diện thì slide tự đổi theo, không phải sửa hai chỗ.
 pip install python-pptx
 python3 scripts/tao-slide.py thesis/abs/slide-bao-ve.pptx
 python3 scripts/tao-kich-ban.py docs/kich-ban-bao-ve.md
+
+# ban in duoc cua kich ban + ban PDF cua slide
+python3 scripts/dung-ban-in-kich-ban.py
+libreoffice --headless --convert-to pdf --outdir thesis/pdf thesis/abs/slide-bao-ve.pptx
 
 npm install playwright          # poster dựng bằng Chromium
 node scripts/tao-poster.mjs thesis/abs/poster.pdf

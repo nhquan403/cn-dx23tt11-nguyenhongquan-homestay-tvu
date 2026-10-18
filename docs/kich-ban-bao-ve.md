@@ -302,7 +302,7 @@ là chỗ hội đồng chấm điểm.
 
 ## Slide 27 — Liên kết
 
-**Trên slide:** Video thuyết trình:  «DÁN LIÊN KẾT GOOGLE DRIVE VÀO ĐÂY» · Mã nguồn và toàn bộ tài liệu: · github.com/nhquan403/cn-dx23tt11-nguyenhongquan-homestay-tvu · Bản trình diễn hệ thống 10 phút: thesis/abs/ trong kho mã nguồn
+**Trên slide:** Video thuyết trình: · drive.google.com/file/d/1ROd5S2zjg6JL-6JjTNNbQqxwpGj-5YCJ/view · Mã nguồn và toàn bộ tài liệu: · github.com/nhquan403/cn-dx23tt11-nguyenhongquan-homestay-tvu · Bản trình diễn hệ thống 10 phút: thesis/abs/ trong kho mã nguồn
 
 *(51 từ · ~20 giây)*
 

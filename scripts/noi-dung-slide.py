@@ -312,7 +312,8 @@ SLIDES = [
   "để chủ nhà vẫn bán trên sàn mà không lo trùng lịch."),
 
  ("Liên kết",
-  ["Video thuyết trình:  «DÁN LIÊN KẾT GOOGLE DRIVE VÀO ĐÂY»",
+  ["Video thuyết trình:",
+   "drive.google.com/file/d/1ROd5S2zjg6JL-6JjTNNbQqxwpGj-5YCJ/view",
    "Mã nguồn và toàn bộ tài liệu:",
    "github.com/nhquan403/cn-dx23tt11-nguyenhongquan-homestay-tvu",
    "Bản trình diễn hệ thống 10 phút: thesis/abs/ trong kho mã nguồn"],
