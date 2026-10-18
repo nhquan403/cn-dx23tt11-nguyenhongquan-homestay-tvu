@@ -15,7 +15,8 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 MSSV='170123592'
-HO_TEN='Nguyen Hong Quan'
+HO_TEN='Nguyễn Hồng Quân'
+HO_TEN_KHONG_DAU='Nguyen Hong Quan'
 LOP='DX23TT11'
 KHO='https://github.com/nhquan403/cn-dx23tt11-nguyenhongquan-homestay-tvu'
 
@@ -57,21 +58,61 @@ then
 fi
 
 rm -rf "$RA"; mkdir -p "$RA/$TEN"
-cp "$BAO_CAO" "$RA/$TEN/Bao cao do an - ${HO_TEN}.docx"
-cp "$SLIDE"   "$RA/$TEN/Ban thuyet trinh - ${HO_TEN}.pptx"
-cat > "$RA/$TEN/Lien ket ma nguon.txt" <<EOF
-MÃ NGUỒN ĐỒ ÁN
-${KHO}
+cp "$BAO_CAO" "$RA/$TEN/Bao cao do an - ${HO_TEN_KHONG_DAU}.docx"
+cp "$SLIDE"   "$RA/$TEN/Ban thuyet trinh - ${HO_TEN_KHONG_DAU}.pptx"
 
-Kho để CÔNG KHAI nên mở được ngay, không cần xin quyền truy cập.
-Toàn bộ mã nguồn, tài liệu, bản trình diễn và các tệp đã nộp đều nằm trong kho.
+# Mã nguồn: lấy từ chính commit đang đứng, nên không bao giờ dính tệp rác,
+# tệp build hay tệp .env — git chỉ xuất ra những gì đã được theo dõi.
+# Bỏ thesis/ vì đó là các bản đã xuất, mà hai bản cần nộp đã nằm ngay cạnh đây.
+mkdir -p "$RA/$TEN/Ma nguon"
+git archive HEAD $(git ls-tree --name-only HEAD | grep -v '^thesis$') \
+    | tar -x -C "$RA/$TEN/Ma nguon"
+# Hình minh hoạ của báo cáo nặng 15 MB mà đã in nguyên trong quyển .docx ngay
+# cạnh đây, chép thêm một lần nữa chỉ làm tệp nộp nặng gấp đôi mà không thêm gì.
+rm -rf "$RA/$TEN/Ma nguon/docs/images"
+
+cat > "$RA/$TEN/Doc truoc khi cham.txt" <<EOF
+ĐỒ ÁN THỰC TẬP CHUYÊN NGÀNH
+XÂY DỰNG WEBSITE GIỚI THIỆU VÀ ĐẶT PHÒNG HOMESTAY — HOMESTAY TVH
 
 Sinh viên thực hiện : ${HO_TEN}
 Mã số sinh viên     : ${MSSV}
 Lớp                 : ${LOP}
+
+TỆP NÉN NÀY GỒM
+
+  Bao cao do an - ${HO_TEN_KHONG_DAU}.docx
+      Quyển báo cáo trọn bộ 98 trang: trang bìa, nhận xét, mục lục,
+      47 trang nội dung, tài liệu tham khảo và phụ lục.
+
+  Ban thuyet trinh - ${HO_TEN_KHONG_DAU}.pptx
+      28 slide, có ghi chú người trình bày ở từng slide.
+      Liên kết video thuyết trình nằm ở slide 27 — "Liên kết".
+
+  Ma nguon/
+      Toàn bộ mã nguồn: backend (Java 21, Spring Boot 3.5),
+      frontend (Angular 21, Tailwind CSS v4), docker-compose,
+      script dựng tài liệu và tài liệu kỹ thuật.
+      Cách chạy xem Ma nguon/README.md.
+
+KHO MÃ NGUỒN TRỰC TUYẾN
+
+  ${KHO}
+
+  Kho để CÔNG KHAI nên mở được ngay, không cần xin quyền truy cập.
+  Thư mục ảnh minh hoạ của tài liệu (docs/images) và các bản đã xuất
+  (thesis/) không chép vào đây cho tệp nén nhẹ — xem trên kho nếu cần.
 EOF
 
-( cd "$RA" && zip -q -r "${TEN}.zip" "$TEN" && rm -rf "$TEN" )
+cd "$RA"
+if command -v rar >/dev/null 2>&1; then
+    rar a -r -idq "${TEN}.rar" "$TEN"
+    GOI="${TEN}.rar"
+else
+    echo "  (không có lệnh rar — đóng gói .zip thay thế)" >&2
+    zip -q -r "${TEN}.zip" "$TEN"
+    GOI="${TEN}.zip"
+fi
+rm -rf "$TEN"
 
-echo "  -> $RA/${TEN}.zip  ($(du -h "$RA/${TEN}.zip" | cut -f1))"
-unzip -l "$RA/${TEN}.zip" | sed -n '4,8p'
+echo "  -> $RA/${GOI}  ($(du -h "$GOI" | cut -f1))"
