@@ -40,3 +40,6 @@ thesis/abs/*.webm
 # Thu muc tam cua Playwright luc dang quay. Script tu xoa khi quay xong; dong
 # nay la de phong truong hop quay hong giua chung va no con lai.
 thesis/abs/.video-tmp/
+
+# Tep nen de nop LMS — dung lai duoc bang scripts/dong-goi-nop-bai.sh
+thesis/nop-bai/

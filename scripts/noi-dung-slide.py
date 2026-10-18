@@ -153,6 +153,16 @@ SLIDES = [
   "Kiến trúc tách rời cho phép ứng dụng di động dùng lại nguyên giao diện lập "
   "trình ứng dụng hiện có, không phải viết lại tầng máy chủ."),
 
+ ("Liên kết",
+  ["Video thuyết trình:  «DÁN LIÊN KẾT GOOGLE DRIVE VÀO ĐÂY»",
+   "Mã nguồn và toàn bộ tài liệu:",
+   "github.com/nhquan403/cn-dx23tt11-nguyenhongquan-homestay-tvu",
+   "Bản trình diễn hệ thống 10 phút: thesis/abs/ trong kho mã nguồn"],
+  None,
+  "Slide này để hội đồng mở lại bất cứ lúc nào: video thuyết trình, kho mã "
+  "nguồn và bản trình diễn hệ thống. Kho mã nguồn để công khai nên thầy cô "
+  "mở được ngay, không cần xin quyền."),
+
  ("__THANKS__", [], None,
   "Em xin cảm ơn thầy cô đã lắng nghe. Em sẵn sàng trả lời câu hỏi."),
 ]

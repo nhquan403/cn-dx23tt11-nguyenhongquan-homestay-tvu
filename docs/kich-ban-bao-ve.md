@@ -175,7 +175,15 @@ nên **10–12 phút**. Với 20 slide, trung bình **35 giây một slide**. Ba
 
 > Kiến trúc tách rời cho phép ứng dụng di động dùng lại nguyên giao diện lập trình ứng dụng hiện có, không phải viết lại tầng máy chủ.
 
-## Slide 20 — Cảm ơn
+## Slide 20 — Liên kết
+
+**Trên slide:** Video thuyết trình:  «DÁN LIÊN KẾT GOOGLE DRIVE VÀO ĐÂY» · Mã nguồn và toàn bộ tài liệu: · github.com/nhquan403/cn-dx23tt11-nguyenhongquan-homestay-tvu · Bản trình diễn hệ thống 10 phút: thesis/abs/ trong kho mã nguồn
+
+**Nói:**
+
+> Slide này để hội đồng mở lại bất cứ lúc nào: video thuyết trình, kho mã nguồn và bản trình diễn hệ thống. Kho mã nguồn để công khai nên thầy cô mở được ngay, không cần xin quyền.
+
+## Slide 21 — Cảm ơn
 
 **Nói:**
 
