@@ -41,6 +41,19 @@ SLIDES = [
   "hai khách nhắn gần như cùng lúc thì đều được trả lời là còn phòng. Còn nếu "
   "đưa lên sàn trung gian thì mất 15 đến 20 phần trăm mỗi đơn."),
 
+ ("Vì sao không đưa lên sàn có sẵn",
+  ["Sàn thu 15–20% mỗi đơn — với homestay nhỏ là phần lớn lợi nhuận",
+   "Chủ nhà không sở hữu dữ liệu khách của chính mình",
+   "Vẫn phải tự giữ một lịch riêng cho khách đặt trực tiếp"],
+  None,
+  "Một câu hỏi hợp lý là vì sao không đưa luôn lên Booking hay Agoda cho nhanh. "
+  "Em có khảo sát và thấy ba vấn đề. Thứ nhất là hoa hồng 15 đến 20 phần trăm "
+  "mỗi đơn, với một homestay nhỏ thì đó là phần lớn lợi nhuận. Thứ hai, chủ nhà "
+  "không sở hữu dữ liệu khách của chính mình, nên không xây được tệp khách quen. "
+  "Thứ ba, và đây mới là điều quan trọng: kể cả bán trên sàn thì chủ nhà vẫn "
+  "phải giữ một lịch riêng cho khách đặt trực tiếp qua tin nhắn — tức là bài "
+  "toán trùng lịch vẫn còn nguyên, chỉ là chuyển chỗ."),
+
  ("Bài toán cốt lõi: không được bán trùng phòng",
   ["Hai khách liên hệ gần như cùng lúc",
    "Chủ nhà trả lời còn phòng cho cả hai",
@@ -77,6 +90,17 @@ SLIDES = [
   "phải một lời hứa. Hệ thống gồm ba khối: trang bán hàng cho khách, khu quản "
   "trị cho chủ homestay, và giao diện lập trình ứng dụng nối hai khối đó. "
   "Khách đặt cọc bằng mã QR và hệ thống tự xác nhận khi tiền về."),
+
+ ("Phân tích chức năng: 11 use case, 4 tác nhân",
+  [], "hinh-3-1-use-case.png",
+  "Về phân tích chức năng, hệ thống có mười một use case và bốn tác nhân. Cột "
+  "trái là nhóm chức năng của khách: tìm phòng, đặt phòng, thanh toán cọc, tra "
+  "cứu và huỷ đơn, xem lại đơn đã đặt, viết đánh giá. Cột phải là của quản trị "
+  "viên: đối soát thanh toán, quản lý đơn, báo cáo doanh thu, đặt ngày khả dụng, "
+  "soạn nội dung trang chủ. Em xin lưu ý quan hệ kế thừa ở góc trái: khách có "
+  "tài khoản làm được mọi thao tác của khách vãng lai và chỉ thêm một chức năng "
+  "là xem lại toàn bộ đơn đã đặt — nên hệ thống không bắt ai phải đăng ký mới "
+  "đặt được phòng."),
 
  ("Công nghệ sử dụng",
   ["Máy chủ: Java 21, Spring Boot 3.5",
@@ -140,6 +164,14 @@ SLIDES = [
   "Thứ hai, dữ liệu mẫu nằm ngoài lịch sử migration, nên bản triển khai thật và "
   "bản trình diễn dùng chung một lược đồ mà không lẫn dữ liệu."),
 
+ ("Lược đồ tổng thể: 20 thực thể",
+  [], "hinh-3-2-erd-tong-the.png",
+  "Đây là lược đồ tổng thể, hai mươi thực thể ánh xạ tới hai mươi trong hai mươi "
+  "mốt bảng. Em chia thành các nhóm: nhóm phòng và tiện nghi, nhóm đơn đặt phòng, "
+  "nhóm thanh toán, nhóm nội dung trang chủ, và nhóm người dùng. Thiết kế theo "
+  "hướng mỗi nhóm có một bảng gốc và các bảng phụ trỏ về, nên thêm một loại tiện "
+  "nghi hay một kiểu nội dung mới là thêm dòng chứ không phải sửa bảng."),
+
  ("Máy trạng thái đơn đặt phòng",
   [], "hinh-3-5-trang-thai-don.png",
   "Đơn đặt phòng đi qua tám trạng thái. Em xin lưu ý hai đường chuyển ở phía "
@@ -148,6 +180,16 @@ SLIDES = [
   "đơn đã hết hạn giữ chỗ, nhưng tiền thì vẫn vào tài khoản thật. Nếu không có "
   "hai đường này thì tiền đã vào mà hệ thống coi như không có gì xảy ra. Em "
   "thiết kế sao cho không có nhánh nào để tiền của khách biến mất im lặng."),
+
+ ("Nhánh khó nhất: tiền về muộn",
+  [], "hinh-3-8-tuan-tu-tien-ve-muon.png",
+  "Em muốn dừng ở một nhánh mà em nghĩ là khó nhất trong cả hệ thống. Khách "
+  "chuyển khoản chậm, đơn đã hết hạn giữ chỗ mười lăm phút, nhưng tiền thì vẫn "
+  "vào tài khoản thật. Nếu xử lý ngây thơ thì hệ thống sẽ bỏ qua webhook vì đơn "
+  "không còn hiệu lực, và tiền của khách biến mất im lặng — khách mất tiền mà "
+  "không có phòng. Sơ đồ này là cách em xử lý: webhook về muộn vẫn được ghi "
+  "nhận, đơn quay lại trạng thái chờ đối soát, và chủ nhà thấy nó trên màn hình "
+  "đối soát để quyết định hoàn tiền hay xếp phòng khác."),
 
  ("Thanh toán: mã QR và webhook",
   [], "hinh-3-7-tuan-tu-thanh-toan.png",
@@ -159,6 +201,33 @@ SLIDES = [
   "nhấn: trước khi cho một đồng nào ảnh hưởng tới dữ liệu, hệ thống kiểm năm "
   "lớp — khoá xác thực của webhook, đúng số tài khoản nhận, đúng chiều tiền "
   "vào, chống xử lý trùng một giao dịch, và cuối cùng là đúng số tiền."),
+
+ ("Thiết kế API: 82 thao tác trên 65 đường dẫn",
+  ["Nhóm công khai: tìm phòng, đặt phòng, tra cứu đơn",
+   "Nhóm khách có tài khoản: xem lại đơn đã đặt",
+   "Nhóm quản trị: đơn, thanh toán, danh mục, nội dung, báo cáo",
+   "Nhóm webhook: chỉ nhà cung cấp thanh toán gọi, có khoá riêng"],
+  None,
+  "Giao diện lập trình ứng dụng có tám mươi hai thao tác trên sáu mươi lăm "
+  "đường dẫn, chia bốn nhóm theo quyền. Nguyên tắc em đặt ra là quyền gắn vào "
+  "nhóm đường dẫn chứ không gắn vào từng thao tác lẻ, vì gắn lẻ thì chỉ cần "
+  "quên một chỗ là hở. Riêng nhóm webhook tách hẳn ra, dùng khoá riêng chứ "
+  "không dùng token người dùng, vì người gọi nó là máy chứ không phải người."),
+
+ ("Mô hình bảo mật: mặc định từ chối tất cả",
+  ["Cấu hình kết thúc bằng một quy tắc từ chối tất cả",
+   "Quên khai một đường dẫn mới thì nó bị CHẶN, không bị hở",
+   "Giới hạn tần suất theo 9 khoá: địa chỉ mạng, danh tính, mã đơn",
+   "9 kịch bản tấn công thử trên hệ thống đang chạy — tất cả đều bị chặn"],
+  None,
+  "Về bảo mật, điểm thiết kế quan trọng nhất nằm ở dòng đầu: cấu hình phân "
+  "quyền của em kết thúc bằng một quy tắc từ chối tất cả. Nghĩa là mặc định mọi "
+  "đường dẫn đều bị chặn và phải khai tường minh mới mở ra. Nếu sau này em thêm "
+  "một chức năng mới mà quên khai quyền, nó sẽ bị chặn chứ không bị hở — hệ "
+  "thống hỏng theo hướng an toàn. Ngoài ra em giới hạn tần suất theo chín khoá "
+  "khác nhau, và em thử chín kịch bản tấn công ngay trên hệ thống đang chạy: "
+  "giả mạo địa chỉ, gọi endpoint quản trị bằng token khách, dùng token cũ sau "
+  "khi đổi mật khẩu, gửi lại webhook, chèn thẻ kịch bản. Tất cả đều bị chặn."),
 
  ("Giao diện khách: ba bước đặt phòng",
   [], "hinh-3-11-ba-buoc-dat-phong.png",
@@ -192,6 +261,17 @@ SLIDES = [
   "trung thực: lần chạy đầy đủ gần nhất xanh 129 ca; bảy ca của lớp kiểm thử nút "
   "mô phỏng chuyển khoản bổ sung sau đó em mới kiểm chứng bằng cách gọi trực "
   "tiếp qua HTTP, chưa qua một lần chạy đầy đủ cả 136 ca."),
+
+ ("Mười một lỗi thực tế đã tìm ra và sửa",
+  [], "hinh-4-1-do-tuong-phan.png",
+  "Em muốn nói một chút về mười một lỗi thực tế, vì em nghĩ chỗ này nói lên "
+  "nhiều điều hơn là con số ca kiểm thử. Hình trên slide là một trong số đó: "
+  "nút chính của trang có độ tương phản chỉ 2,27 trên 1, dưới xa ngưỡng 4,5 "
+  "của chuẩn khả năng tiếp cận, do một quy tắc CSS nằm ngoài tầng. Sau khi sửa "
+  "thì lên 7,69. Điều đáng nói là lỗi này biên dịch vẫn thành công, kiểm thử "
+  "vẫn xanh, và chỉ lộ ra khi em chụp màn hình bằng trình duyệt thật. Bài học "
+  "em rút ra là một màn hình chưa ai thao tác tới là một màn hình chưa được "
+  "kiểm — và đó là lý do em bổ sung bước chụp ảnh tự động toàn bộ màn hình."),
 
  ("Khả năng tiếp cận và triển khai",
   ["Quét 17 màn hình: 0 vi phạm WCAG 2.1 mức A và AA, 353 lần quy tắc đạt",
@@ -245,6 +325,28 @@ SLIDES = [
   "Phần trình bày của em đến đây là hết. Em xin cảm ơn thầy cô đã lắng nghe, và "
   "em sẵn sàng trả lời câu hỏi của thầy cô."),
 ]
+
+# ── Duong ngan cho buoi bao ve ─────────────────────────────────────────────
+#
+# Ban day du dung cho video thuyet trình, noi het duoc vi video khong bi bam
+# gio gat nhu buoi bao ve. Con hoi dong chi cho 10-20 phut KE CA hoi dap, nen
+# phan trinh bay phai gon lai.
+#
+# Cac slide ghi ten o day la slide BO QUA khi noi duong ngan. Chon theo nguyen
+# tac: bo nhung slide mo ta (giao dien trong the nao, co bao nhieu man hinh),
+# GIU nhung slide tra loi cau hoi "vi sao" — vi do la cho hoi dong cham diem.
+MO_RONG = {
+    'Vì sao không đưa lên sàn có sẵn',
+    'Kiến trúc tổng thể',
+    'Lược đồ tổng thể: 20 thực thể',
+    'Cơ sở dữ liệu: 21 bảng, 9 migration',
+    'Nhánh khó nhất: tiền về muộn',
+    'Thiết kế API: 82 thao tác trên 65 đường dẫn',
+    'Giao diện khách: ba bước đặt phòng',
+    'Khu quản trị: 11 màn hình',
+    'Máy trạng thái đơn đặt phòng',
+    'Mười một lỗi thực tế đã tìm ra và sửa',
+}
 
 # ── Du kien cau hoi cua hoi dong ────────────────────────────────────────────
 #

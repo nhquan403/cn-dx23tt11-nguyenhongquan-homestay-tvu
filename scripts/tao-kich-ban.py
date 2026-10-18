@@ -19,14 +19,6 @@ TEN = {'__COVER__': 'Bìa', '__THANKS__': 'Cảm ơn'}
 # khong kip hieu, cham hon thi chay qua gio.
 TOC_DO = 150
 
-# (ten doan, slide dau, slide cuoi) — tinh theo so thu tu slide, bat dau tu 1
-DOAN = [
-    ('Mở đầu và bài toán', 1, 6),
-    ('Vấn đề kỹ thuật then chốt', 7, 10),
-    ('Thiết kế và cài đặt', 11, 15),
-    ('Kết quả và kết luận', 16, 21),
-]
-
 DAU = """# Kịch bản nói khi bảo vệ
 
 Sinh tự động từ `scripts/noi-dung-slide.py` bằng `scripts/tao-kich-ban.py`.
@@ -37,26 +29,28 @@ Phần lời nói ở đây **giống hệt** phần ghi chú người trình b�
 PowerPoint. Mở chế độ người trình bày là thấy lời nói ngay dưới slide; tệp này
 để in ra cầm theo hoặc đọc lại khi tập.
 
-**Thời lượng.** Hội đồng cho 10–20 phút *kể cả hỏi đáp*. Bản đầy đủ này dài
-{tu} từ trên {so_slide} slide, tức khoảng **{day_du} phút** nếu nói ở tốc độ
-{toc_do} từ mỗi phút.
+## Hai bản, một bộ slide
 
-Kịch bản được viết **dài hơn khung 10–12 phút một chút, có chủ đích**: thừa chữ
-thì lúc nói bỏ bớt được, còn thiếu chữ thì đứng trên bục mới biết là không có
-gì để nói. Mỗi slide đều ghi sẵn số từ và số giây để bạn biết mình đang vượt ở
-đâu.
+Bộ slide có {tong} slide. Bạn **không nói hết** khi bảo vệ.
 
 {bang}
-> **Muốn gọn còn ~11 phút** thì cắt khoảng {can_cat} từ, và cắt ở ba slide mô tả
-> (14, 15, 19) cùng phần dẫn nhập của slide 3. **Đừng cắt slide 9 và 10** — hai
-> slide đó là phần có giá trị nhất của đề tài, và cũng là chỗ hội đồng sẽ hỏi.
->
+**Khi bảo vệ** đi theo *đường ngắn*: hội đồng cho 10–20 phút *kể cả hỏi đáp*,
+nên phần trình bày phải gọn trong khoảng {ngan_phut} phút để còn chỗ cho phần
+hỏi. Những slide đánh dấu `[bản đầy đủ]` thì **bấm qua, không dừng lại nói**.
+
+**Khi quay video nộp LMS** thì nói hết cả {tong} slide, vì video không bị bấm
+giờ gắt như buổi bảo vệ và nói đủ thì người chấm thấy được chiều sâu của đồ án.
+
+Nguyên tắc chọn đường ngắn: bỏ những slide **mô tả** (giao diện trông thế nào,
+có bao nhiêu màn hình), giữ những slide trả lời câu hỏi **"vì sao"** — vì đó
+là chỗ hội đồng chấm điểm.
+
 > **Cách tập:** đọc to một lượt và bấm giờ thật. Đọc thầm bao giờ cũng nhanh
-> hơn nói thật khoảng một phần ba.
+> hơn nói thật khoảng một phần ba. Mỗi slide dưới đây đều ghi sẵn số từ và số
+> giây để bạn biết mình đang vượt ở đâu.
 
 ---
 """
-
 
 def dem_tu(s):
     return len(s.split())
@@ -67,26 +61,24 @@ def main(out):
     exec(open(os.path.join(ROOT, 'scripts', 'noi-dung-slide.py'), encoding='utf-8').read(), ns)
     slides, hoi_dap = ns['SLIDES'], ns.get('HOI_DAP', [])
 
+    mo_rong = ns.get('MO_RONG', set())
     tu_slide = [dem_tu(n) for _, _, _, n in slides]
-    tong = sum(tu_slide)
+    tong_tu = sum(tu_slide)
+    ngan_tu = sum(t for (ti, _, _, _), t in zip(slides, tu_slide) if ti not in mo_rong)
+    so_ngan = sum(1 for ti, _, _, _ in slides if ti not in mo_rong)
 
-    hang = ['| Đoạn | Slide | Số từ | Thời lượng |', '|---|---|---:|---:|']
-    for ten, a, b in DOAN:
-        t = sum(tu_slide[a - 1:b])
-        hang.append('| %s | %d–%d | %d | ~%.1f phút |' % (ten, a, b, t, t / TOC_DO))
-    hang.append('| **Cộng** | **1–%d** | **%d** | **~%.1f phút** |'
-                % (len(slides), tong, tong / TOC_DO))
+    hang = ['| Bản | Slide | Số từ | Thời lượng |', '|---|---:|---:|---:|',
+            '| **Đường ngắn** — nói khi bảo vệ | %d | %d | **~%.0f phút** |'
+            % (so_ngan, ngan_tu, ngan_tu / TOC_DO),
+            '| Bản đầy đủ — dùng cho video | %d | %d | ~%.0f phút |'
+            % (len(slides), tong_tu, tong_tu / TOC_DO)]
 
-    # 11 phut la muc nham: hoi dong cho 10-20 phut ke ca hoi dap, de lai
-    # khoang mot nua thoi gian cho phan hoi.
-    can_cat = max(0, tong - 11 * TOC_DO)
-    parts = [DAU.format(
-        day_du='%.0f' % (tong / TOC_DO),
-        toc_do=TOC_DO, tu=tong, so_slide=len(slides),
-        bang='\n'.join(hang) + '\n', can_cat=can_cat)]
+    parts = [DAU.format(tong=len(slides), bang='\n'.join(hang) + '\n',
+                        ngan_phut='%.0f' % (ngan_tu / TOC_DO))]
 
     for i, (title, bullets, img, notes) in enumerate(slides, 1):
-        parts.append('## Slide %d — %s\n' % (i, TEN.get(title, title)))
+        nhan = '  `[bản đầy đủ]`' if title in mo_rong else ''
+        parts.append('## Slide %d — %s%s\n' % (i, TEN.get(title, title), nhan))
         if bullets:
             parts.append('**Trên slide:** ' + ' · '.join(bullets) + '\n')
         if img:
@@ -118,8 +110,10 @@ def main(out):
 
     open(out, 'w', encoding='utf-8').write('\n'.join(parts))
     print('  -> %s' % out)
-    print('     %d slide · %d từ · ~%.1f phút ở tốc độ %d từ/phút'
-          % (len(slides), tong, tong / TOC_DO, TOC_DO))
+    print('     đường ngắn: %d slide · %d từ · ~%.1f phút'
+          % (so_ngan, ngan_tu, ngan_tu / TOC_DO))
+    print('     bản đầy đủ: %d slide · %d từ · ~%.1f phút (tốc độ %d từ/phút)'
+          % (len(slides), tong_tu, tong_tu / TOC_DO, TOC_DO))
     print('     %d câu hỏi dự kiến kèm câu trả lời' % len(hoi_dap))
 
 

@@ -8,29 +8,29 @@ Phần lời nói ở đây **giống hệt** phần ghi chú người trình b�
 PowerPoint. Mở chế độ người trình bày là thấy lời nói ngay dưới slide; tệp này
 để in ra cầm theo hoặc đọc lại khi tập.
 
-**Thời lượng.** Hội đồng cho 10–20 phút *kể cả hỏi đáp*. Bản đầy đủ này dài
-2002 từ trên 21 slide, tức khoảng **13 phút** nếu nói ở tốc độ
-150 từ mỗi phút.
+## Hai bản, một bộ slide
 
-Kịch bản được viết **dài hơn khung 10–12 phút một chút, có chủ đích**: thừa chữ
-thì lúc nói bỏ bớt được, còn thiếu chữ thì đứng trên bục mới biết là không có
-gì để nói. Mỗi slide đều ghi sẵn số từ và số giây để bạn biết mình đang vượt ở
-đâu.
+Bộ slide có 28 slide. Bạn **không nói hết** khi bảo vệ.
 
-| Đoạn | Slide | Số từ | Thời lượng |
-|---|---|---:|---:|
-| Mở đầu và bài toán | 1–6 | 509 | ~3.4 phút |
-| Vấn đề kỹ thuật then chốt | 7–10 | 462 | ~3.1 phút |
-| Thiết kế và cài đặt | 11–15 | 486 | ~3.2 phút |
-| Kết quả và kết luận | 16–21 | 545 | ~3.6 phút |
-| **Cộng** | **1–21** | **2002** | **~13.3 phút** |
+| Bản | Slide | Số từ | Thời lượng |
+|---|---:|---:|---:|
+| **Đường ngắn** — nói khi bảo vệ | 18 | 1806 | **~12 phút** |
+| Bản đầy đủ — dùng cho video | 28 | 2784 | ~19 phút |
 
-> **Muốn gọn còn ~11 phút** thì cắt khoảng 352 từ, và cắt ở ba slide mô tả
-> (14, 15, 19) cùng phần dẫn nhập của slide 3. **Đừng cắt slide 9 và 10** — hai
-> slide đó là phần có giá trị nhất của đề tài, và cũng là chỗ hội đồng sẽ hỏi.
->
+**Khi bảo vệ** đi theo *đường ngắn*: hội đồng cho 10–20 phút *kể cả hỏi đáp*,
+nên phần trình bày phải gọn trong khoảng 12 phút để còn chỗ cho phần
+hỏi. Những slide đánh dấu `[bản đầy đủ]` thì **bấm qua, không dừng lại nói**.
+
+**Khi quay video nộp LMS** thì nói hết cả 28 slide, vì video không bị bấm
+giờ gắt như buổi bảo vệ và nói đủ thì người chấm thấy được chiều sâu của đồ án.
+
+Nguyên tắc chọn đường ngắn: bỏ những slide **mô tả** (giao diện trông thế nào,
+có bao nhiêu màn hình), giữ những slide trả lời câu hỏi **"vì sao"** — vì đó
+là chỗ hội đồng chấm điểm.
+
 > **Cách tập:** đọc to một lượt và bấm giờ thật. Đọc thầm bao giờ cũng nhanh
-> hơn nói thật khoảng một phần ba.
+> hơn nói thật khoảng một phần ba. Mỗi slide dưới đây đều ghi sẵn số từ và số
+> giây để bạn biết mình đang vượt ở đâu.
 
 ---
 
@@ -64,7 +64,17 @@ gì để nói. Mỗi slide đều ghi sẵn số từ và số giây để bạ
 
 > Du lịch homestay ở Trà Vinh đang phát triển, nhưng phần lớn cơ sở là hộ gia đình tự vận hành. Chủ nhà nhận đặt phòng qua nhiều kênh tin nhắn khác nhau, mỗi kênh là một danh sách riêng nằm trong trí nhớ. Lưu đồ trên slide là quy trình thủ công hiện nay, và ba ô tô đỏ là ba chỗ hỏng: tra cứu lịch bằng trí nhớ, không có bản ghi tập trung nên mất sổ là mất hết, và nguy hiểm nhất là hai khách nhắn gần như cùng lúc thì đều được trả lời là còn phòng. Còn nếu đưa lên sàn trung gian thì mất 15 đến 20 phần trăm mỗi đơn.
 
-## Slide 4 — Bài toán cốt lõi: không được bán trùng phòng
+## Slide 4 — Vì sao không đưa lên sàn có sẵn  `[bản đầy đủ]`
+
+**Trên slide:** Sàn thu 15–20% mỗi đơn — với homestay nhỏ là phần lớn lợi nhuận · Chủ nhà không sở hữu dữ liệu khách của chính mình · Vẫn phải tự giữ một lịch riêng cho khách đặt trực tiếp
+
+*(114 từ · ~46 giây)*
+
+**Nói:**
+
+> Một câu hỏi hợp lý là vì sao không đưa luôn lên Booking hay Agoda cho nhanh. Em có khảo sát và thấy ba vấn đề. Thứ nhất là hoa hồng 15 đến 20 phần trăm mỗi đơn, với một homestay nhỏ thì đó là phần lớn lợi nhuận. Thứ hai, chủ nhà không sở hữu dữ liệu khách của chính mình, nên không xây được tệp khách quen. Thứ ba, và đây mới là điều quan trọng: kể cả bán trên sàn thì chủ nhà vẫn phải giữ một lịch riêng cho khách đặt trực tiếp qua tin nhắn — tức là bài toán trùng lịch vẫn còn nguyên, chỉ là chuyển chỗ.
+
+## Slide 5 — Bài toán cốt lõi: không được bán trùng phòng
 
 **Trên slide:** Hai khách liên hệ gần như cùng lúc · Chủ nhà trả lời còn phòng cho cả hai · Sai sót chỉ lộ ra vào ngày nhận phòng
 
@@ -74,7 +84,7 @@ gì để nói. Mỗi slide đều ghi sẵn số từ và số giây để bạ
 
 > Em muốn dừng lại ở rủi ro thứ ba, vì nó mới là bài toán kỹ thuật thật sự. Đây không phải lỗi bất cẩn của chủ nhà. Đây là hệ quả tất yếu của việc quản lý lịch phòng bằng trí nhớ con người: giữa lúc nhìn vào sổ và lúc ghi vào sổ luôn có một khoảng trống thời gian, và trong khoảng đó người thứ hai chen vào được. Hậu quả thì chỉ lộ ra vào ngày nhận phòng, khi khách đã tới nơi — lúc đó không còn cách nào sửa.
 
-## Slide 5 — Quy ước nửa mở cho khoảng ngày
+## Slide 6 — Quy ước nửa mở cho khoảng ngày
 
 **Trên slide:** Trả phòng 10/03 và nhận phòng 10/03 KHÔNG chồng lấn · Viết là [nhận, trả) — chứa ngày đầu, không chứa ngày cuối · Sai quy ước này là mất một đêm bán được của mỗi phòng
 
@@ -86,7 +96,7 @@ gì để nói. Mỗi slide đều ghi sẵn số từ và số giây để bạ
 
 > Trước khi nói chuyện chống đặt trùng, phải thống nhất với nhau thế nào là trùng. Hai thanh trên hình chạm nhau tại ngày mùng mười tháng ba, nhưng chúng không chồng lấn: khách thứ nhất trả phòng buổi sáng, khách thứ hai nhận phòng buổi chiều, cùng một ngày mà vẫn bán được cho cả hai. Em dùng quy ước nửa mở, viết là ngoặc vuông mở ngoặc tròn đóng, nghĩa là chứa ngày nhận nhưng không chứa ngày trả. Nếu làm sai quy ước này thì mỗi phòng mất một đêm bán được ở mỗi lượt khách — một lỗi nhỏ trên giấy nhưng rất tốn tiền.
 
-## Slide 6 — Mục tiêu và phạm vi
+## Slide 7 — Mục tiêu và phạm vi
 
 **Trên slide:** Ba khối: trang khách, khu quản trị, giao diện lập trình ứng dụng · Đặt cọc qua mã QR, webhook tự xác nhận · Không có nhánh nào để tiền của khách biến mất im lặng · Một lệnh là đủ để chạy toàn hệ thống kèm dữ liệu mẫu
 
@@ -96,7 +106,17 @@ gì để nói. Mỗi slide đều ghi sẵn số từ và số giây để bạ
 
 > Từ bài toán đó, đồ án đặt ra tám mục đích cụ thể, và điều em cố giữ là mỗi mục đích phải đi kèm một tiêu chí nghiệm thu đo được bằng lệnh, chứ không phải một lời hứa. Hệ thống gồm ba khối: trang bán hàng cho khách, khu quản trị cho chủ homestay, và giao diện lập trình ứng dụng nối hai khối đó. Khách đặt cọc bằng mã QR và hệ thống tự xác nhận khi tiền về.
 
-## Slide 7 — Công nghệ sử dụng
+## Slide 8 — Phân tích chức năng: 11 use case, 4 tác nhân
+
+**Hình:** `hinh-3-1-use-case.png`
+
+*(123 từ · ~49 giây)*
+
+**Nói:**
+
+> Về phân tích chức năng, hệ thống có mười một use case và bốn tác nhân. Cột trái là nhóm chức năng của khách: tìm phòng, đặt phòng, thanh toán cọc, tra cứu và huỷ đơn, xem lại đơn đã đặt, viết đánh giá. Cột phải là của quản trị viên: đối soát thanh toán, quản lý đơn, báo cáo doanh thu, đặt ngày khả dụng, soạn nội dung trang chủ. Em xin lưu ý quan hệ kế thừa ở góc trái: khách có tài khoản làm được mọi thao tác của khách vãng lai và chỉ thêm một chức năng là xem lại toàn bộ đơn đã đặt — nên hệ thống không bắt ai phải đăng ký mới đặt được phòng.
+
+## Slide 9 — Công nghệ sử dụng
 
 **Trên slide:** Máy chủ: Java 21, Spring Boot 3.5 · Giao diện: Angular 21, Tailwind CSS v4 · Cơ sở dữ liệu: PostgreSQL 16 — chọn vì một lý do rất cụ thể · Đóng gói: Docker Compose, bốn dịch vụ
 
@@ -106,7 +126,7 @@ gì để nói. Mỗi slide đều ghi sẵn số từ và số giây để bạ
 
 > Về công nghệ, em dùng Java 21 với Spring Boot cho tầng máy chủ, Angular 21 cho tầng giao diện, và đóng gói bằng Docker Compose. Em xin nhấn mạnh dòng thứ ba: em chọn PostgreSQL không phải vì nó mạnh hơn MySQL một cách chung chung, mà vì một tính năng rất cụ thể mà MySQL không có. Hai slide nữa em sẽ nói rõ tính năng đó là gì và vì sao nó quyết định cả đề tài.
 
-## Slide 8 — Kiến trúc tổng thể
+## Slide 10 — Kiến trúc tổng thể  `[bản đầy đủ]`
 
 **Hình:** `hinh-2-1-kien-truc-tong-the.png`
 
@@ -116,7 +136,7 @@ gì để nói. Mỗi slide đều ghi sẵn số từ và số giây để bạ
 
 > Hệ thống chạy bốn dịch vụ. Máy chủ web là đường vào duy nhất từ bên ngoài; nó phục vụ tệp tĩnh của giao diện và chuyển tiếp các lời gọi vào máy chủ ứng dụng. Cơ sở dữ liệu và hộp thư không mở cổng ra ngoài — chỉ máy chủ ứng dụng gọi tới được. Cách chia này nghĩa là dù ai đó dò được địa chỉ máy, họ cũng không chạm thẳng vào cơ sở dữ liệu, và mọi yêu cầu đều đi qua đúng một cửa có kiểm soát.
 
-## Slide 9 — Vì sao kiểm tra ở tầng ứng dụng KHÔNG đủ
+## Slide 11 — Vì sao kiểm tra ở tầng ứng dụng KHÔNG đủ
 
 **Trên slide:** Luồng 1 đọc: còn phòng → Luồng 2 đọc: còn phòng · Cả hai cùng ghi → bán trùng · Mức cô lập Read Committed không ngăn được · Tài liệu PostgreSQL khuyên dùng ràng buộc toàn vẹn
 
@@ -128,7 +148,7 @@ gì để nói. Mỗi slide đều ghi sẵn số từ và số giây để bạ
 
 > Đây là slide quan trọng nhất của bài. Cách làm tự nhiên nhất khi gặp bài toán này là viết mã kiểm tra: trước khi ghi đơn thì truy vấn xem phòng còn trống không, còn thì mới ghi. Cột bên trái cho thấy vì sao cách đó sai. Hai luồng chạy song song, cả hai cùng đọc và cùng thấy còn phòng, rồi cả hai cùng ghi — kết quả là bán trùng. Khoảng trống giữa lúc đọc và lúc ghi là một khe hở không bịt được bằng logic thông thường. Và điều đáng nói là mức cô lập giao dịch mặc định của PostgreSQL, Read Committed, cũng không ngăn được chuyện này — chính tài liệu của PostgreSQL nêu ví dụ đúng như vậy, và khuyến cáo dùng ràng buộc toàn vẹn thay vì kiểm tra ở tầng ứng dụng.
 
-## Slide 10 — Giải pháp: để cơ sở dữ liệu quyết định
+## Slide 12 — Giải pháp: để cơ sở dữ liệu quyết định
 
 **Trên slide:** EXCLUDE USING gist (room_id WITH =, stay WITH &&) · Cột stay sinh tự động: daterange(nhận, trả, '[)') · Luồng thứ hai nhận lỗi 23P01 và bị bác — ngay trong giao dịch · MySQL không có daterange lẫn ràng buộc loại trừ
 
@@ -138,7 +158,7 @@ gì để nói. Mỗi slide đều ghi sẵn số từ và số giây để bạ
 
 > Nên em không kiểm ở tầng ứng dụng nữa, mà đẩy việc quyết định xuống chính cơ sở dữ liệu. Em khai một ràng buộc loại trừ: hai dòng bị coi là xung đột nếu cùng mã phòng và hai khoảng ngày chồng lấn nhau. Khoảng ngày là một cột sinh tự động kiểu daterange theo quy ước nửa mở em vừa trình bày. Ràng buộc này dùng chỉ số GiST, vì chỉ số B-tree thông thường không so sánh được quan hệ chồng lấn. Khi hai giao dịch cùng ghi, PostgreSQL bác một giao dịch ngay trong động cơ lưu trữ bằng mã lỗi 23P01, không còn khe hở nào để chen vào. Hệ thống bắt đúng mã lỗi đó rồi tự thử phòng trống tiếp theo trong một giao dịch mới, nên khách thứ hai vẫn đặt được nếu loại phòng còn phòng khác.
 
-## Slide 11 — Cơ sở dữ liệu: 21 bảng, 9 migration
+## Slide 13 — Cơ sở dữ liệu: 21 bảng, 9 migration  `[bản đầy đủ]`
 
 **Hình:** `hinh-3-3-erd-dat-phong.png`
 
@@ -148,7 +168,17 @@ gì để nói. Mỗi slide đều ghi sẵn số từ và số giây để bạ
 
 > Lược đồ có 21 bảng nghiệp vụ, dựng bởi chín migration. Hình trên slide là nhóm bảng đặt phòng — nơi đặt ràng buộc em vừa nói. Hai điểm em muốn nêu: thứ nhất, lược đồ do công cụ migration quản lý chứ không để khung ứng dụng tự sinh, và migration là bất biến — đã chạy thì không sửa, chỉ thêm bản mới. Thứ hai, dữ liệu mẫu nằm ngoài lịch sử migration, nên bản triển khai thật và bản trình diễn dùng chung một lược đồ mà không lẫn dữ liệu.
 
-## Slide 12 — Máy trạng thái đơn đặt phòng
+## Slide 14 — Lược đồ tổng thể: 20 thực thể  `[bản đầy đủ]`
+
+**Hình:** `hinh-3-2-erd-tong-the.png`
+
+*(82 từ · ~33 giây)*
+
+**Nói:**
+
+> Đây là lược đồ tổng thể, hai mươi thực thể ánh xạ tới hai mươi trong hai mươi mốt bảng. Em chia thành các nhóm: nhóm phòng và tiện nghi, nhóm đơn đặt phòng, nhóm thanh toán, nhóm nội dung trang chủ, và nhóm người dùng. Thiết kế theo hướng mỗi nhóm có một bảng gốc và các bảng phụ trỏ về, nên thêm một loại tiện nghi hay một kiểu nội dung mới là thêm dòng chứ không phải sửa bảng.
+
+## Slide 15 — Máy trạng thái đơn đặt phòng  `[bản đầy đủ]`
 
 **Hình:** `hinh-3-5-trang-thai-don.png`
 
@@ -158,7 +188,17 @@ gì để nói. Mỗi slide đều ghi sẵn số từ và số giây để bạ
 
 > Đơn đặt phòng đi qua tám trạng thái. Em xin lưu ý hai đường chuyển ở phía dưới hình: đơn đã huỷ và đơn đã hết hạn vẫn quay lại được trạng thái chờ đối soát. Đó là trường hợp tiền của khách về muộn — khách chuyển khoản chậm, đơn đã hết hạn giữ chỗ, nhưng tiền thì vẫn vào tài khoản thật. Nếu không có hai đường này thì tiền đã vào mà hệ thống coi như không có gì xảy ra. Em thiết kế sao cho không có nhánh nào để tiền của khách biến mất im lặng.
 
-## Slide 13 — Thanh toán: mã QR và webhook
+## Slide 16 — Nhánh khó nhất: tiền về muộn  `[bản đầy đủ]`
+
+**Hình:** `hinh-3-8-tuan-tu-tien-ve-muon.png`
+
+*(113 từ · ~45 giây)*
+
+**Nói:**
+
+> Em muốn dừng ở một nhánh mà em nghĩ là khó nhất trong cả hệ thống. Khách chuyển khoản chậm, đơn đã hết hạn giữ chỗ mười lăm phút, nhưng tiền thì vẫn vào tài khoản thật. Nếu xử lý ngây thơ thì hệ thống sẽ bỏ qua webhook vì đơn không còn hiệu lực, và tiền của khách biến mất im lặng — khách mất tiền mà không có phòng. Sơ đồ này là cách em xử lý: webhook về muộn vẫn được ghi nhận, đơn quay lại trạng thái chờ đối soát, và chủ nhà thấy nó trên màn hình đối soát để quyết định hoàn tiền hay xếp phòng khác.
+
+## Slide 17 — Thanh toán: mã QR và webhook
 
 **Hình:** `hinh-3-7-tuan-tu-thanh-toan.png`
 
@@ -168,7 +208,27 @@ gì để nói. Mỗi slide đều ghi sẵn số từ và số giây để bạ
 
 > Luồng thanh toán như sau. Sau khi đặt, khách thấy mã QR theo chuẩn VietQR đã gắn sẵn số tiền và nội dung chuyển khoản, kèm đồng hồ đếm ngược mười lăm phút giữ chỗ. Khách quét và chuyển khoản; nhà cung cấp dịch vụ gọi webhook báo về cho hệ thống; hệ thống tự xác nhận đơn và gửi thư cho khách. Màn hình của khách tự chuyển khi tiền về, khách không phải bấm gì thêm. Điểm em muốn nhấn: trước khi cho một đồng nào ảnh hưởng tới dữ liệu, hệ thống kiểm năm lớp — khoá xác thực của webhook, đúng số tài khoản nhận, đúng chiều tiền vào, chống xử lý trùng một giao dịch, và cuối cùng là đúng số tiền.
 
-## Slide 14 — Giao diện khách: ba bước đặt phòng
+## Slide 18 — Thiết kế API: 82 thao tác trên 65 đường dẫn  `[bản đầy đủ]`
+
+**Trên slide:** Nhóm công khai: tìm phòng, đặt phòng, tra cứu đơn · Nhóm khách có tài khoản: xem lại đơn đã đặt · Nhóm quản trị: đơn, thanh toán, danh mục, nội dung, báo cáo · Nhóm webhook: chỉ nhà cung cấp thanh toán gọi, có khoá riêng
+
+*(79 từ · ~32 giây)*
+
+**Nói:**
+
+> Giao diện lập trình ứng dụng có tám mươi hai thao tác trên sáu mươi lăm đường dẫn, chia bốn nhóm theo quyền. Nguyên tắc em đặt ra là quyền gắn vào nhóm đường dẫn chứ không gắn vào từng thao tác lẻ, vì gắn lẻ thì chỉ cần quên một chỗ là hở. Riêng nhóm webhook tách hẳn ra, dùng khoá riêng chứ không dùng token người dùng, vì người gọi nó là máy chứ không phải người.
+
+## Slide 19 — Mô hình bảo mật: mặc định từ chối tất cả
+
+**Trên slide:** Cấu hình kết thúc bằng một quy tắc từ chối tất cả · Quên khai một đường dẫn mới thì nó bị CHẶN, không bị hở · Giới hạn tần suất theo 9 khoá: địa chỉ mạng, danh tính, mã đơn · 9 kịch bản tấn công thử trên hệ thống đang chạy — tất cả đều bị chặn
+
+*(133 từ · ~53 giây)*
+
+**Nói:**
+
+> Về bảo mật, điểm thiết kế quan trọng nhất nằm ở dòng đầu: cấu hình phân quyền của em kết thúc bằng một quy tắc từ chối tất cả. Nghĩa là mặc định mọi đường dẫn đều bị chặn và phải khai tường minh mới mở ra. Nếu sau này em thêm một chức năng mới mà quên khai quyền, nó sẽ bị chặn chứ không bị hở — hệ thống hỏng theo hướng an toàn. Ngoài ra em giới hạn tần suất theo chín khoá khác nhau, và em thử chín kịch bản tấn công ngay trên hệ thống đang chạy: giả mạo địa chỉ, gọi endpoint quản trị bằng token khách, dùng token cũ sau khi đổi mật khẩu, gửi lại webhook, chèn thẻ kịch bản. Tất cả đều bị chặn.
+
+## Slide 20 — Giao diện khách: ba bước đặt phòng  `[bản đầy đủ]`
 
 **Hình:** `hinh-3-11-ba-buoc-dat-phong.png`
 
@@ -178,7 +238,7 @@ gì để nói. Mỗi slide đều ghi sẵn số từ và số giây để bạ
 
 > Phía khách, luồng đặt phòng gọn trong ba bước: chọn ngày và số khách, chọn phòng, rồi xác nhận. Hai chi tiết nhỏ nhưng em cho là quan trọng. Thứ nhất, giá hiển thị là tổng tiền cả kỳ chứ không phải giá một đêm — đó mới là con số khách thực sự muốn biết trước khi quyết định. Thứ hai, những ngày đã kín phòng bị chặn sẵn ngay trong lịch, khách không chọn được; hệ thống không để khách điền xong hết thông tin rồi mới báo là hết phòng.
 
-## Slide 15 — Khu quản trị: 11 màn hình
+## Slide 21 — Khu quản trị: 11 màn hình  `[bản đầy đủ]`
 
 **Hình:** `hinh-3-13-dashboard.png`
 
@@ -188,7 +248,7 @@ gì để nói. Mỗi slide đều ghi sẵn số từ và số giây để bạ
 
 > Khu quản trị có mười một màn hình. Trang tổng quan hiện giá trị booking theo tháng, tỉ lệ lấp đầy, tỉ lệ huỷ, và số khoản tiền đang chờ đối soát. Em thiết kế khu này ưu tiên mật độ thông tin chứ không ưu tiên đẹp, vì chủ homestay mở nó hằng ngày và cần nhìn một lần là nắm được tình hình, không phải bấm qua nhiều lớp.
 
-## Slide 16 — Kết quả kiểm thử
+## Slide 22 — Kết quả kiểm thử
 
 **Trên slide:** 136 ca kiểm thử trong 19 lớp · Kiểm thử đa luồng với PostgreSQL thật, không giả lập · 11 lỗi thực tế đã tìm ra và khắc phục · Ma trận phân quyền: 30 tiền tố đường dẫn đều được khai
 
@@ -198,7 +258,17 @@ gì để nói. Mỗi slide đều ghi sẵn số từ và số giây để bạ
 
 > Về kiểm chứng, hệ thống có 136 ca kiểm thử trong 19 lớp. Điểm em muốn nói rõ là kiểm thử tích hợp chạy trên PostgreSQL thật qua Testcontainers chứ không giả lập bằng cơ sở dữ liệu trong bộ nhớ — vì thứ cần kiểm chính là hành vi của PostgreSQL: ràng buộc loại trừ, kiểu khoảng, mã trạng thái SQL. Giả lập chúng là kiểm thử một thứ không tồn tại. Trong đó có ba ca kiểm thử đa luồng chứng minh trực tiếp rằng hệ thống không bán trùng phòng. Em cũng xin báo trung thực: lần chạy đầy đủ gần nhất xanh 129 ca; bảy ca của lớp kiểm thử nút mô phỏng chuyển khoản bổ sung sau đó em mới kiểm chứng bằng cách gọi trực tiếp qua HTTP, chưa qua một lần chạy đầy đủ cả 136 ca.
 
-## Slide 17 — Khả năng tiếp cận và triển khai
+## Slide 23 — Mười một lỗi thực tế đã tìm ra và sửa  `[bản đầy đủ]`
+
+**Hình:** `hinh-4-1-do-tuong-phan.png`
+
+*(138 từ · ~55 giây)*
+
+**Nói:**
+
+> Em muốn nói một chút về mười một lỗi thực tế, vì em nghĩ chỗ này nói lên nhiều điều hơn là con số ca kiểm thử. Hình trên slide là một trong số đó: nút chính của trang có độ tương phản chỉ 2,27 trên 1, dưới xa ngưỡng 4,5 của chuẩn khả năng tiếp cận, do một quy tắc CSS nằm ngoài tầng. Sau khi sửa thì lên 7,69. Điều đáng nói là lỗi này biên dịch vẫn thành công, kiểm thử vẫn xanh, và chỉ lộ ra khi em chụp màn hình bằng trình duyệt thật. Bài học em rút ra là một màn hình chưa ai thao tác tới là một màn hình chưa được kiểm — và đó là lý do em bổ sung bước chụp ảnh tự động toàn bộ màn hình.
+
+## Slide 24 — Khả năng tiếp cận và triển khai
 
 **Trên slide:** Quét 17 màn hình: 0 vi phạm WCAG 2.1 mức A và AA, 353 lần quy tắc đạt · Kiểm ở ba độ rộng màn hình, vùng chạm tối thiểu 44×44 điểm ảnh · docker compose up -d: bốn dịch vụ đều healthy
 
@@ -210,7 +280,7 @@ gì để nói. Mỗi slide đều ghi sẵn số từ và số giây để bạ
 
 > Bảng trên slide là kết quả quét thật chứ không phải con số em tự ghi: mỗi dòng là một màn hình, cột giữa là số vi phạm. Em quét tự động bằng axe-core trên mười bảy màn hình, bảy màn công khai và mười màn quản trị, và quét ngay trên bản đóng gói đang chạy — tức là đi qua đúng máy chủ web và đúng chính sách bảo mật nội dung của bản triển khai, chứ không phải chạy trên máy phát triển. Kết quả không còn lỗi vi phạm nào ở mức A và AA, trên tổng 353 lần quy tắc đạt. Về triển khai, toàn hệ thống chạy được bằng ba lệnh, và cả bốn dịch vụ đều báo trạng thái khoẻ.
 
-## Slide 18 — Giới hạn đã biết
+## Slide 25 — Giới hạn đã biết
 
 **Trên slide:** Chưa có bảng giá theo từng đêm — giá hiện là giá cố định theo loại phòng · Tầng giao diện chưa có bộ kiểm thử tự động thường trực · Hoàn tiền chưa tự động, chỉ ghi nhận để người xử lý
 
@@ -220,7 +290,7 @@ gì để nói. Mỗi slide đều ghi sẵn số từ và số giây để bạ
 
 > Em xin nêu rõ giới hạn thay vì giấu đi. Ba giới hạn trên slide là những chỗ em biết hệ thống chưa làm được. Ngoài ra trong báo cáo em liệt kê đủ bảy giới hạn, và em cho rằng giới hạn quan trọng nhất là bản đóng gói hiện chưa có HTTPS, vì nó chạy trên máy cục bộ khi trình diễn — nếu đưa ra dùng thật thì đây là việc phải làm đầu tiên. Điểm chung của những giới hạn này là chúng đều là chỗ mở rộng được, không phải chỗ thiết kế sai.
 
-## Slide 19 — Hướng phát triển
+## Slide 26 — Hướng phát triển
 
 **Trên slide:** Bảng giá theo mùa và theo ngày trong tuần · Ứng dụng di động — dùng lại nguyên giao diện lập trình ứng dụng · Đồng bộ lịch hai chiều với sàn trung gian
 
@@ -230,7 +300,7 @@ gì để nói. Mỗi slide đều ghi sẵn số từ và số giây để bạ
 
 > Ba hướng phát triển tiếp theo. Bảng giá theo mùa là thứ cần nhất về nghiệp vụ, vì giá cuối tuần và giá lễ khác hẳn ngày thường. Về ứng dụng di động, chính vì em tách rời giao diện và máy chủ ngay từ đầu nên ứng dụng di động dùng lại được nguyên giao diện lập trình ứng dụng hiện có, không phải viết lại tầng máy chủ. Hướng thứ ba là đồng bộ lịch hai chiều với sàn trung gian, để chủ nhà vẫn bán trên sàn mà không lo trùng lịch.
 
-## Slide 20 — Liên kết
+## Slide 27 — Liên kết
 
 **Trên slide:** Video thuyết trình:  «DÁN LIÊN KẾT GOOGLE DRIVE VÀO ĐÂY» · Mã nguồn và toàn bộ tài liệu: · github.com/nhquan403/cn-dx23tt11-nguyenhongquan-homestay-tvu · Bản trình diễn hệ thống 10 phút: thesis/abs/ trong kho mã nguồn
 
@@ -240,7 +310,7 @@ gì để nói. Mỗi slide đều ghi sẵn số từ và số giây để bạ
 
 > Slide này để thầy cô mở lại bất cứ lúc nào: video thuyết trình, kho mã nguồn và bản trình diễn hệ thống dài mười phút đi hết toàn bộ quy trình. Kho mã nguồn em để công khai nên thầy cô mở được ngay, không cần xin quyền truy cập.
 
-## Slide 21 — Cảm ơn
+## Slide 28 — Cảm ơn
 
 *(29 từ · ~12 giây)*
 
