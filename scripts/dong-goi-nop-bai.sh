@@ -15,8 +15,9 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 MSSV='170123592'
-HO_TEN='Nguyễn Hồng Quân'
-HO_TEN_KHONG_DAU='Nguyen Hong Quan'
+# Quy dinh ghi khuon ten la "Ma so sinh vien_Ho ten_Ma lop" — "Ho ten" va
+# "Ma lop" trong chinh quy dinh deu viet khong dau, nen ten tep cung khong dau.
+HO_TEN='Nguyen Hong Quan'
 LOP='DX23TT11'
 KHO='https://github.com/nhquan403/cn-dx23tt11-nguyenhongquan-homestay-tvu'
 
@@ -58,8 +59,8 @@ then
 fi
 
 rm -rf "$RA"; mkdir -p "$RA/$TEN"
-cp "$BAO_CAO" "$RA/$TEN/Bao cao do an - ${HO_TEN_KHONG_DAU}.docx"
-cp "$SLIDE"   "$RA/$TEN/Ban thuyet trinh - ${HO_TEN_KHONG_DAU}.pptx"
+cp "$BAO_CAO" "$RA/$TEN/Bao cao do an - ${HO_TEN}.docx"
+cp "$SLIDE"   "$RA/$TEN/Ban thuyet trinh - ${HO_TEN}.pptx"
 
 # Mã nguồn: lấy từ chính commit đang đứng, nên không bao giờ dính tệp rác,
 # tệp build hay tệp .env — git chỉ xuất ra những gì đã được theo dõi.
@@ -81,11 +82,11 @@ Lớp                 : ${LOP}
 
 TỆP NÉN NÀY GỒM
 
-  Bao cao do an - ${HO_TEN_KHONG_DAU}.docx
-      Quyển báo cáo trọn bộ 98 trang: trang bìa, nhận xét, mục lục,
-      47 trang nội dung, tài liệu tham khảo và phụ lục.
+  Bao cao do an - ${HO_TEN}.docx
+      Quyển báo cáo trọn bộ 99 trang: trang bìa, nhận xét, mục lục,
+      48 trang nội dung, tài liệu tham khảo và phụ lục.
 
-  Ban thuyet trinh - ${HO_TEN_KHONG_DAU}.pptx
+  Ban thuyet trinh - ${HO_TEN}.pptx
       28 slide, có ghi chú người trình bày ở từng slide.
       Liên kết video thuyết trình nằm ở slide 27 — "Liên kết".
 
@@ -105,14 +106,19 @@ KHO MÃ NGUỒN TRỰC TUYẾN
 EOF
 
 cd "$RA"
+# Quy dinh cho ".raz hoac .zip". Khong co dinh dang nen nao ten la .raz, gan
+# nhu chac chan do la loi go cua .rar, nhung khong doan thay sinh vien duoc —
+# dung ca hai ban de chon ban nao he thong nhan.
+zip -q -r "${TEN}.zip" "$TEN"
+GOI="${TEN}.zip"
 if command -v rar >/dev/null 2>&1; then
     rar a -r -idq "${TEN}.rar" "$TEN"
-    GOI="${TEN}.rar"
+    GOI="${TEN}.zip va ${TEN}.rar"
 else
-    echo "  (không có lệnh rar — đóng gói .zip thay thế)" >&2
-    zip -q -r "${TEN}.zip" "$TEN"
-    GOI="${TEN}.zip"
+    echo "  (máy không có lệnh rar — chỉ đóng gói được .zip)" >&2
 fi
 rm -rf "$TEN"
 
-echo "  -> $RA/${GOI}  ($(du -h "$GOI" | cut -f1))"
+for f in "${TEN}.zip" "${TEN}.rar"; do
+    [ -f "$f" ] && echo "  -> $RA/$f  ($(du -h "$f" | cut -f1))"
+done

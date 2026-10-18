@@ -60,3 +60,18 @@ những lỗi mà việc biên dịch thành công hoàn toàn không phát hi�
    hiện có.
 10. Mở rộng thành nền tảng phục vụ nhiều chi nhánh.
 11. Gợi ý phòng dựa trên lịch sử đặt của khách.
+
+## 5.3. Mã nguồn và sản phẩm bàn giao
+
+Toàn bộ mã nguồn của đồ án được lưu trữ công khai trên GitHub:
+
+**https://github.com/nhquan403/cn-dx23tt11-nguyenhongquan-homestay-tvu**
+
+Kho để chế độ công khai nên mở được ngay, không cần xin quyền truy cập. Trong
+kho có mã nguồn phần máy chủ, mã nguồn phần giao diện, tệp cấu hình đóng gói,
+các kịch bản dựng tài liệu và toàn bộ tài liệu kỹ thuật. Hướng dẫn cài đặt và
+chạy thử nằm ở tệp `README.md` ngay thư mục gốc.
+
+Kèm theo kho mã nguồn còn có bản trình diễn hệ thống dài mười phút, đi hết quy
+trình từ lúc khách tìm phòng cho tới lúc quản trị viên xác nhận đơn, đặt tại
+thư mục `thesis/abs/`.
